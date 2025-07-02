@@ -28,10 +28,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('users', UserController::class);
     Route::post('users/{id}/assign', [UserController::class, 'assignRolesPermissions']);
     Route::apiResource('companies', CompaniesController::class);
-    // Route::apiResource('contact_companies', ContactCompanyController::class);
     Route::apiResource('sectors', SectorController::class);
     Route::apiResource('stores', StoreController::class);
-    Route::apiResource('contact_stores', ContactStoreController::class);
     Route::apiResource('status', StatusController::class);
     Route::apiResource('action', ActionController::class);
     Route::get('system-logs', [SystemLogController::class, 'index']);

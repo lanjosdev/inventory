@@ -62,7 +62,7 @@ class UserController extends Controller
      *     ),
      *     @OA\Response(
      *         response=500,
-     *         description="Erro interno ao buscar usuários"
+     *         description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
      *     )
      * )
      */
@@ -83,10 +83,10 @@ class UserController extends Controller
             return ResponseHelper::success('Lista de usuários obtida com sucesso.', $users);
         } catch (QueryException $qe) {
             Log::error('Error DB: ' . $qe->getMessage());
-            return ResponseHelper::error('Ops, algo inesperado aconteceu. Tente novamente mais tarde.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         } catch (Exception $e) {
             Log::error('Error: ' . $e->getMessage());
-            return ResponseHelper::error('Ops, algo aconteceu. Tente novamente mais tarde.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         }
     }
 
@@ -125,7 +125,7 @@ class UserController extends Controller
      *     ),
      *     @OA\Response(
      *         response=500,
-     *         description="Erro interno ao buscar usuário"
+     *         description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
      *     )
      * )
      */
@@ -147,10 +147,10 @@ class UserController extends Controller
             return ResponseHelper::success('Usuário encontrado.', $userData);
         } catch (QueryException $qe) {
             Log::error('Error DB: ' . $qe->getMessage());
-            return ResponseHelper::error('Ops, algo inesperado aconteceu. Tente novamente mais tarde.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         } catch (Exception $e) {
             Log::error('Error: ' . $e->getMessage());
-            return ResponseHelper::error('Ops, algo aconteceu. Tente novamente mais tarde.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         }
     }
 
@@ -188,7 +188,7 @@ class UserController extends Controller
      *     ),
      *     @OA\Response(
      *         response=500,
-     *         description="Erro interno ao criar usuário"
+     *         description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
      *     )
      * )
      */
@@ -214,11 +214,11 @@ class UserController extends Controller
         } catch (QueryException $qe) {
             DB::rollBack();
             Log::error('Error DB: ' . $qe->getMessage());
-            return ResponseHelper::error('Ops, algo inesperado aconteceu. Tente novamente mais tarde.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         } catch (Exception $e) {
             DB::rollBack();
             Log::error('Error: ' . $e->getMessage());
-            return ResponseHelper::error('Ops, algo aconteceu. Tente novamente mais tarde.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         }
     }
 
@@ -267,7 +267,7 @@ class UserController extends Controller
      *     ),
      *     @OA\Response(
      *         response=500,
-     *         description="Erro interno ao atualizar usuário"
+     *         description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
      *     )
      * )
      */
@@ -298,11 +298,11 @@ class UserController extends Controller
         } catch (QueryException $qe) {
             DB::rollBack();
             Log::error('Error DB: ' . $qe->getMessage());
-            return ResponseHelper::error('Ops, algo inesperado aconteceu. Tente novamente mais tarde.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         } catch (Exception $e) {
             DB::rollBack();
             Log::error('Error: ' . $e->getMessage());
-            return ResponseHelper::error('Ops, algo aconteceu. Tente novamente mais tarde.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         }
     }
 
@@ -333,7 +333,7 @@ class UserController extends Controller
      *     ),
      *     @OA\Response(
      *         response=500,
-     *         description="Erro interno ao remover usuário"
+     *         description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
      *     )
      * )
      */
@@ -359,11 +359,11 @@ class UserController extends Controller
         } catch (QueryException $qe) {
             DB::rollBack();
             Log::error('Error DB: ' . $qe->getMessage());
-            return ResponseHelper::error('Ops, algo inesperado aconteceu. Tente novamente mais tarde.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         } catch (Exception $e) {
             DB::rollBack();
             Log::error('Error: ' . $e->getMessage());
-            return ResponseHelper::error('Ops, algo aconteceu. Tente novamente mais tarde.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         }
     }
 
@@ -446,11 +446,11 @@ class UserController extends Controller
         } catch (QueryException $qe) {
             DB::rollBack();
             Log::error('Error DB: ' . $qe->getMessage());
-            return ResponseHelper::error('Ops, algo inesperado aconteceu. Tente novamente mais tarde.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         } catch (Exception $e) {
             DB::rollBack();
             Log::error('Error: ' . $e->getMessage());
-            return ResponseHelper::error('Ops, algo aconteceu. Tente novamente mais tarde.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         }
     }
 }

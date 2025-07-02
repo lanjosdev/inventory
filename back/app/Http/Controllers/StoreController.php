@@ -61,7 +61,7 @@ class StoreController extends Controller
      *     ),
      *     @OA\Response(
      *         response=500,
-     *         description="Erro interno ao buscar lojas"
+     *         description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
      *     )
      * )
      */
@@ -88,10 +88,10 @@ class StoreController extends Controller
             return ResponseHelper::success('Lista de lojas obtida com sucesso.', $stores);
         } catch (QueryException $qe) {
             Log::error('Erro DB: ' . $qe->getMessage());
-            return ResponseHelper::error('Erro ao buscar lojas.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         } catch (Exception $e) {
             Log::error('Erro: ' . $e->getMessage());
-            return ResponseHelper::error('Erro inesperado ao buscar lojas.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         }
     }
 
@@ -133,7 +133,7 @@ class StoreController extends Controller
      *     ),
      *     @OA\Response(
      *         response=500,
-     *         description="Erro interno ao buscar loja"
+     *         description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
      *     )
      * )
      */
@@ -160,10 +160,10 @@ class StoreController extends Controller
             return ResponseHelper::success('Loja encontrada.', $data);
         } catch (QueryException $qe) {
             Log::error('Erro DB: ' . $qe->getMessage());
-            return ResponseHelper::error('Erro ao buscar loja.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         } catch (Exception $e) {
             Log::error('Erro: ' . $e->getMessage());
-            return ResponseHelper::error('Erro inesperado ao buscar loja.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         }
     }
 
@@ -237,11 +237,11 @@ class StoreController extends Controller
         } catch (QueryException $qe) {
             DB::rollBack();
             Log::error('Erro DB: ' . $qe->getMessage());
-            return ResponseHelper::error('Erro ao criar loja.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         } catch (Exception $e) {
             DB::rollBack();
             Log::error('Erro: ' . $e->getMessage());
-            return ResponseHelper::error('Erro inesperado ao criar loja.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         }
     }
 
@@ -338,11 +338,11 @@ class StoreController extends Controller
         } catch (QueryException $qe) {
             DB::rollBack();
             Log::error('Erro DB: ' . $qe->getMessage());
-            return ResponseHelper::error('Erro ao atualizar loja.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         } catch (Exception $e) {
             DB::rollBack();
             Log::error('Erro: ' . $e->getMessage());
-            return ResponseHelper::error('Erro inesperado ao atualizar loja.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         }
     }
 
@@ -392,11 +392,11 @@ class StoreController extends Controller
         } catch (QueryException $qe) {
             DB::rollBack();
             Log::error('Erro DB: ' . $qe->getMessage());
-            return ResponseHelper::error('Erro ao remover loja.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         } catch (Exception $e) {
             DB::rollBack();
             Log::error('Erro: ' . $e->getMessage());
-            return ResponseHelper::error('Erro inesperado ao remover loja.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         }
     }
 }

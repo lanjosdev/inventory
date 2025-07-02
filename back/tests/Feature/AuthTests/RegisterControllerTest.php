@@ -28,7 +28,9 @@ class RegisterControllerTest extends TestCase
                     'access_token',
                     'token_type',
                     'user' => [
-                        'id', 'name', 'email'
+                        'id',
+                        'name',
+                        'email'
                     ]
                 ]
             ]);

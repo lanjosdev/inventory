@@ -45,7 +45,7 @@ class LogoutController extends Controller
      *     ),
      *     @OA\Response(
      *         response=500,
-     *         description="Erro interno ao realizar logout"
+     *         description="Ops, algo inesperado aconteceu. Tente novamente mais tarde."
      *     )
      * )
      */

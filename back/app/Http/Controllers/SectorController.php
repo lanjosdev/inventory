@@ -60,7 +60,7 @@ class SectorController extends Controller
      *     ),
      *     @OA\Response(
      *         response=500,
-     *         description="Erro interno ao buscar setores"
+     *         description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
      *     )
      * )
      */
@@ -80,10 +80,10 @@ class SectorController extends Controller
             return ResponseHelper::success('Lista de setores obtida com sucesso.', $sectors);
         } catch (QueryException $qe) {
             Log::error('Error DB: ' . $qe->getMessage());
-            return ResponseHelper::error('Ops, algo inesperado aconteceu. Tente novamente mais tarde.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         } catch (Exception $e) {
             Log::error('Error: ' . $e->getMessage());
-            return ResponseHelper::error('Ops, algo aconteceu. Tente novamente mais tarde.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         }
     }
 
@@ -120,7 +120,7 @@ class SectorController extends Controller
      *     ),
      *     @OA\Response(
      *         response=500,
-     *         description="Erro interno ao criar setor"
+     *         description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
      *     )
      * )
      */
@@ -138,11 +138,11 @@ class SectorController extends Controller
         } catch (QueryException $qe) {
             DB::rollBack();
             Log::error('Error DB: ' . $qe->getMessage());
-            return ResponseHelper::error('Ops, algo inesperado aconteceu. Tente novamente mais tarde.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         } catch (Exception $e) {
             DB::rollBack();
             Log::error('Error: ' . $e->getMessage());
-            return ResponseHelper::error('Ops, algo aconteceu. Tente novamente mais tarde.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         }
     }
 
@@ -182,7 +182,7 @@ class SectorController extends Controller
      *     ),
      *     @OA\Response(
      *         response=500,
-     *         description="Erro interno ao buscar setor"
+     *         description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
      *     )
      * )
      */
@@ -203,10 +203,10 @@ class SectorController extends Controller
             return ResponseHelper::success('Setor encontrado.', $sectorData);
         } catch (QueryException $qe) {
             Log::error('Error DB: ' . $qe->getMessage());
-            return ResponseHelper::error('Ops, algo inesperado aconteceu. Tente novamente mais tarde.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         } catch (Exception $e) {
             Log::error('Error: ' . $e->getMessage());
-            return ResponseHelper::error('Ops, algo aconteceu. Tente novamente mais tarde.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         }
     }
 
@@ -254,7 +254,7 @@ class SectorController extends Controller
      *     ),
      *     @OA\Response(
      *         response=500,
-     *         description="Erro interno ao atualizar setor"
+     *         description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
      *     )
      * )
      */
@@ -276,11 +276,11 @@ class SectorController extends Controller
         } catch (QueryException $qe) {
             DB::rollBack();
             Log::error('Error DB: ' . $qe->getMessage());
-            return ResponseHelper::error('Ops, algo inesperado aconteceu. Tente novamente mais tarde.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         } catch (Exception $e) {
             DB::rollBack();
             Log::error('Error: ' . $e->getMessage());
-            return ResponseHelper::error('Ops, algo aconteceu. Tente novamente mais tarde.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         }
     }
 
@@ -313,7 +313,7 @@ class SectorController extends Controller
      *     ),
      *     @OA\Response(
      *         response=500,
-     *         description="Erro interno ao remover setor"
+     *         description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
      *     )
      * )
      */
@@ -331,11 +331,11 @@ class SectorController extends Controller
         } catch (QueryException $qe) {
             DB::rollBack();
             Log::error('Error DB: ' . $qe->getMessage());
-            return ResponseHelper::error('Ops, algo inesperado aconteceu. Tente novamente mais tarde.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         } catch (Exception $e) {
             DB::rollBack();
             Log::error('Error: ' . $e->getMessage());
-            return ResponseHelper::error('Ops, algo aconteceu. Tente novamente mais tarde.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         }
     }
 }

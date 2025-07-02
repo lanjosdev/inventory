@@ -37,7 +37,8 @@ class ActionController extends Controller
      *         @OA\Schema(type="integer", default=10)
      *     ),
      *     @OA\Response(response=200, description="Sucesso"),
-     *     @OA\Response(response=401, description="Não autorizado")
+     *     @OA\Response(response=401, description="Não autorizado"),
+     *     @OA\Response(response=500, description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.")
      * )
      */
     public function index(Request $request)
@@ -48,7 +49,7 @@ class ActionController extends Controller
             return ResponseHelper::success('Ações listadas com sucesso.', $actions);
         } catch (\Exception $e) {
             Log::error('Erro ao listar ações: ' . $e->getMessage());
-            return ResponseHelper::error('Erro ao listar ações.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         }
     }
 
@@ -67,7 +68,8 @@ class ActionController extends Controller
      *         )
      *     ),
      *     @OA\Response(response=201, description="Criado"),
-     *     @OA\Response(response=400, description="Erro de validação")
+     *     @OA\Response(response=400, description="Erro de validação"),
+     *     @OA\Response(response=500, description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.")
      * )
      */
     public function store(Request $request)
@@ -84,7 +86,7 @@ class ActionController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Erro ao criar ação: ' . $e->getMessage());
-            return ResponseHelper::error('Erro ao criar ação.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         }
     }
 
@@ -96,7 +98,8 @@ class ActionController extends Controller
      *     description="Exibe uma ação específica.",
      *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
      *     @OA\Response(response=200, description="Sucesso"),
-     *     @OA\Response(response=404, description="Não encontrado")
+     *     @OA\Response(response=404, description="Não encontrado"),
+     *     @OA\Response(response=500, description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.")
      * )
      */
     public function show(Action $action)
@@ -105,7 +108,7 @@ class ActionController extends Controller
             return ResponseHelper::success('Ação encontrada.', $action);
         } catch (\Exception $e) {
             Log::error('Erro ao exibir ação: ' . $e->getMessage());
-            return ResponseHelper::error('Erro ao exibir ação.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         }
     }
 
@@ -125,7 +128,8 @@ class ActionController extends Controller
      *     ),
      *     @OA\Response(response=200, description="Atualizado"),
      *     @OA\Response(response=400, description="Erro de validação"),
-     *     @OA\Response(response=404, description="Não encontrado")
+     *     @OA\Response(response=404, description="Não encontrado"),
+     *     @OA\Response(response=500, description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.")
      * )
      */
     public function update(Request $request, Action $action)
@@ -142,7 +146,7 @@ class ActionController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Erro ao atualizar ação: ' . $e->getMessage());
-            return ResponseHelper::error('Erro ao atualizar ação.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         }
     }
 
@@ -154,7 +158,8 @@ class ActionController extends Controller
      *     description="Remove uma ação existente.",
      *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
      *     @OA\Response(response=200, description="Removido"),
-     *     @OA\Response(response=404, description="Não encontrado")
+     *     @OA\Response(response=404, description="Não encontrado"),
+     *     @OA\Response(response=500, description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.")
      * )
      */
     public function destroy(Action $action)
@@ -167,7 +172,7 @@ class ActionController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Erro ao remover ação: ' . $e->getMessage());
-            return ResponseHelper::error('Erro ao remover ação.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         }
     }
 }

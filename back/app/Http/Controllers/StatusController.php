@@ -57,7 +57,7 @@ class StatusController extends Controller
      *     ),
      *     @OA\Response(
      *         response=500,
-     *         description="Erro interno ao buscar status"
+     *         description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
      *     )
      * )
      */
@@ -77,10 +77,10 @@ class StatusController extends Controller
             return ResponseHelper::success('Lista de status obtida com sucesso.', $status);
         } catch (\Illuminate\Database\QueryException $qe) {
             Log::error('Error DB: ' . $qe->getMessage());
-            return ResponseHelper::error('Ops, algo inesperado aconteceu. Tente novamente mais tarde.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         } catch (\Exception $e) {
             Log::error('Error: ' . $e->getMessage());
-            return ResponseHelper::error('Ops, algo aconteceu. Tente novamente mais tarde.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         }
     }
 
@@ -126,7 +126,7 @@ class StatusController extends Controller
      *     ),
      *     @OA\Response(
      *         response=500,
-     *         description="Erro interno ao criar status"
+     *         description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
      *     )
      * )
      */
@@ -144,11 +144,11 @@ class StatusController extends Controller
         } catch (\Illuminate\Database\QueryException $qe) {
             DB::rollBack();
             Log::error('Error DB: ' . $qe->getMessage());
-            return ResponseHelper::error('Ops, algo inesperado aconteceu. Tente novamente mais tarde.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Error: ' . $e->getMessage());
-            return ResponseHelper::error('Ops, algo aconteceu. Tente novamente mais tarde.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         }
     }
 
@@ -189,7 +189,7 @@ class StatusController extends Controller
      *     ),
      *     @OA\Response(
      *         response=500,
-     *         description="Erro interno ao buscar status"
+     *         description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
      *     )
      * )
      */
@@ -210,10 +210,10 @@ class StatusController extends Controller
             return ResponseHelper::success('Status encontrado.', $data);
         } catch (\Illuminate\Database\QueryException $qe) {
             Log::error('Error DB: ' . $qe->getMessage());
-            return ResponseHelper::error('Ops, algo inesperado aconteceu. Tente novamente mais tarde.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         } catch (\Exception $e) {
             Log::error('Error: ' . $e->getMessage());
-            return ResponseHelper::error('Ops, algo aconteceu. Tente novamente mais tarde.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         }
     }
 
@@ -270,7 +270,7 @@ class StatusController extends Controller
      *     ),
      *     @OA\Response(
      *         response=500,
-     *         description="Erro interno ao atualizar status"
+     *         description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
      *     )
      * )
      */
@@ -292,11 +292,11 @@ class StatusController extends Controller
         } catch (\Illuminate\Database\QueryException $qe) {
             DB::rollBack();
             Log::error('Error DB: ' . $qe->getMessage());
-            return ResponseHelper::error('Ops, algo inesperado aconteceu. Tente novamente mais tarde.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Error: ' . $e->getMessage());
-            return ResponseHelper::error('Ops, algo aconteceu. Tente novamente mais tarde.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         }
     }
 
@@ -330,7 +330,7 @@ class StatusController extends Controller
      *     ),
      *     @OA\Response(
      *         response=500,
-     *         description="Erro interno ao remover status"
+     *         description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
      *     )
      * )
      */
@@ -348,11 +348,11 @@ class StatusController extends Controller
         } catch (\Illuminate\Database\QueryException $qe) {
             DB::rollBack();
             Log::error('Error DB: ' . $qe->getMessage());
-            return ResponseHelper::error('Ops, algo inesperado aconteceu. Tente novamente mais tarde.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Error: ' . $e->getMessage());
-            return ResponseHelper::error('Ops, algo aconteceu. Tente novamente mais tarde.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         }
     }
 }

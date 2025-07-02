@@ -8,7 +8,7 @@ namespace App\Http\Controllers;
  *     version="1.0.0",
  *     description="Documentação da API Inventory gerada automaticamente via Swagger.",
  *     @OA\Contact(
- *         email="seu-email@dominio.com"
+ *         email="victor.hugo@bizsys.com.br"
  *     )
  * )
  */

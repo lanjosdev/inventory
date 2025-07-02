@@ -59,7 +59,7 @@ class LoginController extends Controller
      *     ),
      *     @OA\Response(
      *         response=500,
-     *         description="Erro interno ao realizar login"
+     *         description="Ops, algo inesperado aconteceu. Tente novamente mais tarde."
      *     )
      * )
      */

@@ -55,7 +55,7 @@ class CompaniesController extends Controller
      *             )
      *         )
      *     ),
-     *     @OA\Response(response=500, description="Erro interno ao buscar empresas")
+     *     @OA\Response(response=500, description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.")
      * )
      */
     public function index(Request $request)
@@ -83,10 +83,10 @@ class CompaniesController extends Controller
             return ResponseHelper::success('Lista de empresas obtida com sucesso.', $companies);
         } catch (QueryException $qe) {
             Log::error('Error DB: ' . $qe->getMessage());
-            return ResponseHelper::error('Ops, algo inesperado aconteceu. Tente novamente mais tarde.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         } catch (Exception $e) {
             Log::error('Error: ' . $e->getMessage());
-            return ResponseHelper::error('Ops, algo aconteceu. Tente novamente mais tarde.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         }
     }
 
@@ -130,7 +130,7 @@ class CompaniesController extends Controller
      *         )
      *     ),
      *     @OA\Response(response=422, description="Erro de validação"),
-     *     @OA\Response(response=500, description="Erro interno ao criar empresa")
+     *     @OA\Response(response=500, description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.")
      * )
      */
     public function store(Request $request)
@@ -164,11 +164,11 @@ class CompaniesController extends Controller
         } catch (QueryException $qe) {
             DB::rollBack();
             Log::error('Error DB: ' . $qe->getMessage());
-            return ResponseHelper::error('Ops, algo inesperado aconteceu. Tente novamente mais tarde.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         } catch (Exception $e) {
             DB::rollBack();
             Log::error('Error: ' . $e->getMessage());
-            return ResponseHelper::error('Ops, algo aconteceu. Tente novamente mais tarde.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         }
     }
 
@@ -200,7 +200,7 @@ class CompaniesController extends Controller
      *         )
      *     ),
      *     @OA\Response(response=404, description="Empresa não encontrada"),
-     *     @OA\Response(response=500, description="Erro interno ao buscar empresa")
+     *     @OA\Response(response=500, description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.")
      * )
      */
     public function show($id)
@@ -228,10 +228,10 @@ class CompaniesController extends Controller
             return ResponseHelper::success('Empresa encontrada.', $companyData);
         } catch (QueryException $qe) {
             Log::error('Error DB: ' . $qe->getMessage());
-            return ResponseHelper::error('Ops, algo inesperado aconteceu. Tente novamente mais tarde.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         } catch (Exception $e) {
             Log::error('Error: ' . $e->getMessage());
-            return ResponseHelper::error('Ops, algo aconteceu. Tente novamente mais tarde.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         }
     }
 
@@ -278,7 +278,7 @@ class CompaniesController extends Controller
      *     ),
      *     @OA\Response(response=404, description="Empresa não encontrada"),
      *     @OA\Response(response=422, description="Erro de validação"),
-     *     @OA\Response(response=500, description="Erro interno ao atualizar empresa")
+     *     @OA\Response(response=500, description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.")
      * )
      */
     public function update(Request $request, $id)
@@ -324,11 +324,11 @@ class CompaniesController extends Controller
         } catch (QueryException $qe) {
             DB::rollBack();
             Log::error('Error DB: ' . $qe->getMessage());
-            return ResponseHelper::error('Ops, algo inesperado aconteceu. Tente novamente mais tarde.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         } catch (Exception $e) {
             DB::rollBack();
             Log::error('Error: ' . $e->getMessage());
-            return ResponseHelper::error('Ops, algo aconteceu. Tente novamente mais tarde.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         }
     }
 
@@ -348,7 +348,7 @@ class CompaniesController extends Controller
      *         )
      *     ),
      *     @OA\Response(response=404, description="Empresa não encontrada"),
-     *     @OA\Response(response=500, description="Erro interno ao remover empresa")
+     *     @OA\Response(response=500, description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.")
      * )
      */
     public function destroy(Request $request, $id)
@@ -373,11 +373,11 @@ class CompaniesController extends Controller
         } catch (QueryException $qe) {
             DB::rollBack();
             Log::error('Error DB: ' . $qe->getMessage());
-            return ResponseHelper::error('Ops, algo inesperado aconteceu. Tente novamente mais tarde.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         } catch (Exception $e) {
             DB::rollBack();
             Log::error('Error: ' . $e->getMessage());
-            return ResponseHelper::error('Ops, algo aconteceu. Tente novamente mais tarde.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         }
     }
 }

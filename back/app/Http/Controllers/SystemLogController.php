@@ -36,7 +36,8 @@ class SystemLogController extends Controller
      *         @OA\Schema(type="integer", default=10)
      *     ),
      *     @OA\Response(response=200, description="Sucesso"),
-     *     @OA\Response(response=401, description="Não autorizado")
+     *     @OA\Response(response=401, description="Não autorizado"),
+     *     @OA\Response(response=500, description="Ops, algo inesperado aconteceu. Tente novamente mais tarde.")
      * )
      */
     public function index(Request $request)
@@ -47,7 +48,7 @@ class SystemLogController extends Controller
             return ResponseHelper::success('Logs listados com sucesso.', $logs);
         } catch (\Exception $e) {
             Log::error('Erro ao listar logs do sistema: ' . $e->getMessage());
-            return ResponseHelper::error('Erro ao listar logs do sistema.', 500);
+            return ResponseHelper::error('Ops, algo inesperado aconteceu. Tente novamente mais tarde.', 500);
         }
     }
 
@@ -59,7 +60,8 @@ class SystemLogController extends Controller
      *     description="Exibe um log do sistema específico.",
      *     @OA\Parameter(name="systemLog", in="path", required=true, @OA\Schema(type="integer")),
      *     @OA\Response(response=200, description="Sucesso"),
-     *     @OA\Response(response=404, description="Não encontrado")
+     *     @OA\Response(response=404, description="Não encontrado"),
+     *     @OA\Response(response=500, description="Ops, algo inesperado aconteceu. Tente novamente mais tarde.")
      * )
      */
     public function show(SystemLog $systemLog)
@@ -68,7 +70,7 @@ class SystemLogController extends Controller
             return ResponseHelper::success('Log encontrado.', $systemLog);
         } catch (\Exception $e) {
             Log::error('Erro ao exibir log do sistema: ' . $e->getMessage());
-            return ResponseHelper::error('Erro ao exibir log do sistema.', 500);
+            return ResponseHelper::error('Ops, algo inesperado aconteceu. Tente novamente mais tarde.', 500);
         }
     }
 

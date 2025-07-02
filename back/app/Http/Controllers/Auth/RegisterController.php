@@ -55,7 +55,7 @@ class RegisterController extends Controller
      *     ),
      *     @OA\Response(
      *         response=500,
-     *         description="Erro interno ao registrar usuário"
+     *         description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
      *     )
      * )
      */
@@ -70,7 +70,7 @@ class RegisterController extends Controller
                 'password' => Hash::make($validated['password']),
             ]);
             $token = $user->createToken('auth_token')->plainTextToken;
-            
+
             // Log de auditoria - registro
             SystemLog::create([
                 'fk_user' => $user->id,
@@ -79,7 +79,7 @@ class RegisterController extends Controller
                 'record_id' => $user->id,
                 'description' => 'Usuário registrado: ' . json_encode($user->toArray()),
             ]);
-            
+
             DB::commit();
             return ResponseHelper::success('Usuário registrado com sucesso', [
                 'access_token' => $token,
@@ -92,11 +92,11 @@ class RegisterController extends Controller
         } catch (QueryException $qe) {
             DB::rollBack();
             Log::error('Error DB: ' . $qe->getMessage());
-            return ResponseHelper::error('Ops, algo inesperado aconteceu. Tente novamente mais tarde.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         } catch (Exception $e) {
             DB::rollBack();
             Log::error('Error: ' . $e->getMessage());
-            return ResponseHelper::error('Ops, algo aconteceu. Tente novamente mais tarde.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         }
     }
 }
