@@ -11,9 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('asset_types', function (Blueprint $table) {
+        Schema::create('assets', function (Blueprint $table) {
             $table->id();
             $table->string('name', 255);
+            $table->foreignId('fk_store')->constrained('stores')->onUpdate('cascade');
+            $table->foreignId('fk_sector')->constrained('stores')->onUpdate('cascade');
+            $table->foreignId('fk_asset_type')->constrained('asset_types')->onUpdate('cascade');
+            $table->foreignId('fk_status')->constrained('asset_types')->onUpdate('cascade');
             $table->string('observation', 255)->nullable();
             $table->timestamps();
             $table->softDeletes();
@@ -25,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('asset_types');
+        Schema::dropIfExists('assets');
     }
 };
