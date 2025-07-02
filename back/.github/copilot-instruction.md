@@ -70,7 +70,7 @@ Todo controller, model e helper deve possuir testes automatizados (unitários e/
 
 Siga as diretrizes do arquivo TESTS.md para garantir cobertura e qualidade dos testes.
 
-Não aprove PRs sem testes para novas features ou correções.
+**Não aprove PRs sem testes para novas features ou correções.**
 
 # 7. Instruções Específicas para o Copilot (IA) (SEÇÃO ATUALIZADA)
 A fonte da verdade para a documentação da API agora são as anotações @OA\... nos Controllers.

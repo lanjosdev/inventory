@@ -70,14 +70,16 @@ class RegisterController extends Controller
                 'password' => Hash::make($validated['password']),
             ]);
             $token = $user->createToken('auth_token')->plainTextToken;
+            
             // Log de auditoria - registro
             SystemLog::create([
                 'fk_user' => $user->id,
-                'fk_action' => ActionModel::where('name', 'criação')->value('id'),
+                'fk_action' => ActionModel::where('name', 'criou')->value('id'),
                 'name_table' => 'users',
                 'record_id' => $user->id,
                 'description' => 'Usuário registrado: ' . json_encode($user->toArray()),
             ]);
+            
             DB::commit();
             return ResponseHelper::success('Usuário registrado com sucesso', [
                 'access_token' => $token,
