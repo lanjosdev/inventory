@@ -4,7 +4,7 @@
         "title": "API Inventory",
         "description": "Documentação da API Inventory gerada automaticamente via Swagger.",
         "contact": {
-            "email": "seu-email@dominio.com"
+            "email": "victor.hugo@bizsys.com.br"
         },
         "version": "1.0.0"
     },
@@ -45,6 +45,9 @@
                     },
                     "401": {
                         "description": "Não autorizado"
+                    },
+                    "500": {
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
             },
@@ -82,6 +85,9 @@
                     },
                     "400": {
                         "description": "Erro de validação"
+                    },
+                    "500": {
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
             }
@@ -110,6 +116,9 @@
                     },
                     "404": {
                         "description": "Não encontrado"
+                    },
+                    "500": {
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
             },
@@ -157,6 +166,9 @@
                     },
                     "404": {
                         "description": "Não encontrado"
+                    },
+                    "500": {
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
             },
@@ -183,6 +195,290 @@
                     },
                     "404": {
                         "description": "Não encontrado"
+                    },
+                    "500": {
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
+                    }
+                }
+            }
+        },
+        "/asset-types": {
+            "get": {
+                "tags": [
+                    "Tipos de Ativo"
+                ],
+                "summary": "Lista tipos de ativos",
+                "description": "Retorna uma lista paginada de tipos de ativos.",
+                "operationId": "b0ef8566e9fabc14db41157d6778fc26",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 10
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista paginada de tipos de ativos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Tipos de Ativo"
+                ],
+                "summary": "Cria um novo tipo de ativo",
+                "description": "Cria um novo tipo de ativo.",
+                "operationId": "9d5bc403bcbaaaa2a967e2792bdf61f1",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Notebook"
+                                    },
+                                    "observation": {
+                                        "type": "string",
+                                        "example": "Equipamento de TI"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Tipo de ativo criado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Erro de validação"
+                    },
+                    "500": {
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
+                    }
+                }
+            }
+        },
+        "/asset-types/{id}": {
+            "get": {
+                "tags": [
+                    "Tipos de Ativo"
+                ],
+                "summary": "Exibe um tipo de ativo",
+                "description": "Retorna os dados de um tipo de ativo pelo ID.",
+                "operationId": "fd612903db3129b6f76d19bdad32c218",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tipo de ativo encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Tipo de ativo não encontrado"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Tipos de Ativo"
+                ],
+                "summary": "Atualiza um tipo de ativo",
+                "description": "Atualiza os dados de um tipo de ativo.",
+                "operationId": "0c2d05bef27f7e52a7fbecfb637d2846",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Notebook"
+                                    },
+                                    "observation": {
+                                        "type": "string",
+                                        "example": "Equipamento de TI"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Tipo de ativo atualizado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Erro de validação"
+                    },
+                    "404": {
+                        "description": "Tipo de ativo não encontrado"
+                    },
+                    "500": {
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Tipos de Ativo"
+                ],
+                "summary": "Remove um tipo de ativo",
+                "description": "Remove (soft delete) um tipo de ativo.",
+                "operationId": "30768a215ccf2952fac224121fdf4ee7",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tipo de ativo removido com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Tipo de ativo não encontrado"
+                    },
+                    "500": {
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
             }
@@ -277,7 +573,7 @@
                         "description": "Erro de validação"
                     },
                     "500": {
-                        "description": "Erro interno ao realizar login"
+                        "description": "Ops, algo inesperado aconteceu. Tente novamente mais tarde."
                     }
                 }
             }
@@ -318,7 +614,7 @@
                         "description": "Erro de validação"
                     },
                     "500": {
-                        "description": "Erro interno ao realizar logout"
+                        "description": "Ops, algo inesperado aconteceu. Tente novamente mais tarde."
                     }
                 }
             }
@@ -415,7 +711,7 @@
                         "description": "Erro de validação"
                     },
                     "500": {
-                        "description": "Erro interno ao registrar usuário"
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
             }
@@ -534,7 +830,7 @@
                         }
                     },
                     "500": {
-                        "description": "Erro interno ao buscar empresas"
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
             },
@@ -662,7 +958,7 @@
                         "description": "Erro de validação"
                     },
                     "500": {
-                        "description": "Erro interno ao criar empresa"
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
             }
@@ -752,7 +1048,7 @@
                         "description": "Empresa não encontrada"
                     },
                     "500": {
-                        "description": "Erro interno ao buscar empresa"
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
             },
@@ -897,7 +1193,7 @@
                         "description": "Erro de validação"
                     },
                     "500": {
-                        "description": "Erro interno ao atualizar empresa"
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
             },
@@ -943,7 +1239,7 @@
                         "description": "Empresa não encontrada"
                     },
                     "500": {
-                        "description": "Erro interno ao remover empresa"
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
             }
@@ -1049,7 +1345,7 @@
                         }
                     },
                     "500": {
-                        "description": "Erro interno ao buscar setores"
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
             },
@@ -1117,7 +1413,7 @@
                         "description": "Erro de validação"
                     },
                     "500": {
-                        "description": "Erro interno ao criar setor"
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
             }
@@ -1196,7 +1492,7 @@
                         "description": "Setor não encontrado"
                     },
                     "500": {
-                        "description": "Erro interno ao buscar setor"
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
             },
@@ -1279,7 +1575,7 @@
                         "description": "Erro de validação"
                     },
                     "500": {
-                        "description": "Erro interno ao atualizar setor"
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
             },
@@ -1327,7 +1623,7 @@
                         "description": "Setor não encontrado"
                     },
                     "500": {
-                        "description": "Erro interno ao remover setor"
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
             }
@@ -1433,7 +1729,7 @@
                         }
                     },
                     "500": {
-                        "description": "Erro interno ao buscar status"
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
             },
@@ -1501,7 +1797,7 @@
                         "description": "Erro de validação"
                     },
                     "500": {
-                        "description": "Erro interno ao criar status"
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
             }
@@ -1580,7 +1876,7 @@
                         "description": "Status não encontrado"
                     },
                     "500": {
-                        "description": "Erro interno ao buscar status"
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
             },
@@ -1663,7 +1959,7 @@
                         "description": "Erro de validação"
                     },
                     "500": {
-                        "description": "Erro interno ao atualizar status"
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
             },
@@ -1711,7 +2007,7 @@
                         "description": "Status não encontrado"
                     },
                     "500": {
-                        "description": "Erro interno ao remover status"
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
             }
@@ -1829,7 +2125,7 @@
                         }
                     },
                     "500": {
-                        "description": "Erro interno ao buscar lojas"
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
             },
@@ -2019,7 +2315,7 @@
                         "description": "Loja não encontrada"
                     },
                     "500": {
-                        "description": "Erro interno ao buscar loja"
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
             },
@@ -2219,6 +2515,9 @@
                     },
                     "401": {
                         "description": "Não autorizado"
+                    },
+                    "500": {
+                        "description": "Ops, algo inesperado aconteceu. Tente novamente mais tarde."
                     }
                 }
             }
@@ -2247,6 +2546,9 @@
                     },
                     "404": {
                         "description": "Não encontrado"
+                    },
+                    "500": {
+                        "description": "Ops, algo inesperado aconteceu. Tente novamente mais tarde."
                     }
                 }
             }
@@ -2356,7 +2658,7 @@
                         }
                     },
                     "500": {
-                        "description": "Erro interno ao buscar usuários"
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
             },
@@ -2438,7 +2740,7 @@
                         "description": "Erro de validação"
                     },
                     "500": {
-                        "description": "Erro interno ao criar usuário"
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
             }
@@ -2521,7 +2823,7 @@
                         "description": "Usuário não encontrado"
                     },
                     "500": {
-                        "description": "Erro interno ao buscar usuário"
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
             },
@@ -2618,7 +2920,7 @@
                         "description": "Erro de validação"
                     },
                     "500": {
-                        "description": "Erro interno ao atualizar usuário"
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
             },
@@ -2666,7 +2968,7 @@
                         "description": "Usuário não encontrado"
                     },
                     "500": {
-                        "description": "Erro interno ao remover usuário"
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
             }
@@ -2784,6 +3086,10 @@
         {
             "name": "SystemLog",
             "description": "Logs do sistema"
+        },
+        {
+            "name": "Tipos de Ativo",
+            "description": "Tipos de Ativo"
         },
         {
             "name": "Autenticação",
