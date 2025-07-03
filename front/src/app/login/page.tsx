@@ -1,16 +1,11 @@
-import { FormLogin } from '@/components/FormLogin/FormLogin';
+import { LoginForm } from "@/components/login-form"
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen-mobile bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-6 sm:mb-8">
-          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-2">Faça seu Login</h1>
-          <p className="text-slate-600">Entre na sua conta para continuar</p>
-        </div>
-        
-        <FormLogin />
+    <div className="flex min-h-svh flex-col items-center justify-center bg-muted p-6 md:p-10">
+      <div className="w-full max-w-sm md:max-w-3xl">
+        <LoginForm />
       </div>
     </div>
-  );
+  )
 }

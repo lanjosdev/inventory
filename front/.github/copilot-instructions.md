@@ -43,6 +43,7 @@ O Copilot deve priorizar o uso das seguintes tecnologias e padrões:
 - Utilize **Tailwind CSS** para estilização e foque na criação de componentes reutilizáveis.
 - Utilize **shadcn/ui** para componentes de UI consistentes e acessíveis.
 - Personalize os componentes de `shadcn/ui` através das props ou sobrepondo classes do Tailwind para manter a consistência visual do projeto.
+- Garanta que todas as páginas sigam um **padrão visual consistente**, mantendo identidade, espaçamentos, tipografia e componentes alinhados ao design do projeto.
 - Garanta a **responsividade** e acessibilidade em todos os componentes.
 
 ### Validação e Formulários
