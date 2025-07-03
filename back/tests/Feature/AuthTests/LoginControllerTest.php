@@ -36,7 +36,8 @@ class LoginControllerTest extends TestCase
                         'id',
                         'name',
                         'email'
-                    ]
+                    ],
+                    'level'
                 ]
             ]);
     }

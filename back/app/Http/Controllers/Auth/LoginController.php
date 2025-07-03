@@ -15,6 +15,7 @@ use App\Helpers\ResponseHelper;
 use Illuminate\Support\Facades\DB;
 use App\Models\SystemLog;
 use App\Models\Action as ActionModel;
+use App\Models\Role;
 
 class LoginController extends Controller
 {
@@ -45,6 +46,12 @@ class LoginController extends Controller
      *                     @OA\Property(property="id", type="integer", example=1),
      *                     @OA\Property(property="name", type="string", example="João da Silva"),
      *                     @OA\Property(property="email", type="string", example="usuario@email.com")
+     *                 ),
+     *                 @OA\Property(property="level", type="array",
+     *                     @OA\Items(type="object",
+     *                         @OA\Property(property="id", type="integer", example=1),
+     *                         @OA\Property(property="name", type="string", example="admin")
+     *                     )
      *                 )
      *             )
      *         )
@@ -76,6 +83,13 @@ class LoginController extends Controller
             }
 
             $token = $user->createToken('auth_token')->plainTextToken;
+
+            $roles = DB::table('user_roles')
+                ->join('roles', 'user_roles.fk_role', '=', 'roles.id')
+                ->where('user_roles.fk_user', $user->id)
+                ->select('roles.id', 'roles.name')
+                ->get();
+
             // Log de auditoria - login
             SystemLog::create([
                 'fk_user' => $user->id,
@@ -90,6 +104,7 @@ class LoginController extends Controller
                 'access_token' => $token,
                 'token_type' => 'Bearer',
                 'user' => $user,
+                'level' => $roles,
             ]);
         } catch (ValidationException $ve) {
             DB::rollBack();

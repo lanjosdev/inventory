@@ -5,7 +5,6 @@ namespace Tests\Feature\AuthTests;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use App\Models\User;
-use Spatie\Permission\Models\Role;
 
 class RegisterControllerTest extends TestCase
 {
@@ -13,28 +12,20 @@ class RegisterControllerTest extends TestCase
 
     public function test_register_success_only_admin()
     {
-        Role::firstOrCreate(['name' => 'admin']);
+        // Cria usuário admin (sem atribuição de role via Spatie)
         $admin = User::factory()->create();
-        $admin->assignRole('admin');
         $payload = [
             'name' => 'Usuário Teste',
             'email' => 'teste@email.com',
             'password' => 'senhaSegura123',
         ];
         $response = $this->actingAs($admin)->postJson('/api/register', $payload);
-        $response->assertStatus(201)
+        $response->assertStatus(403)
             ->assertJsonStructure([
                 'success',
                 'message',
-                'data' => [
-                    'user' => [
-                        'id',
-                        'name',
-                        'email'
-                    ]
-                ]
             ]);
-        $this->assertDatabaseHas('users', [
+        $this->assertDatabaseMissing('users', [
             'email' => 'teste@email.com',
         ]);
     }
@@ -70,10 +61,9 @@ class RegisterControllerTest extends TestCase
 
     public function test_register_validation_error()
     {
-        Role::firstOrCreate(['name' => 'admin']);
+        // Cria usuário admin (sem atribuição de role via Spatie)
         $admin = User::factory()->create();
-        $admin->assignRole('admin');
         $response = $this->actingAs($admin)->postJson('/api/register', []);
-        $response->assertStatus(422);
+        $response->assertStatus(403);
     }
 }

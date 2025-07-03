@@ -76,12 +76,20 @@ class RegisterController extends Controller
      */
     public function register(Request $request)
     {
-        // Permitir apenas admin
-        if (!$request->user() || !$request->user()->hasRole('admin')) {
-            return ResponseHelper::error('Apenas administradores podem registrar novos usuários.', 403);
-        }
         DB::beginTransaction();
         try {
+
+            $id_user_request = $request->user()->id;
+
+            $is_admin = DB::table('user_roles')
+                ->where('fk_user', $id_user_request)
+                ->where('fk_role', 1)
+                ->exists();
+
+            if (!$is_admin) {
+                return ResponseHelper::error('Apenas usuários de nivel administrador pode registrar outro usuário', 403);
+            }
+
             $validated = $request->validate(User::rules(), User::feedback());
             $user = User::create([
                 'name' => $validated['name'],
