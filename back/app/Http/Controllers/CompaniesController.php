@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * @OA\Tag(
- *     name="Empresas",
+ *     name="Redes",
  *     description="Gerenciamento de empresas (redes) e seus contatos."
  * )
  */
@@ -27,7 +27,7 @@ class CompaniesController extends Controller
      *     path="/api/companies",
      *     summary="Lista empresas paginadas",
      *     description="Retorna uma lista paginada de empresas, incluindo contatos.",
-     *     tags={"Empresas"},
+     *     tags={"Redes"},
      *     @OA\Parameter(name="page", in="query", description="Número da página", required=false, @OA\Schema(type="integer", example=1)),
      *     @OA\Parameter(name="per_page", in="query", description="Itens por página", required=false, @OA\Schema(type="integer", example=10)),
      *     @OA\Response(
@@ -95,7 +95,7 @@ class CompaniesController extends Controller
      *     path="/api/companies",
      *     summary="Cria uma empresa",
      *     description="Cria uma empresa e associa contatos.",
-     *     tags={"Empresas"},
+     *     tags={"Redes"},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -177,7 +177,7 @@ class CompaniesController extends Controller
      *     path="/api/companies/{id}",
      *     summary="Exibe uma empresa",
      *     description="Retorna os dados de uma empresa pelo ID, incluindo contatos.",
-     *     tags={"Empresas"},
+     *     tags={"Redes"},
      *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
      *     @OA\Response(
      *         response=200,
@@ -240,7 +240,7 @@ class CompaniesController extends Controller
      *     path="/api/companies/{id}",
      *     summary="Atualiza uma empresa",
      *     description="Atualiza os dados de uma empresa e seus contatos.",
-     *     tags={"Empresas"},
+     *     tags={"Redes"},
      *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
      *     @OA\RequestBody(
      *         required=true,
@@ -337,7 +337,7 @@ class CompaniesController extends Controller
      *     path="/api/companies/{id}",
      *     summary="Remove uma empresa",
      *     description="Remove uma empresa e seus contatos.",
-     *     tags={"Empresas"},
+     *     tags={"Redes"},
      *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
      *     @OA\Response(
      *         response=200,

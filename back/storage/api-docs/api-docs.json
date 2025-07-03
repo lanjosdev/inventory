@@ -964,7 +964,7 @@
         "/api/companies": {
             "get": {
                 "tags": [
-                    "Empresas"
+                    "Redes"
                 ],
                 "summary": "Lista empresas paginadas",
                 "description": "Retorna uma lista paginada de empresas, incluindo contatos.",
@@ -1081,7 +1081,7 @@
             },
             "post": {
                 "tags": [
-                    "Empresas"
+                    "Redes"
                 ],
                 "summary": "Cria uma empresa",
                 "description": "Cria uma empresa e associa contatos.",
@@ -1211,7 +1211,7 @@
         "/api/companies/{id}": {
             "get": {
                 "tags": [
-                    "Empresas"
+                    "Redes"
                 ],
                 "summary": "Exibe uma empresa",
                 "description": "Retorna os dados de uma empresa pelo ID, incluindo contatos.",
@@ -1299,7 +1299,7 @@
             },
             "put": {
                 "tags": [
-                    "Empresas"
+                    "Redes"
                 ],
                 "summary": "Atualiza uma empresa",
                 "description": "Atualiza os dados de uma empresa e seus contatos.",
@@ -1444,7 +1444,7 @@
             },
             "delete": {
                 "tags": [
-                    "Empresas"
+                    "Redes"
                 ],
                 "summary": "Remove uma empresa",
                 "description": "Remove uma empresa e seus contatos.",
@@ -2727,7 +2727,7 @@
         "/api/system-logs": {
             "get": {
                 "tags": [
-                    "SystemLog"
+                    "Logs do sistema"
                 ],
                 "summary": "Listar logs do sistema",
                 "description": "Retorna uma lista paginada de logs do sistema.",
@@ -2770,14 +2770,14 @@
         "/api/system-logs/{systemLog}": {
             "get": {
                 "tags": [
-                    "SystemLog"
+                    "Logs do sistema"
                 ],
                 "summary": "Exibir log do sistema",
                 "description": "Exibe um log do sistema específico.",
                 "operationId": "75ce81b4319d523ff97d05f6127405a4",
                 "parameters": [
                     {
-                        "name": "systemLog",
+                        "name": "Logs do sistema",
                         "in": "path",
                         "required": true,
                         "schema": {
@@ -3329,11 +3329,11 @@
             "description": "Gerenciamento de ativos de cada loja"
         },
         {
-            "name": "Empresas",
+            "name": "Redes",
             "description": "Gerenciamento de empresas (redes) e seus contatos."
         },
         {
-            "name": "SystemLog",
+            "name": "Logs do sistema",
             "description": "Logs do sistema"
         },
         {

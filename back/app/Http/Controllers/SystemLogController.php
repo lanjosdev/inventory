@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Log;
 
 /**
  * @OA\Tag(
- *     name="SystemLog",
+ *     name="Logs do sistema",
  *     description="Logs do sistema"
  * )
  */
@@ -18,7 +18,7 @@ class SystemLogController extends Controller
     /**
      * @OA\Get(
      *     path="/api/system-logs",
-     *     tags={"SystemLog"},
+     *     tags={"Logs do sistema"},
      *     summary="Listar logs do sistema",
      *     description="Retorna uma lista paginada de logs do sistema.",
      *     @OA\Parameter(
@@ -55,10 +55,10 @@ class SystemLogController extends Controller
     /**
      * @OA\Get(
      *     path="/api/system-logs/{systemLog}",
-     *     tags={"SystemLog"},
+     *     tags={"Logs do sistema"},
      *     summary="Exibir log do sistema",
      *     description="Exibe um log do sistema específico.",
-     *     @OA\Parameter(name="systemLog", in="path", required=true, @OA\Schema(type="integer")),
+     *     @OA\Parameter(name="Logs do sistema", in="path", required=true, @OA\Schema(type="integer")),
      *     @OA\Response(response=200, description="Sucesso"),
      *     @OA\Response(response=404, description="Não encontrado"),
      *     @OA\Response(response=500, description="Ops, algo inesperado aconteceu. Tente novamente mais tarde.")
