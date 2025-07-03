@@ -855,6 +855,22 @@
                                                         }
                                                     },
                                                     "type": "object"
+                                                },
+                                                "level": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "name": {
+                                                                "type": "string",
+                                                                "example": "admin"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
                                                 }
                                             },
                                             "type": "object"
@@ -2966,7 +2982,7 @@
                                                     "type": "array",
                                                     "items": {
                                                         "properties": {
-                                                            "id_user": {
+                                                            "id": {
                                                                 "type": "integer",
                                                                 "example": 1
                                                             },
@@ -2977,6 +2993,26 @@
                                                             "email": {
                                                                 "type": "string",
                                                                 "example": "joao@email.com"
+                                                            },
+                                                            "level": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "properties": {
+                                                                        "id": {
+                                                                            "type": "integer",
+                                                                            "example": 1
+                                                                        },
+                                                                        "name": {
+                                                                            "type": "string",
+                                                                            "example": "Admin"
+                                                                        },
+                                                                        "permission": {
+                                                                            "type": "string",
+                                                                            "example": "C,R,U,D"
+                                                                        }
+                                                                    },
+                                                                    "type": "object"
+                                                                }
                                                             },
                                                             "created_at": {
                                                                 "type": "string",

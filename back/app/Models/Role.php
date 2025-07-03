@@ -11,6 +11,11 @@ class Role extends Model
     protected $fillable = ['name'];
     protected $date = ['deleted_at'];
 
+    public function permissions()
+    {
+        return $this->belongsToMany(Permission::class, 'role_permissions', 'fk_role', 'fk_permission');
+    }
+
     public static function rules()
     {
         return [

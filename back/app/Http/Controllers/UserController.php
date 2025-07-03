@@ -45,9 +45,16 @@ class UserController extends Controller
      *                 @OA\Property(property="current_page", type="integer", example=1),
      *                 @OA\Property(property="data", type="array",
      *                     @OA\Items(
-     *                         @OA\Property(property="id_user", type="integer", example=1),
+     *                         @OA\Property(property="id", type="integer", example=1),
      *                         @OA\Property(property="name", type="string", example="João da Silva"),
      *                         @OA\Property(property="email", type="string", example="joao@email.com"),
+     *                         @OA\Property(property="level", type="array",
+     *                             @OA\Items(
+     *                                 @OA\Property(property="id", type="integer", example=1),
+     *                                 @OA\Property(property="name", type="string", example="Admin"),
+     *                                 @OA\Property(property="permission", type="string", example="C,R,U,D")
+     *                             )
+     *                         ),
      *                         @OA\Property(property="created_at", type="string", format="date-time", example="2025-07-01T10:00:00Z"),
      *                         @OA\Property(property="updated_at", type="string", format="date-time", example="2025-07-01T10:00:00Z"),
      *                         @OA\Property(property="deleted_at", type="string", format="date-time", nullable=true, example=null)
@@ -73,8 +80,15 @@ class UserController extends Controller
                     'id' => $user->id,
                     'name' => $user->name,
                     'email' => $user->email,
-                    'created_at' => $user->created_at ?? null ?? null,
-                    'updated_at' => $user->updated_at ?? null ?? null,
+                    'level' => $user->roles->map(function ($role) {
+                        return [
+                            'id' => $role->id,
+                            'name' => $role->name,
+                            'permission' => $role->permissions()->pluck('name')->implode(',')
+                        ];
+                    }),
+                    'created_at' => $user->created_at ?? null,
+                    'updated_at' => $user->updated_at ?? null,
                     'deleted_at' => $user->deleted_at ?? null,
                 ];
             });
@@ -138,8 +152,15 @@ class UserController extends Controller
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
-                'created_at' => $user->created_at ?? null ?? null,
-                'updated_at' => $user->updated_at ?? null ?? null,
+                'level' => $user->roles->map(function ($role) {
+                    return [
+                        'id' => $role->id,
+                        'name' => $role->name,
+                        'permission' => $role->permissions()->pluck('name')->implode(',')
+                    ];
+                }),
+                'created_at' => $user->created_at ?? null,
+                'updated_at' => $user->updated_at ?? null,
                 'deleted_at' => $user->deleted_at ?? null,
             ];
             return ResponseHelper::success('Usuário encontrado.', $userData);

@@ -90,4 +90,21 @@ class User extends Authenticatable
             'password.max' => 'A senha deve ter no máximo 30 caracteres.'
         ];
     }
+
+    /**
+     * Retorna os níveis (roles) do usuário.
+     * Como não há sistema de roles, retorna ['user'] como padrão.
+     */
+    public function getLevelNames()
+    {
+        return ['user'];
+    }
+
+    /**
+     * Relação: retorna os papéis (roles) do usuário.
+     */
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'user_roles', 'fk_user', 'fk_role');
+    }
 }

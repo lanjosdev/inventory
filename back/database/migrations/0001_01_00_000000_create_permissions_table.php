@@ -23,8 +23,8 @@ return new class extends Migration
         DB::table('permissions')->insert([
             ['name' => "C", 'description' => "create", 'created_at' => now(), 'updated_at' => now()],
             ['name' => "R", 'description' => "read", 'created_at' => now(), 'updated_at' => now()],
-            ['name' => "U", 'namedescription' => "update", 'created_at' => now(), 'updated_at' => now()],
-            ['name' => "D", 'namedescription' => "delete", 'created_at' => now(), 'updated_at' => now()],
+            ['name' => "U", 'description' => "update", 'created_at' => now(), 'updated_at' => now()],
+            ['name' => "D", 'description' => "delete", 'created_at' => now(), 'updated_at' => now()],
         ]);
     }
 
