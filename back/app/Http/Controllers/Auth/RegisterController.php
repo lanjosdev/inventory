@@ -20,9 +20,10 @@ class RegisterController extends Controller
     /**
      * @OA\Post(
      *     path="/register",
-     *     summary="Registra um novo usuário",
-     *     description="Cria um novo usuário e retorna um token de acesso.",
+     *     summary="Registra um novo usuário (apenas admin)",
+     *     description="Cria um novo usuário. Apenas administradores autenticados podem acessar este endpoint.",
      *     tags={"Autenticação"},
+     *     security={{"sanctum":{}}},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -39,8 +40,6 @@ class RegisterController extends Controller
      *             @OA\Property(property="success", type="boolean", example=true),
      *             @OA\Property(property="message", type="string", example="Usuário registrado com sucesso"),
      *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="access_token", type="string", example="token.jwt.aqui"),
-     *                 @OA\Property(property="token_type", type="string", example="Bearer"),
      *                 @OA\Property(property="user", type="object",
      *                     @OA\Property(property="id", type="integer", example=1),
      *                     @OA\Property(property="name", type="string", example="João da Silva"),
@@ -50,12 +49,28 @@ class RegisterController extends Controller
      *         )
      *     ),
      *     @OA\Response(
+     *         response=403,
+     *         description="Apenas administradores podem registrar novos usuários.",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Apenas administradores podem registrar novos usuários.")
+     *         )
+     *     ),
+     *     @OA\Response(
      *         response=422,
-     *         description="Erro de validação"
+     *         description="Erro de validação",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=false),
+     *             @OA\Property(property="message", type="object", example={"email": {"O campo email é obrigatório."}})
+     *         )
      *     ),
      *     @OA\Response(
      *         response=500,
-     *         description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
+     *         description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.")
+     *         )
      *     )
      * )
      */
@@ -73,7 +88,6 @@ class RegisterController extends Controller
                 'email' => $validated['email'],
                 'password' => Hash::make($validated['password']),
             ]);
-            $token = $user->createToken('auth_token')->plainTextToken;
 
             // Log de auditoria - registro
             SystemLog::create([
@@ -86,8 +100,6 @@ class RegisterController extends Controller
 
             DB::commit();
             return ResponseHelper::success('Usuário registrado com sucesso', [
-                'access_token' => $token,
-                'token_type' => 'Bearer',
                 'user' => $user,
             ], 201);
         } catch (ValidationException $ve) {

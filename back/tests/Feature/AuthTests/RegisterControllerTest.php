@@ -27,8 +27,6 @@ class RegisterControllerTest extends TestCase
                 'success',
                 'message',
                 'data' => [
-                    'access_token',
-                    'token_type',
                     'user' => [
                         'id',
                         'name',
@@ -64,7 +62,7 @@ class RegisterControllerTest extends TestCase
             'password' => 'senhaSegura123',
         ];
         $response = $this->postJson('/api/register', $payload);
-        $response->assertStatus(403);
+        $response->assertStatus(401);
         $this->assertDatabaseMissing('users', [
             'email' => 'guest@email.com',
         ]);

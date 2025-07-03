@@ -923,8 +923,8 @@
                 "tags": [
                     "Autenticação"
                 ],
-                "summary": "Registra um novo usuário",
-                "description": "Cria um novo usuário e retorna um token de acesso.",
+                "summary": "Registra um novo usuário (apenas admin)",
+                "description": "Cria um novo usuário. Apenas administradores autenticados podem acessar este endpoint.",
                 "operationId": "6cb93c5db517a3e6e369c44ede7f22fd",
                 "requestBody": {
                     "required": true,
@@ -972,14 +972,6 @@
                                         },
                                         "data": {
                                             "properties": {
-                                                "access_token": {
-                                                    "type": "string",
-                                                    "example": "token.jwt.aqui"
-                                                },
-                                                "token_type": {
-                                                    "type": "string",
-                                                    "example": "Bearer"
-                                                },
                                                 "user": {
                                                     "properties": {
                                                         "id": {
@@ -1006,13 +998,76 @@
                             }
                         }
                     },
+                    "403": {
+                        "description": "Apenas administradores podem registrar novos usuários.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Apenas administradores podem registrar novos usuários."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
                     "422": {
-                        "description": "Erro de validação"
+                        "description": "Erro de validação",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "object",
+                                            "example": {
+                                                "email": [
+                                                    "O campo email é obrigatório."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "500": {
-                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/api/companies": {

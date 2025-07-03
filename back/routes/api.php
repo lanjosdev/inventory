@@ -20,10 +20,11 @@ Route::get('/', function () {
 
 // Rotas públicas
 Route::post('login', [LoginController::class, 'login']);
-Route::post('register', [RegisterController::class, 'register']);
 
 // Rotas protegidas por autenticação Sanctum
 Route::middleware('auth:sanctum')->group(function () {
+    Route::post('register', [RegisterController::class, 'register']);
+    
     Route::post('logout', [LogoutController::class, 'logout']);
     Route::apiResource('users', UserController::class, [
         'parameters' => ['users' => 'id_user']
