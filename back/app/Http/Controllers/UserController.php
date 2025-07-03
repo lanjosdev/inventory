@@ -390,7 +390,7 @@ class UserController extends Controller
      * @OA\Post(
      *     path="/api/users/{id_user}/assign",
      *     summary="Atribui papéis e permissões ao usuário",
-     *     description="Atribui um ou mais papéis (roles) e permissões ao usuário informado.",
+     *     description="Atribui um ou mais papéis (roles) e permissões ao usuário informado. Agora aceita um array de objetos, cada um com um role e suas permissions.",
      *     tags={"Usuários"},
      *     @OA\Parameter(
      *         name="id",
@@ -400,10 +400,21 @@ class UserController extends Controller
      *         @OA\Schema(type="integer", example=1)
      *     ),
      *     @OA\RequestBody(
-     *         required=false,
+     *         required=true,
      *         @OA\JsonContent(
-     *             @OA\Property(property="roles", type="array", @OA\Items(type="string"), example={"admin"}),
-     *             @OA\Property(property="permissions", type="array", @OA\Items(type="string"), example={"read users"})
+     *             @OA\Property(
+     *                 property="level",
+     *                 type="array",
+     *                 @OA\Items(
+     *                     type="object",
+     *                     @OA\Property(property="role", type="string", example="manager"),
+     *                     @OA\Property(property="permissions", type="array", @OA\Items(type="string"), example={"C","R"})
+     *                 ),
+     *                 example={
+     *                     {"role": "manager", "permissions": {"C", "R"}},
+     *                     {"role": "midia", "permissions": {"C", "R", "U", "D"}}
+     *                 }
+     *             )
      *         )
      *     ),
      *     @OA\Response(
@@ -412,9 +423,12 @@ class UserController extends Controller
      *         @OA\JsonContent(
      *             @OA\Property(property="success", type="boolean", example=true),
      *             @OA\Property(property="message", type="string", example="Papéis e permissões atualizados com sucesso."),
-     *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="roles", type="array", @OA\Items(type="object")),
-     *                 @OA\Property(property="permissions", type="array", @OA\Items(type="object"))
+     *             @OA\Property(property="data", type="array",
+     *                 @OA\Items(
+     *                     type="object",
+     *                     @OA\Property(property="role", type="string", example="manager"),
+     *                     @OA\Property(property="permissions", type="array", @OA\Items(type="string"), example={"C","R"})
+     *                 )
      *             )
      *         )
      *     ),
@@ -440,14 +454,43 @@ class UserController extends Controller
             if (!$user) {
                 return ResponseHelper::error('Usuário não encontrado.', 404);
             }
-            $roles = $request->input('roles', []); // array de nomes de roles
-            $permissions = $request->input('permissions', []); // array de nomes de permissões
-
-            if (!empty($roles)) {
-                $user->syncRoles($roles);
+            $levels = $request->input('level', []); // array de objetos {role, permissions}
+            if (!is_array($levels) || empty($levels)) {
+                return ResponseHelper::error('O campo level deve ser um array de objetos.', 422);
             }
-            if (!empty($permissions)) {
-                $user->syncPermissions($permissions);
+            $roleNames = [];
+            $rolePermissionsMap = [];
+            foreach ($levels as $item) {
+                if (!isset($item['role']) || !is_string($item['role'])) {
+                    return ResponseHelper::error('Cada item de level deve conter o campo role (string).', 422);
+                }
+                if (!isset($item['permissions']) || !is_array($item['permissions'])) {
+                    return ResponseHelper::error('Cada item de level deve conter o campo permissions (array).', 422);
+                }
+                $roleNames[] = $item['role'];
+                $rolePermissionsMap[$item['role']] = $item['permissions'];
+            }
+            // Validação dos roles
+            $validRoles = \App\Models\Role::whereIn('name', $roleNames)->pluck('name')->toArray();
+            if (count($roleNames) !== count($validRoles)) {
+                return ResponseHelper::error('Um ou mais papéis (roles) são inválidos.', 422);
+            }
+            // Validação das permissões (todas)
+            $allPermissions = array_unique(array_merge(...array_values($rolePermissionsMap)));
+            $validPermissions = \App\Models\Permission::whereIn('name', $allPermissions)->pluck('name')->toArray();
+            if (count($allPermissions) !== count($validPermissions)) {
+                return ResponseHelper::error('Uma ou mais permissões são inválidas.', 422);
+            }
+            // Sincroniza roles
+            $roleIds = \App\Models\Role::whereIn('name', $roleNames)->pluck('id', 'name')->toArray();
+            $user->roles()->sync(array_values($roleIds));
+            // Sincroniza permissions para cada role
+            foreach ($rolePermissionsMap as $roleName => $permissions) {
+                $role = \App\Models\Role::where('name', $roleName)->first();
+                if ($role) {
+                    $permissionIds = \App\Models\Permission::whereIn('name', $permissions)->pluck('id')->toArray();
+                    $role->permissions()->sync($permissionIds);
+                }
             }
             // Log de auditoria - atribuição de papéis/permissões
             SystemLog::create([
@@ -455,10 +498,17 @@ class UserController extends Controller
                 'fk_action' => ActionModel::where('name', 'atribuição')->value('id'),
                 'name_table' => 'users',
                 'record_id' => $user->id,
-                'description' => 'Papéis e permissões atribuídos: roles=' . json_encode($roles) . ', permissions=' . json_encode($permissions),
+                'description' => 'Papéis e permissões atribuídos: ' . json_encode($levels),
             ]);
             DB::commit();
-            return ResponseHelper::success('Papéis e permissões atualizados com sucesso.', $user->load('roles', 'permissions'));
+            // Retorna os roles e permissions atuais do usuário
+            $response = $user->roles->map(function($role) {
+                return [
+                    'role' => $role->name,
+                    'permissions' => $role->permissions->pluck('name')->values(),
+                ];
+            });
+            return ResponseHelper::success('Papéis e permissões atualizados com sucesso.', $response);
         } catch (ValidationException $ve) {
             DB::rollBack();
             return ResponseHelper::error($ve->errors(), 422);

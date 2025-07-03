@@ -92,15 +92,6 @@ class User extends Authenticatable
     }
 
     /**
-     * Retorna os níveis (roles) do usuário.
-     * Como não há sistema de roles, retorna ['user'] como padrão.
-     */
-    public function getLevelNames()
-    {
-        return ['user'];
-    }
-
-    /**
      * Relação: retorna os papéis (roles) do usuário.
      */
     public function roles()

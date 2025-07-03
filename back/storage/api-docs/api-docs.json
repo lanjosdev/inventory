@@ -3373,7 +3373,7 @@
                     "Usuários"
                 ],
                 "summary": "Atribui papéis e permissões ao usuário",
-                "description": "Atribui um ou mais papéis (roles) e permissões ao usuário informado.",
+                "description": "Atribui um ou mais papéis (roles) e permissões ao usuário informado. Agora aceita um array de objetos, cada um com um role e suas permissions.",
                 "operationId": "96d25bea319177c531a006632b33b841",
                 "parameters": [
                     {
@@ -3388,27 +3388,49 @@
                     }
                 ],
                 "requestBody": {
-                    "required": false,
+                    "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
                                 "properties": {
-                                    "roles": {
+                                    "level": {
                                         "type": "array",
                                         "items": {
-                                            "type": "string"
+                                            "properties": {
+                                                "role": {
+                                                    "type": "string",
+                                                    "example": "manager"
+                                                },
+                                                "permissions": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    },
+                                                    "example": [
+                                                        "C",
+                                                        "R"
+                                                    ]
+                                                }
+                                            },
+                                            "type": "object"
                                         },
                                         "example": [
-                                            "admin"
-                                        ]
-                                    },
-                                    "permissions": {
-                                        "type": "array",
-                                        "items": {
-                                            "type": "string"
-                                        },
-                                        "example": [
-                                            "read users"
+                                            {
+                                                "role": "manager",
+                                                "permissions": [
+                                                    "C",
+                                                    "R"
+                                                ]
+                                            },
+                                            {
+                                                "role": "midia",
+                                                "permissions": [
+                                                    "C",
+                                                    "R",
+                                                    "U",
+                                                    "D"
+                                                ]
+                                            }
                                         ]
                                     }
                                 },
@@ -3433,21 +3455,26 @@
                                             "example": "Papéis e permissões atualizados com sucesso."
                                         },
                                         "data": {
-                                            "properties": {
-                                                "roles": {
-                                                    "type": "array",
-                                                    "items": {
-                                                        "type": "object"
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "role": {
+                                                        "type": "string",
+                                                        "example": "manager"
+                                                    },
+                                                    "permissions": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "string"
+                                                        },
+                                                        "example": [
+                                                            "C",
+                                                            "R"
+                                                        ]
                                                     }
                                                 },
-                                                "permissions": {
-                                                    "type": "array",
-                                                    "items": {
-                                                        "type": "object"
-                                                    }
-                                                }
-                                            },
-                                            "type": "object"
+                                                "type": "object"
+                                            }
                                         }
                                     },
                                     "type": "object"
