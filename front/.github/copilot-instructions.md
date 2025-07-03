@@ -14,8 +14,6 @@ O Copilot deve priorizar o uso das seguintes tecnologias e padrões:
 - **Linguagem:** TypeScript
 - **Estilização:** Tailwind CSS
 - **Biblioteca de Componentes:** shadcn/ui
-- **Formulários:** React Hook Form
-- **Validação de Esquemas:** Zod
 
 ## Padrões de Codificação
 
@@ -48,8 +46,7 @@ O Copilot deve priorizar o uso das seguintes tecnologias e padrões:
 - Garanta a **responsividade** e acessibilidade em todos os componentes.
 
 ### Validação e Formulários
-- Utilize **React Hook Form** para gerenciamento de formulários.
-- Utilize **Zod** para validação de dados e schema validation.
+- Garanta boas validações de dados.
 - Certifique-se de sempre validar os dados antes de enviá-los à API.
 
 ## Resumo de Boas Práticas
@@ -60,7 +57,7 @@ O Copilot deve priorizar o uso das seguintes tecnologias e padrões:
 
 ## Segurança
 
-- Nunca exponha **tokens** ou **chaves** no código; use variáveis de ambiente (`process.env`).  
+- Nunca exponha **tokens** ou **chaves** no código; use variáveis de ambiente.  
 - Valide e sanitize todos os dados antes de enviar à API.  
 - Evite `dangerouslySetInnerHTML`; se necessário, sanitize o conteúdo.  
 - Ative **Strict Mode** no TypeScript.

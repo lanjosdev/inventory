@@ -56,7 +56,7 @@ export function FormLogin() {
                         placeholder="seu@email.com"
                         value={formData.email}
                         onChange={handleChangeForm}
-                    // required 
+                        // required 
                     />
                 </div>
 
@@ -71,7 +71,7 @@ export function FormLogin() {
                         placeholder="••••••••"
                         value={formData.password}
                         onChange={handleChangeForm}
-                    // required 
+                        // required 
                     />
                 </div>
 

@@ -1,0 +1,25 @@
+src/app/
+├── layout.tsx                 # Layout raiz (sem header/nav)
+├── page.tsx                   # Homepage pública
+├── login/
+│   └── page.tsx              # Página de login
+├── (auth)/                   # Layout Group para área autenticada
+│   ├── layout.tsx            # Layout com header/nav
+│   ├── dashboard/
+│   │   └── page.tsx          
+│   ├── networks/
+│   │   ├── page.tsx          # Listar redes
+│   │   ├── create/
+│   │   │   └── page.tsx      # Criar rede
+│   │   └── [id]/
+│   │       ├── page.tsx      # Visualizar rede
+│   │       └── edit/
+│   │           └── page.tsx  # Editar rede
+│   └── stores/
+│       ├── page.tsx          # Listar lojas
+│       ├── create/
+│       │   └── page.tsx      # Criar loja
+│       └── [id]/
+│           ├── page.tsx      # Visualizar loja
+│           └── edit/
+│               └── page.tsx  # Editar loja
