@@ -11,9 +11,6 @@ use Illuminate\Support\Facades\Log;
 class StatusController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     */
-    /**
      * @OA\Get(
      *     path="/api/status",
      *     summary="Lista status paginados",
@@ -43,7 +40,7 @@ class StatusController extends Controller
      *                 @OA\Property(property="current_page", type="integer", example=1),
      *                 @OA\Property(property="data", type="array",
      *                     @OA\Items(
-     *                         @OA\Property(property="id", type="integer", example=1),
+     *                         @OA\Property(property="id_status", type="integer", example=1),
      *                         @OA\Property(property="name", type="string", example="Ativo"),
      *                         @OA\Property(property="created_at", type="string", format="date-time", example="2025-07-01T10:00:00Z"),
      *                         @OA\Property(property="updated_at", type="string", format="date-time", example="2025-07-01T10:00:00Z"),
@@ -157,7 +154,7 @@ class StatusController extends Controller
      */
     /**
      * @OA\Get(
-     *     path="/api/status/{id}",
+     *     path="/api/status/{id_status}",
      *     summary="Exibe um status",
      *     description="Retorna os dados de um status pelo ID.",
      *     tags={"Status"},
@@ -230,7 +227,7 @@ class StatusController extends Controller
      */
     /**
      * @OA\Put(
-     *     path="/api/status/{id}",
+     *     path="/api/status/{id_status}",
      *     summary="Atualiza um status",
      *     description="Atualiza os dados de um status existente.",
      *     tags={"Status"},
@@ -305,7 +302,7 @@ class StatusController extends Controller
      */
     /**
      * @OA\Delete(
-     *     path="/api/status/{id}",
+     *     path="/api/status/{id_status}",
      *     summary="Remove um status",
      *     description="Remove um status pelo ID.",
      *     tags={"Status"},

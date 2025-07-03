@@ -54,20 +54,20 @@ class SystemLogController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/system-logs/{systemLog}",
+     *     path="/api/system-logs/{id_system_log}",
      *     tags={"Logs do sistema"},
      *     summary="Exibir log do sistema",
      *     description="Exibe um log do sistema específico.",
-     *     @OA\Parameter(name="Logs do sistema", in="path", required=true, @OA\Schema(type="integer")),
+     *     @OA\Parameter(name="id_system_log", in="path", required=true, description="ID do log do sistema", @OA\Schema(type="integer")),
      *     @OA\Response(response=200, description="Sucesso"),
      *     @OA\Response(response=404, description="Não encontrado"),
      *     @OA\Response(response=500, description="Ops, algo inesperado aconteceu. Tente novamente mais tarde.")
      * )
      */
-    public function show(SystemLog $systemLog)
+    public function show(SystemLog $id_system_log)
     {
         try {
-            return ResponseHelper::success('Log encontrado.', $systemLog);
+            return ResponseHelper::success('Log encontrado.', $id_system_log);
         } catch (\Exception $e) {
             Log::error('Erro ao exibir log do sistema: ' . $e->getMessage());
             return ResponseHelper::error('Ops, algo inesperado aconteceu. Tente novamente mais tarde.', 500);

@@ -18,7 +18,7 @@ class ActionController extends Controller
 {
     /**
      * @OA\Get(
-     *     path="/api/action",
+     *     path="/api/actions",
      *     tags={"Ações"},
      *     summary="Listar ações",
      *     description="Retorna uma lista paginada de ações.",
@@ -92,20 +92,20 @@ class ActionController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/action/{id}",
+     *     path="/api/actions/{id_action}",
      *     tags={"Ações"},
      *     summary="Exibir ação",
      *     description="Exibe uma ação específica.",
-     *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
+     *     @OA\Parameter(name="id_action", in="path", required=true, description="ID da ação", @OA\Schema(type="integer")),
      *     @OA\Response(response=200, description="Sucesso"),
      *     @OA\Response(response=404, description="Não encontrado"),
      *     @OA\Response(response=500, description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.")
      * )
      */
-    public function show(Action $action)
+    public function show(Action $id_action)
     {
         try {
-            return ResponseHelper::success('Ação encontrada.', $action);
+            return ResponseHelper::success('Ação encontrada.', $id_action);
         } catch (\Exception $e) {
             Log::error('Erro ao exibir ação: ' . $e->getMessage());
             return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
@@ -114,32 +114,33 @@ class ActionController extends Controller
 
     /**
      * @OA\Put(
-     *     path="/api/action/{id}",
+     *     path="/api/actions/{id_action}",
      *     tags={"Ações"},
      *     summary="Atualizar ação",
      *     description="Atualiza uma ação existente.",
-     *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
+     *     @OA\Parameter(name="id_action", in="path", required=true, description="ID da ação", @OA\Schema(type="integer")),
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
+     *             required={"name"},
      *             @OA\Property(property="name", type="string"),
      *             @OA\Property(property="description", type="string")
      *         )
      *     ),
-     *     @OA\Response(response=200, description="Atualizado"),
+     *     @OA\Response(response=200, description="Ação atualizada com sucesso"),
      *     @OA\Response(response=400, description="Erro de validação"),
      *     @OA\Response(response=404, description="Não encontrado"),
      *     @OA\Response(response=500, description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.")
      * )
      */
-    public function update(Request $request, Action $action)
+    public function update(Request $request, Action $id_action)
     {
         DB::beginTransaction();
         try {
-            $validated = $request->validate(Action::rules($action->id), Action::feedback());
-            $action->update($validated);
+            $validated = $request->validate(Action::rules($id_action->id), Action::feedback());
+            $id_action->update($validated);
             DB::commit();
-            return ResponseHelper::success('Ação atualizada com sucesso.', $action);
+            return ResponseHelper::success('Ação atualizada com sucesso.', $id_action);
         } catch (\Illuminate\Validation\ValidationException $e) {
             DB::rollBack();
             return ResponseHelper::error($e->getMessage(), 400);
@@ -152,21 +153,21 @@ class ActionController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/api/action/{id}",
+     *     path="/api/actions/{id_action}",
      *     tags={"Ações"},
      *     summary="Remover ação",
      *     description="Remove uma ação existente.",
-     *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
-     *     @OA\Response(response=200, description="Removido"),
+     *     @OA\Parameter(name="id_action", in="path", required=true, description="ID da ação", @OA\Schema(type="integer")),
+     *     @OA\Response(response=200, description="Ação removida com sucesso"),
      *     @OA\Response(response=404, description="Não encontrado"),
      *     @OA\Response(response=500, description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.")
      * )
      */
-    public function destroy(Action $action)
+    public function destroy(Request $request, Action $id_action)
     {
         DB::beginTransaction();
         try {
-            $action->delete();
+            $id_action->delete();
             DB::commit();
             return ResponseHelper::success('Ação removida com sucesso.');
         } catch (\Exception $e) {

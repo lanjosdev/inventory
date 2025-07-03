@@ -22,21 +22,23 @@ class AssetController extends Controller
 {
     /**
      * @OA\Get(
-     *     path="/assets",
+     *     path="/stores/{id_store}/assets",
      *     tags={"Ativos"},
-     *     summary="Listar ativos",
-     *     description="Retorna uma lista paginada de ativos.",
+     *     summary="Listar ativos de uma loja",
+     *     description="Retorna uma lista paginada de ativos de uma loja específica.",
+     *     @OA\Parameter(name="id_store", in="path", required=true, description="ID da loja", @OA\Schema(type="integer")),
      *     @OA\Parameter(name="page", in="query", required=false, @OA\Schema(type="integer", default=1)),
      *     @OA\Parameter(name="per_page", in="query", required=false, @OA\Schema(type="integer", default=10)),
      *     @OA\Response(response=200, description="Lista paginada de ativos"),
+     *     @OA\Response(response=404, description="Loja não encontrada"),
      *     @OA\Response(response=500, description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.")
      * )
      */
-    public function index(Request $request)
+    public function index(Request $request, $id_store)
     {
         try {
             $perPage = $request->get('per_page', 10);
-            $assets = Asset::query()->paginate($perPage)->appends($request->all());
+            $assets = Asset::where('fk_store', $id_store)->paginate($perPage)->appends($request->all());
             return ResponseHelper::success('Ativos listados com sucesso.', $assets);
         } catch (\Exception $e) {
             Log::error($e);
@@ -46,16 +48,16 @@ class AssetController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/assets",
+     *     path="/stores/{id_store}/assets",
      *     tags={"Ativos"},
-     *     summary="Cria um novo ativo",
-     *     description="Cria um novo ativo.",
+     *     summary="Cria um novo ativo para uma loja",
+     *     description="Cria um novo ativo vinculado a uma loja.",
+     *     @OA\Parameter(name="id_store", in="path", required=true, description="ID da loja", @OA\Schema(type="integer")),
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             required={"name","fk_store","fk_sector","fk_asset_type","fk_status","quantity"},
+     *             required={"name","fk_sector","fk_asset_type","fk_status","quantity"},
      *             @OA\Property(property="name", type="string", example="Notebook"),
-     *             @OA\Property(property="fk_store", type="integer", example=1),
      *             @OA\Property(property="fk_sector", type="integer", example=1),
      *             @OA\Property(property="fk_asset_type", type="integer", example=1),
      *             @OA\Property(property="fk_status", type="integer", example=1),
@@ -64,11 +66,12 @@ class AssetController extends Controller
      *         )
      *     ),
      *     @OA\Response(response=201, description="Ativo criado com sucesso"),
+     *     @OA\Response(response=404, description="Loja não encontrada"),
      *     @OA\Response(response=422, description="Erro de validação"),
      *     @OA\Response(response=500, description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.")
      * )
      */
-    public function store(Request $request)
+    public function store(Request $request, $id_store)
     {
         DB::beginTransaction();
         try {
@@ -76,6 +79,7 @@ class AssetController extends Controller
                 Asset::rules(),
                 Asset::feedbacks()
             );
+            $validated['fk_store'] = $id_store;
             $asset = Asset::create($validated);
             SystemLog::create([
                 'fk_user' => $request->user()->id ?? null,
@@ -102,34 +106,38 @@ class AssetController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/assets/{asset}",
+     *     path="/stores/{id_store}/assets/{asset}",
      *     tags={"Ativos"},
-     *     summary="Exibe um ativo",
-     *     description="Retorna os dados de um ativo pelo ID.",
-     *     @OA\Parameter(name="asset", in="path", required=true, @OA\Schema(type="integer")),
+     *     summary="Exibe um ativo de uma loja",
+     *     description="Retorna os dados de um ativo pelo ID e loja.",
+     *     @OA\Parameter(name="id_store", in="path", required=true, description="ID da loja", @OA\Schema(type="integer")),
+     *     @OA\Parameter(name="asset", in="path", required=true, description="ID do ativo", @OA\Schema(type="integer")),
      *     @OA\Response(response=200, description="Ativo encontrado"),
-     *     @OA\Response(response=404, description="Ativo não encontrado"),
+     *     @OA\Response(response=404, description="Ativo ou loja não encontrado"),
      *     @OA\Response(response=500, description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.")
      * )
      */
-    public function show(Asset $asset)
+    public function show($id_store, Asset $asset)
     {
+        if ($asset->fk_store != $id_store) {
+            return ResponseHelper::error('Ativo ou loja não encontrado', 404);
+        }
         return ResponseHelper::success('Ativo encontrado.', $asset);
     }
 
     /**
      * @OA\Put(
-     *     path="/assets/{asset}",
+     *     path="/stores/{id_store}/assets/{asset}",
      *     tags={"Ativos"},
-     *     summary="Atualiza um ativo",
-     *     description="Atualiza os dados de um ativo.",
-     *     @OA\Parameter(name="asset", in="path", required=true, @OA\Schema(type="integer")),
+     *     summary="Atualiza um ativo de uma loja",
+     *     description="Atualiza os dados de um ativo de uma loja.",
+     *     @OA\Parameter(name="id_store", in="path", required=true, description="ID da loja", @OA\Schema(type="integer")),
+     *     @OA\Parameter(name="asset", in="path", required=true, description="ID do ativo", @OA\Schema(type="integer")),
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             required={"name","fk_store","fk_sector","fk_asset_type","fk_status","quantity"},
+     *             required={"name","fk_sector","fk_asset_type","fk_status","quantity"},
      *             @OA\Property(property="name", type="string", example="Notebook"),
-     *             @OA\Property(property="fk_store", type="integer", example=1),
      *             @OA\Property(property="fk_sector", type="integer", example=1),
      *             @OA\Property(property="fk_asset_type", type="integer", example=1),
      *             @OA\Property(property="fk_status", type="integer", example=1),
@@ -138,13 +146,16 @@ class AssetController extends Controller
      *         )
      *     ),
      *     @OA\Response(response=200, description="Ativo atualizado com sucesso"),
+     *     @OA\Response(response=404, description="Ativo ou loja não encontrado"),
      *     @OA\Response(response=422, description="Erro de validação"),
-     *     @OA\Response(response=404, description="Ativo não encontrado"),
      *     @OA\Response(response=500, description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.")
      * )
      */
-    public function update(Request $request, Asset $asset)
+    public function update(Request $request, $id_store, Asset $asset)
     {
+        if ($asset->fk_store != $id_store) {
+            return ResponseHelper::error('Ativo ou loja não encontrado', 404);
+        }
         DB::beginTransaction();
         try {
             $validated = $request->validate(
@@ -177,18 +188,22 @@ class AssetController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/assets/{asset}",
+     *     path="/stores/{id_store}/assets/{asset}",
      *     tags={"Ativos"},
-     *     summary="Remove um ativo",
-     *     description="Remove (soft delete) um ativo.",
-     *     @OA\Parameter(name="asset", in="path", required=true, @OA\Schema(type="integer")),
+     *     summary="Remove um ativo de uma loja",
+     *     description="Remove (soft delete) um ativo de uma loja.",
+     *     @OA\Parameter(name="id_store", in="path", required=true, description="ID da loja", @OA\Schema(type="integer")),
+     *     @OA\Parameter(name="asset", in="path", required=true, description="ID do ativo", @OA\Schema(type="integer")),
      *     @OA\Response(response=200, description="Ativo removido com sucesso"),
-     *     @OA\Response(response=404, description="Ativo não encontrado"),
+     *     @OA\Response(response=404, description="Ativo ou loja não encontrado"),
      *     @OA\Response(response=500, description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.")
      * )
      */
-    public function destroy(Request $request, Asset $asset)
+    public function destroy(Request $request, $id_store, Asset $asset)
     {
+        if ($asset->fk_store != $id_store) {
+            return ResponseHelper::error('Ativo ou loja não encontrado', 404);
+        }
         DB::beginTransaction();
         try {
             $asset->delete();

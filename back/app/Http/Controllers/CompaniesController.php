@@ -39,11 +39,12 @@ class CompaniesController extends Controller
      *             @OA\Property(property="data", type="object",
      *                 @OA\Property(property="current_page", type="integer", example=1),
      *                 @OA\Property(property="data", type="array", @OA\Items(
-     *                     @OA\Property(property="id", type="integer", example=1),
+     *                     @OA\Property(property="id_company", type="integer", example=1),
      *                     @OA\Property(property="name", type="string", example="Empresa XPTO"),
      *                     @OA\Property(property="created_at", type="string", format="date-time"),
      *                     @OA\Property(property="updated_at", type="string", format="date-time"),
      *                     @OA\Property(property="contacts", type="array", @OA\Items(
+     *                         @OA\Property(property="id_contact", type="integer"),
      *                         @OA\Property(property="name", type="string"),
      *                         @OA\Property(property="email", type="string"),
      *                         @OA\Property(property="phone", type="string"),
@@ -174,7 +175,7 @@ class CompaniesController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/companies/{id}",
+     *     path="/api/companies/{id_companie}",
      *     summary="Exibe uma empresa",
      *     description="Retorna os dados de uma empresa pelo ID, incluindo contatos.",
      *     tags={"Redes"},
@@ -237,7 +238,7 @@ class CompaniesController extends Controller
 
     /**
      * @OA\Put(
-     *     path="/api/companies/{id}",
+     *     path="/api/companies/{id_companie}",
      *     summary="Atualiza uma empresa",
      *     description="Atualiza os dados de uma empresa e seus contatos.",
      *     tags={"Redes"},
@@ -334,7 +335,7 @@ class CompaniesController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/api/companies/{id}",
+     *     path="/api/companies/{id_companie}",
      *     summary="Remove uma empresa",
      *     description="Remove uma empresa e seus contatos.",
      *     tags={"Redes"},

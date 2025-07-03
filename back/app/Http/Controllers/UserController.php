@@ -16,8 +16,6 @@ use App\Models\Action as ActionModel;
 class UserController extends Controller
 {
     /**
-     * Padrão: Todo método index (get-all) deve retornar resultados paginados (10 por página).
-     *
      * @OA\Get(
      *     path="/api/users",
      *     summary="Lista usuários paginados",
@@ -47,7 +45,7 @@ class UserController extends Controller
      *                 @OA\Property(property="current_page", type="integer", example=1),
      *                 @OA\Property(property="data", type="array",
      *                     @OA\Items(
-     *                         @OA\Property(property="id", type="integer", example=1),
+     *                         @OA\Property(property="id_user", type="integer", example=1),
      *                         @OA\Property(property="name", type="string", example="João da Silva"),
      *                         @OA\Property(property="email", type="string", example="joao@email.com"),
      *                         @OA\Property(property="created_at", type="string", format="date-time", example="2025-07-01T10:00:00Z"),
@@ -92,7 +90,7 @@ class UserController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/users/{id}",
+     *     path="/api/users/{id_user}",
      *     summary="Exibe um usuário",
      *     description="Retorna os dados de um usuário pelo ID.",
      *     tags={"Usuários"},
@@ -224,7 +222,7 @@ class UserController extends Controller
 
     /**
      * @OA\Put(
-     *     path="/api/users/{id}",
+     *     path="/api/users/{id_user}",
      *     summary="Atualiza um usuário",
      *     description="Atualiza os dados de um usuário existente.",
      *     tags={"Usuários"},
@@ -308,7 +306,7 @@ class UserController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/api/users/{id}",
+     *     path="/api/users/{id_user}",
      *     summary="Remove um usuário",
      *     description="Remove um usuário pelo ID.",
      *     tags={"Usuários"},
@@ -369,7 +367,7 @@ class UserController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/users/{id}/assign",
+     *     path="/api/users/{id_user}/assign",
      *     summary="Atribui papéis e permissões ao usuário",
      *     description="Atribui um ou mais papéis (roles) e permissões ao usuário informado.",
      *     tags={"Usuários"},

@@ -14,9 +14,6 @@ use Illuminate\Support\Facades\DB;
 class SectorController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     * Padrão: Todo método index (get-all) deve retornar resultados paginados (10 por página).
-     *
      * @OA\Get(
      *     path="/api/sectors",
      *     summary="Lista setores paginados",
@@ -46,7 +43,7 @@ class SectorController extends Controller
      *                 @OA\Property(property="current_page", type="integer", example=1),
      *                 @OA\Property(property="data", type="array",
      *                     @OA\Items(
-     *                         @OA\Property(property="id", type="integer", example=1),
+     *                         @OA\Property(property="id_sector", type="integer", example=1),
      *                         @OA\Property(property="name", type="string", example="Financeiro"),
      *                         @OA\Property(property="created_at", type="string", format="date-time", example="2025-07-01T10:00:00Z"),
      *                         @OA\Property(property="updated_at", type="string", format="date-time", example="2025-07-01T10:00:00Z"),
@@ -150,7 +147,7 @@ class SectorController extends Controller
      * Display the specified resource.
      *
      * @OA\Get(
-     *     path="/api/sectors/{id}",
+     *     path="/api/sectors/{id_sector}",
      *     summary="Exibe um setor",
      *     description="Retorna os dados de um setor pelo ID.",
      *     tags={"Setores"},
@@ -214,7 +211,7 @@ class SectorController extends Controller
      * Update the specified resource in storage.
      *
      * @OA\Put(
-     *     path="/api/sectors/{id}",
+     *     path="/api/sectors/{id_sector}",
      *     summary="Atualiza um setor",
      *     description="Atualiza os dados de um setor existente.",
      *     tags={"Setores"},
@@ -288,7 +285,7 @@ class SectorController extends Controller
      * Remove the specified resource from storage.
      *
      * @OA\Delete(
-     *     path="/api/sectors/{id}",
+     *     path="/api/sectors/{id_sector}",
      *     summary="Remove um setor",
      *     description="Remove um setor pelo ID.",
      *     tags={"Setores"},

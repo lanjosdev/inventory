@@ -119,12 +119,12 @@ class AssetTypeController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/asset-types/{id}",
+     *     path="/asset-types/{id_asset_type}",
      *     summary="Exibe um tipo de ativo",
      *     description="Retorna os dados de um tipo de ativo pelo ID.",
      *     tags={"Tipos de Ativo"},
      *     @OA\Parameter(
-     *         name="id",
+     *         name="id_asset_type",
      *         in="path",
      *         required=true,
      *         @OA\Schema(type="integer")
@@ -144,19 +144,19 @@ class AssetTypeController extends Controller
      *     )
      * )
      */
-    public function show(AssetType $assetType)
+    public function show(AssetType $id_asset_type)
     {
-        return ResponseHelper::success('Tipo de ativo encontrado.', $assetType);
+        return ResponseHelper::success('Tipo de ativo encontrado.', $id_asset_type);
     }
 
     /**
      * @OA\Put(
-     *     path="/asset-types/{id}",
+     *     path="/asset-types/{id_asset_type}",
      *     summary="Atualiza um tipo de ativo",
      *     description="Atualiza os dados de um tipo de ativo.",
      *     tags={"Tipos de Ativo"},
      *     @OA\Parameter(
-     *         name="id",
+     *         name="id_asset_type",
      *         in="path",
      *         required=true,
      *         @OA\Schema(type="integer")
@@ -191,24 +191,24 @@ class AssetTypeController extends Controller
      *     )
      * )
      */
-    public function update(Request $request, AssetType $assetType)
+    public function update(Request $request, AssetType $id_asset_type)
     {
         DB::beginTransaction();
         try {
             $validated = $request->validate(
-                AssetType::rules($assetType->id),
+                AssetType::rules($id_asset_type->id),
                 AssetType::feedback()
             );
-            $assetType->update($validated);
+            $id_asset_type->update($validated);
             SystemLog::create([
                 'fk_user' => $request->user()->id ?? null,
                 'fk_action' => ActionModel::where('name', 'Atualizou')->value('id'),
                 'name_table' => 'asset_types',
-                'record_id' => $assetType->id,
+                'record_id' => $id_asset_type->id,
                 'description' => 'Atualizou tipo de ativo',
             ]);
             DB::commit();
-            return ResponseHelper::success('Tipo de ativo atualizado com sucesso.', $assetType);
+            return ResponseHelper::success('Tipo de ativo atualizado com sucesso.', $id_asset_type);
         } catch (ValidationException $e) {
             DB::rollBack();
             return ResponseHelper::error($e->getMessage(), 422);
@@ -225,12 +225,12 @@ class AssetTypeController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/asset-types/{id}",
+     *     path="/asset-types/{id_asset_type}",
      *     summary="Remove um tipo de ativo",
      *     description="Remove (soft delete) um tipo de ativo.",
      *     tags={"Tipos de Ativo"},
      *     @OA\Parameter(
-     *         name="id",
+     *         name="id_asset_type",
      *         in="path",
      *         required=true,
      *         @OA\Schema(type="integer")
@@ -254,20 +254,20 @@ class AssetTypeController extends Controller
      *     )
      * )
      */
-    public function destroy(Request $request, AssetType $assetType)
+    public function destroy(Request $request, AssetType $id_asset_type)
     {
         DB::beginTransaction();
         try {
-            $assetType->delete();
+            $id_asset_type->delete();
             SystemLog::create([
                 'fk_user' => $request->user()->id ?? null,
                 'fk_action' => ActionModel::where('name', 'Removeu')->value('id'),
                 'name_table' => 'asset_types',
-                'record_id' => $assetType->id,
+                'record_id' => $id_asset_type->id,
                 'description' => 'Removeu tipo de ativo',
             ]);
             DB::commit();
-            return ResponseHelper::success('Tipo de ativo removido com sucesso.', $assetType);
+            return ResponseHelper::success('Tipo de ativo removido com sucesso.', $id_asset_type);
         } catch (QueryException $e) {
             DB::rollBack();
             Log::error($e);

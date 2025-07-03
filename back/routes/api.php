@@ -25,13 +25,25 @@ Route::post('register', [RegisterController::class, 'register']);
 // Rotas protegidas por autenticação Sanctum
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('logout', [LogoutController::class, 'logout']);
-    Route::apiResource('users', UserController::class);
-    Route::post('users/{id}/assign', [UserController::class, 'assignRolesPermissions']);
-    Route::apiResource('companies', CompaniesController::class);
-    Route::apiResource('sectors', SectorController::class);
-    Route::apiResource('stores', StoreController::class);
-    Route::apiResource('status', StatusController::class);
-    Route::apiResource('action', ActionController::class);
+    Route::apiResource('users', UserController::class, [
+        'parameters' => ['users' => 'id_user']
+    ]);
+    Route::post('users/{id_user}/assign', [UserController::class, 'assignRolesPermissions']);
+    Route::apiResource('companies', CompaniesController::class, [
+        'parameters' => ['companies' => 'id_company']
+    ]);
+    Route::apiResource('sectors', SectorController::class, [
+        'parameters' => ['sectors' => 'id_sector']
+    ]);
+    Route::apiResource('stores', StoreController::class, [
+        'parameters' => ['stores' => 'id_store']
+    ]);
+    Route::apiResource('status', StatusController::class, [
+        'parameters' => ['status' => 'id_status']
+    ]);
+    Route::apiResource('action', ActionController::class, [
+        'parameters' => ['action' => 'id_action']
+    ]);
     Route::get('system-logs', [SystemLogController::class, 'index']);
-    Route::get('system-logs/{systemLog}', [SystemLogController::class, 'show']);
+    Route::get('system-logs/{id_system_log}', [SystemLogController::class, 'show']);
 });

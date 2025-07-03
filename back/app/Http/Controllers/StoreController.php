@@ -43,10 +43,10 @@ class StoreController extends Controller
      *                 @OA\Property(property="current_page", type="integer", example=1),
      *                 @OA\Property(property="data", type="array",
      *                     @OA\Items(
-     *                         @OA\Property(property="id", type="integer", example=1),
+     *                         @OA\Property(property="id_store", type="integer", example=1),
      *                         @OA\Property(property="name", type="string", example="Loja XPTO"),
      *                         @OA\Property(property="contacts", type="array", @OA\Items(
-     *                             @OA\Property(property="id", type="integer", example=1),
+     *                             @OA\Property(property="id_contact", type="integer", example=1),
      *                             @OA\Property(property="name", type="string", example="Contato 1"),
      *                             @OA\Property(property="email", type="string", example="contato@email.com"),
      *                             @OA\Property(property="phone", type="string", example="11999999999"),
@@ -97,7 +97,7 @@ class StoreController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/stores/{id}",
+     *     path="/api/stores/{id_store}",
      *     summary="Exibe uma loja",
      *     description="Retorna os dados de uma loja pelo ID, incluindo contatos.",
      *     tags={"Lojas"},
@@ -118,7 +118,7 @@ class StoreController extends Controller
      *                 @OA\Property(property="id", type="integer", example=1),
      *                 @OA\Property(property="name", type="string", example="Loja XPTO"),
      *                 @OA\Property(property="contacts", type="array", @OA\Items(
-     *                     @OA\Property(property="id", type="integer", example=1),
+     *                     @OA\Property(property="id_contact", type="integer", example=1),
      *                     @OA\Property(property="name", type="string", example="Contato 1"),
      *                     @OA\Property(property="email", type="string", example="contato@email.com"),
      *                     @OA\Property(property="phone", type="string", example="11999999999"),
@@ -247,7 +247,7 @@ class StoreController extends Controller
 
     /**
      * @OA\Put(
-     *     path="/api/stores/{id}",
+     *     path="/api/stores/{id_store}",
      *     summary="Atualiza uma loja",
      *     description="Atualiza os dados de uma loja e seus contatos.",
      *     tags={"Lojas"},
@@ -264,7 +264,7 @@ class StoreController extends Controller
      *             required={"name"},
      *             @OA\Property(property="name", type="string", example="Loja XPTO"),
      *             @OA\Property(property="contacts", type="array", @OA\Items(
-     *                 @OA\Property(property="id", type="integer", example=1),
+     *                 @OA\Property(property="id_contact", type="integer", example=1),
      *                 @OA\Property(property="name", type="string", example="Contato 1"),
      *                 @OA\Property(property="email", type="string", example="contato@email.com"),
      *                 @OA\Property(property="phone", type="string", example="11999999999"),
@@ -348,7 +348,7 @@ class StoreController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/api/stores/{id}",
+     *     path="/api/stores/{id_store}",
      *     summary="Remove uma loja",
      *     description="Remove uma loja e desassocia os contatos.",
      *     tags={"Lojas"},
