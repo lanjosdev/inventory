@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Log;
 
 /**
  * @OA\Tag(
- *     name="Action",
+ *     name="Ações",
  *     description="Gerenciamento de ações do sistema"
  * )
  */
@@ -19,7 +19,7 @@ class ActionController extends Controller
     /**
      * @OA\Get(
      *     path="/api/action",
-     *     tags={"Action"},
+     *     tags={"Ações"},
      *     summary="Listar ações",
      *     description="Retorna uma lista paginada de ações.",
      *     @OA\Parameter(
@@ -56,7 +56,7 @@ class ActionController extends Controller
     /**
      * @OA\Post(
      *     path="/api/action",
-     *     tags={"Action"},
+     *     tags={"Ações"},
      *     summary="Criar ação",
      *     description="Cria uma nova ação.",
      *     @OA\RequestBody(
@@ -93,7 +93,7 @@ class ActionController extends Controller
     /**
      * @OA\Get(
      *     path="/api/action/{id}",
-     *     tags={"Action"},
+     *     tags={"Ações"},
      *     summary="Exibir ação",
      *     description="Exibe uma ação específica.",
      *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
@@ -115,7 +115,7 @@ class ActionController extends Controller
     /**
      * @OA\Put(
      *     path="/api/action/{id}",
-     *     tags={"Action"},
+     *     tags={"Ações"},
      *     summary="Atualizar ação",
      *     description="Atualiza uma ação existente.",
      *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
@@ -153,7 +153,7 @@ class ActionController extends Controller
     /**
      * @OA\Delete(
      *     path="/api/action/{id}",
-     *     tags={"Action"},
+     *     tags={"Ações"},
      *     summary="Remover ação",
      *     description="Remove uma ação existente.",
      *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),

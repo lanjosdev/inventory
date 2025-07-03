@@ -12,7 +12,7 @@
         "/api/action": {
             "get": {
                 "tags": [
-                    "Action"
+                    "Ações"
                 ],
                 "summary": "Listar ações",
                 "description": "Retorna uma lista paginada de ações.",
@@ -53,7 +53,7 @@
             },
             "post": {
                 "tags": [
-                    "Action"
+                    "Ações"
                 ],
                 "summary": "Criar ação",
                 "description": "Cria uma nova ação.",
@@ -95,7 +95,7 @@
         "/api/action/{id}": {
             "get": {
                 "tags": [
-                    "Action"
+                    "Ações"
                 ],
                 "summary": "Exibir ação",
                 "description": "Exibe uma ação específica.",
@@ -124,7 +124,7 @@
             },
             "put": {
                 "tags": [
-                    "Action"
+                    "Ações"
                 ],
                 "summary": "Atualizar ação",
                 "description": "Atualiza uma ação existente.",
@@ -174,7 +174,7 @@
             },
             "delete": {
                 "tags": [
-                    "Action"
+                    "Ações"
                 ],
                 "summary": "Remover ação",
                 "description": "Remove uma ação existente.",
@@ -3321,7 +3321,7 @@
     },
     "tags": [
         {
-            "name": "Action",
+            "name": "Ações",
             "description": "Gerenciamento de ações do sistema"
         },
         {
