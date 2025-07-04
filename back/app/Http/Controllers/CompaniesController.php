@@ -26,10 +26,11 @@ class CompaniesController extends Controller
      * @OA\Get(
      *     path="/api/companies",
      *     summary="Lista empresas paginadas",
-     *     description="Retorna uma lista paginada de empresas, incluindo contatos.",
+     *     description="Retorna uma lista paginada de empresas, incluindo contatos. O parâmetro 'active' permite filtrar empresas ativas, deletadas ou ambas.",
      *     tags={"Redes"},
      *     @OA\Parameter(name="page", in="query", description="Número da página", required=false, @OA\Schema(type="integer", example=1)),
      *     @OA\Parameter(name="per_page", in="query", description="Itens por página", required=false, @OA\Schema(type="integer", example=10)),
+     *     @OA\Parameter(name="active", in="query", description="Filtra empresas ativas (true), deletadas (false) ou ambas (não informado)", required=false, @OA\Schema(type="boolean", example=true)),
      *     @OA\Response(
      *         response=200,
      *         description="Lista de empresas",
@@ -39,12 +40,12 @@ class CompaniesController extends Controller
      *             @OA\Property(property="data", type="object",
      *                 @OA\Property(property="current_page", type="integer", example=1),
      *                 @OA\Property(property="data", type="array", @OA\Items(
-     *                     @OA\Property(property="id_company", type="integer", example=1),
+     *                     @OA\Property(property="id", type="integer", example=1),
      *                     @OA\Property(property="name", type="string", example="Empresa XPTO"),
      *                     @OA\Property(property="created_at", type="string", format="date-time"),
      *                     @OA\Property(property="updated_at", type="string", format="date-time"),
      *                     @OA\Property(property="contacts", type="array", @OA\Items(
-     *                         @OA\Property(property="id_contact", type="integer"),
+     *                         @OA\Property(property="id", type="integer"),
      *                         @OA\Property(property="name", type="string"),
      *                         @OA\Property(property="email", type="string"),
      *                         @OA\Property(property="phone", type="string"),
@@ -63,7 +64,15 @@ class CompaniesController extends Controller
     {
         try {
             $perPage = $request->query('per_page', 10);
-            $companies = Companies::with('contacts')->paginate($perPage)->appends($request->all());
+            $active = $request->query('active', null);
+            if ($active === 'true' || $active === true) {
+                $query = Companies::query();
+            } elseif ($active === 'false' || $active === false) {
+                $query = Companies::onlyTrashed();
+            } else {
+                $query = Companies::withTrashed();
+            }
+            $companies = $query->with('contacts')->paginate($perPage)->appends($request->all());
             $companies->getCollection()->transform(function ($company) {
                 return [
                     'id' => $company->id,
@@ -177,9 +186,10 @@ class CompaniesController extends Controller
      * @OA\Get(
      *     path="/api/companies/{id_companie}",
      *     summary="Exibe uma empresa",
-     *     description="Retorna os dados de uma empresa pelo ID, incluindo contatos.",
+     *     description="Retorna os dados de uma empresa pelo ID, incluindo contatos. O parâmetro 'active' permite buscar uma empresa ativa, deletada ou ambas.",
      *     tags={"Redes"},
      *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
+     *     @OA\Parameter(name="active", in="query", description="Filtra empresa ativa (true), deletada (false) ou ambas (não informado)", required=false, @OA\Schema(type="boolean", example=true)),
      *     @OA\Response(
      *         response=200,
      *         description="Empresa encontrada",
@@ -192,6 +202,7 @@ class CompaniesController extends Controller
      *                 @OA\Property(property="created_at", type="string", format="date-time"),
      *                 @OA\Property(property="updated_at", type="string", format="date-time"),
      *                 @OA\Property(property="contacts", type="array", @OA\Items(
+     *                     @OA\Property(property="id", type="integer"),
      *                     @OA\Property(property="name", type="string"),
      *                     @OA\Property(property="email", type="string"),
      *                     @OA\Property(property="phone", type="string"),
@@ -204,10 +215,17 @@ class CompaniesController extends Controller
      *     @OA\Response(response=500, description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.")
      * )
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
         try {
-            $company = Companies::with('contacts')->find($id);
+            $active = $request->query('active', null);
+            if ($active === 'true' || $active === true) {
+                $company = Companies::with('contacts')->find($id);
+            } elseif ($active === 'false' || $active === false) {
+                $company = Companies::onlyTrashed()->with('contacts')->find($id);
+            } else {
+                $company = Companies::withTrashed()->with('contacts')->find($id);
+            }
             if (!$company) {
                 return ResponseHelper::error('Empresa não encontrada.', 404);
             }
@@ -381,4 +399,83 @@ class CompaniesController extends Controller
             return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         }
     }
+
+    /**
+     * @OA\Post(
+     *     path="/api/companies/{id_companie}/contacts",
+     *     summary="Adiciona um contato a uma empresa (rede)",
+     *     description="Cria um novo contato e faz a relação com a empresa informada.",
+     *     tags={"Redes"},
+     *     @OA\Parameter(name="id_companie", in="path", required=true, description="ID da empresa (rede)", @OA\Schema(type="integer", example=1)),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"name", "email", "phone"},
+     *             @OA\Property(property="name", type="string", example="Contato Novo"),
+     *             @OA\Property(property="email", type="string", example="contato@empresa.com"),
+     *             @OA\Property(property="phone", type="string", example="11999999999"),
+     *             @OA\Property(property="observation", type="string", example="Observação do contato", nullable=true)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Contato criado e relacionado à empresa com sucesso",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Contato adicionado à empresa com sucesso."),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="company_id", type="integer", example=1),
+     *                 @OA\Property(property="contact", type="object",
+     *                     @OA\Property(property="id", type="integer", example=10),
+     *                     @OA\Property(property="name", type="string", example="Contato Novo"),
+     *                     @OA\Property(property="email", type="string", example="contato@empresa.com"),
+     *                     @OA\Property(property="phone", type="string", example="11999999999"),
+     *                     @OA\Property(property="observation", type="string", example="Observação do contato", nullable=true)
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(response=404, description="Empresa não encontrada"),
+     *     @OA\Response(response=422, description="Erro de validação"),
+     *     @OA\Response(response=500, description="Erro interno ao adicionar contato")
+     * )
+     */
+    public function addContactToCompany(Request $request, $id_companie)
+    {
+        DB::beginTransaction();
+        try {
+            $company = Companies::find($id_companie);
+            if (!$company) {
+                return ResponseHelper::error('Empresa não encontrada.', 404);
+            }
+            $validated = $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|max:255',
+                'phone' => 'required|string|max:30',
+                'observation' => 'nullable|string|max:255',
+            ]);
+            $contact = Contact::create($validated);
+            $company->contacts()->attach($contact->id);
+            DB::commit();
+            return ResponseHelper::success('Contato adicionado à empresa com sucesso.', [
+                'company_id' => $company->id,
+                'contact' => $contact
+            ], 201);
+        } catch (ValidationException $ve) {
+            DB::rollBack();
+            return ResponseHelper::error($ve->errors(), 422);
+        } catch (QueryException $qe) {
+            DB::rollBack();
+            Log::error('Error DB: ' . $qe->getMessage());
+            return ResponseHelper::error('Erro interno ao adicionar contato.', 500);
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::error('Error: ' . $e->getMessage());
+            return ResponseHelper::error('Erro interno ao adicionar contato.', 500);
+        }
+    }
 }
+
+// Rota para adicionar contato a uma empresa (rede)
+// Adicione no arquivo de rotas (routes/api.php):
+// Route::post('companies/{id_companie}/contacts', [CompaniesController::class, 'addContactToCompany']);
