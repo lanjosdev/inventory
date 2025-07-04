@@ -45,13 +45,17 @@ class LoginController extends Controller
      *                 @OA\Property(property="user", type="object",
      *                     @OA\Property(property="id", type="integer", example=1),
      *                     @OA\Property(property="name", type="string", example="João da Silva"),
-     *                     @OA\Property(property="email", type="string", example="usuario@email.com")
-     *                 ),
-     *                 @OA\Property(property="level", type="array",
-     *                     @OA\Items(type="object",
-     *                         @OA\Property(property="id", type="integer", example=1),
-     *                         @OA\Property(property="name", type="string", example="admin")
-     *                     )
+     *                     @OA\Property(property="email", type="string", example="usuario@email.com"),
+     *                     @OA\Property(property="level", type="array",
+     *                         @OA\Items(type="object",
+     *                             @OA\Property(property="id", type="integer", example=1),
+     *                             @OA\Property(property="name", type="string", example="Admin"),
+     *                             @OA\Property(property="permission", type="string", example="C,R,U,D")
+     *                         )
+     *                     ),
+     *                     @OA\Property(property="created_at", type="string", format="date-time", example="2025-07-04T14:21:51.000000Z"),
+     *                     @OA\Property(property="updated_at", type="string", format="date-time", example="2025-07-04T14:21:51.000000Z"),
+     *                     @OA\Property(property="deleted_at", type="string", format="date-time", nullable=true, example=null)
      *                 )
      *             )
      *         )
@@ -99,12 +103,27 @@ class LoginController extends Controller
                 'description' => 'Login realizado com sucesso',
             ]);
 
+            $userData = [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'level' => $user->roles->map(function ($role) {
+                    return [
+                        'id' => $role->id,
+                        'name' => $role->name,
+                        'permission' => $role->permissions()->pluck('name')->implode(',')
+                    ];
+                }),
+                'created_at' => $user->created_at,
+                'updated_at' => $user->updated_at,
+                'deleted_at' => $user->deleted_at,
+            ];
+
             DB::commit();
             return ResponseHelper::success('Login realizado com sucesso', [
                 'access_token' => $token,
                 'token_type' => 'Bearer',
-                'user' => $user,
-                'level' => $roles,
+                'user' => $userData,
             ]);
         } catch (ValidationException $ve) {
             DB::rollBack();
