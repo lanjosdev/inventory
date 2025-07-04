@@ -1,4 +1,4 @@
-import { env } from '@/env.mjs';
+// import { env } from '@/env.mjs';
 import { cookies } from 'next/headers';
 
 /**
@@ -19,6 +19,7 @@ export class ApiError extends Error {
     this.data = data;
   }
 }
+
 
 /**
  * Classe para encapsular a lógica de fetch da API.
@@ -64,9 +65,6 @@ class ApiClient {
       },
     };
 
-    console.log(`Fazendo requisição para: ${url}`, { 
-      body: config.body ? JSON.parse(config.body as string) : undefined,
-    });   
     const response = await fetch(url, config);
 
     if (!response.ok) {

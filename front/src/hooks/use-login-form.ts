@@ -2,29 +2,14 @@ import { useState, useTransition } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { loginSchema, type LoginFormData } from '@/lib/validations/auth'
-import { loginAction } from '@/lib/actions/auth'
+import { loginAction } from '@/lib/actions/authAction'
 import { useRouter } from 'next/navigation'
-
-// TODO: Criar um arquivo central de tipos (ex: src/types/index.ts)
-// e mover a interface User para lá.
-interface User {
-    id: string
-    name: string
-    email: string
-    // Adicione outras propriedades do usuário conforme necessário
-}
-
-// Define a interface para a resposta da action, incluindo os erros de campo.
-interface ActionResult {
-    success: boolean
-    message: string
-    errors?: Record<string, string[] | undefined>
-    user?: User
-}
+import type { ActionResult } from '@/types'
 
 export function useLoginForm() {
     const [isPending, startTransition] = useTransition()
     const router = useRouter()
+    const [isSuccess, setIsSuccess] = useState(false)
     const [message, setMessage] = useState<{
         type: 'success' | 'error'
         text: string
@@ -43,11 +28,13 @@ export function useLoginForm() {
         startTransition(async () => {
             setMessage(null)
             form.clearErrors()
+            setIsSuccess(false)
 
             const result: ActionResult = await loginAction(data);
-            console.log('Login result:', result)
+            // console.log('Login result:', result)
 
             if(result.success) {
+                setIsSuccess(true)
                 setMessage({
                     type: 'success',
                     text: result.message
@@ -85,6 +72,7 @@ export function useLoginForm() {
         form,
         onSubmit,
         isPending,
+        isSuccess,
         message,
         setMessage
     }

@@ -4,19 +4,19 @@
         "title": "API Inventory",
         "description": "Documentação da API Inventory gerada automaticamente via Swagger.",
         "contact": {
-            "email": "seu-email@dominio.com"
+            "email": "victor.hugo@bizsys.com.br"
         },
         "version": "1.0.0"
     },
     "paths": {
-        "/api/action": {
+        "/api/actions": {
             "get": {
                 "tags": [
-                    "Action"
+                    "Ações"
                 ],
                 "summary": "Listar ações",
                 "description": "Retorna uma lista paginada de ações.",
-                "operationId": "0e230644ef4b723a3bb9a9ceb8bec6b4",
+                "operationId": "a9d7c561614fd277a97feeccca3fdafb",
                 "parameters": [
                     {
                         "name": "page",
@@ -45,12 +45,17 @@
                     },
                     "401": {
                         "description": "Não autorizado"
+                    },
+                    "500": {
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
-            },
+            }
+        },
+        "/api/action": {
             "post": {
                 "tags": [
-                    "Action"
+                    "Ações"
                 ],
                 "summary": "Criar ação",
                 "description": "Cria uma nova ação.",
@@ -82,22 +87,26 @@
                     },
                     "400": {
                         "description": "Erro de validação"
+                    },
+                    "500": {
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
             }
         },
-        "/api/action/{id}": {
+        "/api/actions/{id_action}": {
             "get": {
                 "tags": [
-                    "Action"
+                    "Ações"
                 ],
                 "summary": "Exibir ação",
                 "description": "Exibe uma ação específica.",
-                "operationId": "6812608e3f6eb9dff717767903c9bcac",
+                "operationId": "cdffda7410fffd48a66cb189cbf3ea9e",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "id_action",
                         "in": "path",
+                        "description": "ID da ação",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -110,20 +119,24 @@
                     },
                     "404": {
                         "description": "Não encontrado"
+                    },
+                    "500": {
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
             },
             "put": {
                 "tags": [
-                    "Action"
+                    "Ações"
                 ],
                 "summary": "Atualizar ação",
                 "description": "Atualiza uma ação existente.",
-                "operationId": "81bf905baeae161a977c822148ca63ef",
+                "operationId": "87d1513604beac66ed6e6b1b65809497",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "id_action",
                         "in": "path",
+                        "description": "ID da ação",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -135,6 +148,9 @@
                     "content": {
                         "application/json": {
                             "schema": {
+                                "required": [
+                                    "name"
+                                ],
                                 "properties": {
                                     "name": {
                                         "type": "string"
@@ -150,26 +166,467 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Atualizado"
+                        "description": "Ação atualizada com sucesso"
                     },
                     "400": {
                         "description": "Erro de validação"
                     },
                     "404": {
                         "description": "Não encontrado"
+                    },
+                    "500": {
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
             },
             "delete": {
                 "tags": [
-                    "Action"
+                    "Ações"
                 ],
                 "summary": "Remover ação",
                 "description": "Remove uma ação existente.",
-                "operationId": "29f7a06274a7c16f902fcdcfbea821d7",
+                "operationId": "0c33a55388c27d3816de4e2040683dfc",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "id_action",
+                        "in": "path",
+                        "description": "ID da ação",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ação removida com sucesso"
+                    },
+                    "404": {
+                        "description": "Não encontrado"
+                    },
+                    "500": {
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
+                    }
+                }
+            }
+        },
+        "/stores/{id_store}/assets": {
+            "get": {
+                "tags": [
+                    "Ativos"
+                ],
+                "summary": "Listar ativos de uma loja",
+                "description": "Retorna uma lista paginada de ativos de uma loja específica.",
+                "operationId": "b5ef156ef49c26350061d03f9b3acca2",
+                "parameters": [
+                    {
+                        "name": "id_store",
+                        "in": "path",
+                        "description": "ID da loja",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 10
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista paginada de ativos"
+                    },
+                    "404": {
+                        "description": "Loja não encontrada"
+                    },
+                    "500": {
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Ativos"
+                ],
+                "summary": "Cria um novo ativo para uma loja",
+                "description": "Cria um novo ativo vinculado a uma loja.",
+                "operationId": "13dd0ae5cb2763ddeaef3adee0d59232",
+                "parameters": [
+                    {
+                        "name": "id_store",
+                        "in": "path",
+                        "description": "ID da loja",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "fk_sector",
+                                    "fk_asset_type",
+                                    "fk_status",
+                                    "quantity"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Notebook"
+                                    },
+                                    "fk_sector": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "fk_asset_type": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "fk_status": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "observation": {
+                                        "type": "string",
+                                        "example": "Equipamento de TI"
+                                    },
+                                    "quantity": {
+                                        "type": "integer",
+                                        "example": 10
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Ativo criado com sucesso"
+                    },
+                    "404": {
+                        "description": "Loja não encontrada"
+                    },
+                    "422": {
+                        "description": "Erro de validação"
+                    },
+                    "500": {
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
+                    }
+                }
+            }
+        },
+        "/stores/{id_store}/assets/{asset}": {
+            "get": {
+                "tags": [
+                    "Ativos"
+                ],
+                "summary": "Exibe um ativo de uma loja",
+                "description": "Retorna os dados de um ativo pelo ID e loja.",
+                "operationId": "b09f81173d7e3bbab229c82e92b19a8f",
+                "parameters": [
+                    {
+                        "name": "id_store",
+                        "in": "path",
+                        "description": "ID da loja",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "asset",
+                        "in": "path",
+                        "description": "ID do ativo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ativo encontrado"
+                    },
+                    "404": {
+                        "description": "Ativo ou loja não encontrado"
+                    },
+                    "500": {
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Ativos"
+                ],
+                "summary": "Atualiza um ativo de uma loja",
+                "description": "Atualiza os dados de um ativo de uma loja.",
+                "operationId": "45e2624d032e1b6f158da05252efd794",
+                "parameters": [
+                    {
+                        "name": "id_store",
+                        "in": "path",
+                        "description": "ID da loja",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "asset",
+                        "in": "path",
+                        "description": "ID do ativo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "fk_sector",
+                                    "fk_asset_type",
+                                    "fk_status",
+                                    "quantity"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Notebook"
+                                    },
+                                    "fk_sector": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "fk_asset_type": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "fk_status": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "observation": {
+                                        "type": "string",
+                                        "example": "Equipamento de TI"
+                                    },
+                                    "quantity": {
+                                        "type": "integer",
+                                        "example": 10
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ativo atualizado com sucesso"
+                    },
+                    "404": {
+                        "description": "Ativo ou loja não encontrado"
+                    },
+                    "422": {
+                        "description": "Erro de validação"
+                    },
+                    "500": {
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Ativos"
+                ],
+                "summary": "Remove um ativo de uma loja",
+                "description": "Remove (soft delete) um ativo de uma loja.",
+                "operationId": "ac523f13b9fbe1f3f34c22a0ee8157ef",
+                "parameters": [
+                    {
+                        "name": "id_store",
+                        "in": "path",
+                        "description": "ID da loja",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "asset",
+                        "in": "path",
+                        "description": "ID do ativo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ativo removido com sucesso"
+                    },
+                    "404": {
+                        "description": "Ativo ou loja não encontrado"
+                    },
+                    "500": {
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
+                    }
+                }
+            }
+        },
+        "/asset-types": {
+            "get": {
+                "tags": [
+                    "Tipos de Ativo"
+                ],
+                "summary": "Lista tipos de ativos",
+                "description": "Retorna uma lista paginada de tipos de ativos.",
+                "operationId": "b0ef8566e9fabc14db41157d6778fc26",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 10
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista paginada de tipos de ativos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Tipos de Ativo"
+                ],
+                "summary": "Cria um novo tipo de ativo",
+                "description": "Cria um novo tipo de ativo.",
+                "operationId": "9d5bc403bcbaaaa2a967e2792bdf61f1",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Notebook"
+                                    },
+                                    "observation": {
+                                        "type": "string",
+                                        "example": "Equipamento de TI"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Tipo de ativo criado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Erro de validação"
+                    },
+                    "500": {
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
+                    }
+                }
+            }
+        },
+        "/asset-types/{id_asset_type}": {
+            "get": {
+                "tags": [
+                    "Tipos de Ativo"
+                ],
+                "summary": "Exibe um tipo de ativo",
+                "description": "Retorna os dados de um tipo de ativo pelo ID.",
+                "operationId": "0502a3dffcab908b01a6504b9bf5559d",
+                "parameters": [
+                    {
+                        "name": "id_asset_type",
                         "in": "path",
                         "required": true,
                         "schema": {
@@ -179,10 +636,148 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Removido"
+                        "description": "Tipo de ativo encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "404": {
-                        "description": "Não encontrado"
+                        "description": "Tipo de ativo não encontrado"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Tipos de Ativo"
+                ],
+                "summary": "Atualiza um tipo de ativo",
+                "description": "Atualiza os dados de um tipo de ativo.",
+                "operationId": "7f2bb0eb9f43b06a0ac5d9c8e341f975",
+                "parameters": [
+                    {
+                        "name": "id_asset_type",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Notebook"
+                                    },
+                                    "observation": {
+                                        "type": "string",
+                                        "example": "Equipamento de TI"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Tipo de ativo atualizado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Tipo de ativo não encontrado"
+                    },
+                    "422": {
+                        "description": "Erro de validação"
+                    },
+                    "500": {
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Tipos de Ativo"
+                ],
+                "summary": "Remove um tipo de ativo",
+                "description": "Remove (soft delete) um tipo de ativo.",
+                "operationId": "9f40cfa912bfa7ce97494b9fd41edad5",
+                "parameters": [
+                    {
+                        "name": "id_asset_type",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tipo de ativo removido com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Tipo de ativo não encontrado"
+                    },
+                    "500": {
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
             }
@@ -257,6 +852,42 @@
                                                         "email": {
                                                             "type": "string",
                                                             "example": "usuario@email.com"
+                                                        },
+                                                        "level": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "properties": {
+                                                                    "id": {
+                                                                        "type": "integer",
+                                                                        "example": 1
+                                                                    },
+                                                                    "name": {
+                                                                        "type": "string",
+                                                                        "example": "Admin"
+                                                                    },
+                                                                    "permission": {
+                                                                        "type": "string",
+                                                                        "example": "C,R,U,D"
+                                                                    }
+                                                                },
+                                                                "type": "object"
+                                                            }
+                                                        },
+                                                        "created_at": {
+                                                            "type": "string",
+                                                            "format": "date-time",
+                                                            "example": "2025-07-04T14:21:51.000000Z"
+                                                        },
+                                                        "updated_at": {
+                                                            "type": "string",
+                                                            "format": "date-time",
+                                                            "example": "2025-07-04T14:21:51.000000Z"
+                                                        },
+                                                        "deleted_at": {
+                                                            "type": "string",
+                                                            "format": "date-time",
+                                                            "example": null,
+                                                            "nullable": true
                                                         }
                                                     },
                                                     "type": "object"
@@ -277,7 +908,7 @@
                         "description": "Erro de validação"
                     },
                     "500": {
-                        "description": "Erro interno ao realizar login"
+                        "description": "Ops, algo inesperado aconteceu. Tente novamente mais tarde."
                     }
                 }
             }
@@ -318,7 +949,7 @@
                         "description": "Erro de validação"
                     },
                     "500": {
-                        "description": "Erro interno ao realizar logout"
+                        "description": "Ops, algo inesperado aconteceu. Tente novamente mais tarde."
                     }
                 }
             }
@@ -328,8 +959,8 @@
                 "tags": [
                     "Autenticação"
                 ],
-                "summary": "Registra um novo usuário",
-                "description": "Cria um novo usuário e retorna um token de acesso.",
+                "summary": "Registra um novo usuário (apenas admin)",
+                "description": "Cria um novo usuário. Apenas administradores autenticados podem acessar este endpoint.",
                 "operationId": "6cb93c5db517a3e6e369c44ede7f22fd",
                 "requestBody": {
                     "required": true,
@@ -377,14 +1008,6 @@
                                         },
                                         "data": {
                                             "properties": {
-                                                "access_token": {
-                                                    "type": "string",
-                                                    "example": "token.jwt.aqui"
-                                                },
-                                                "token_type": {
-                                                    "type": "string",
-                                                    "example": "Bearer"
-                                                },
                                                 "user": {
                                                     "properties": {
                                                         "id": {
@@ -411,19 +1034,82 @@
                             }
                         }
                     },
+                    "403": {
+                        "description": "Apenas administradores podem registrar novos usuários.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Apenas administradores podem registrar novos usuários."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
                     "422": {
-                        "description": "Erro de validação"
+                        "description": "Erro de validação",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "object",
+                                            "example": {
+                                                "email": [
+                                                    "O campo email é obrigatório."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "500": {
-                        "description": "Erro interno ao registrar usuário"
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/api/companies": {
             "get": {
                 "tags": [
-                    "Empresas"
+                    "Redes"
                 ],
                 "summary": "Lista empresas paginadas",
                 "description": "Retorna uma lista paginada de empresas, incluindo contatos.",
@@ -475,7 +1161,7 @@
                                                     "type": "array",
                                                     "items": {
                                                         "properties": {
-                                                            "id": {
+                                                            "id_company": {
                                                                 "type": "integer",
                                                                 "example": 1
                                                             },
@@ -495,6 +1181,9 @@
                                                                 "type": "array",
                                                                 "items": {
                                                                     "properties": {
+                                                                        "id_contact": {
+                                                                            "type": "integer"
+                                                                        },
                                                                         "name": {
                                                                             "type": "string"
                                                                         },
@@ -534,13 +1223,13 @@
                         }
                     },
                     "500": {
-                        "description": "Erro interno ao buscar empresas"
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
             },
             "post": {
                 "tags": [
-                    "Empresas"
+                    "Redes"
                 ],
                 "summary": "Cria uma empresa",
                 "description": "Cria uma empresa e associa contatos.",
@@ -662,19 +1351,19 @@
                         "description": "Erro de validação"
                     },
                     "500": {
-                        "description": "Erro interno ao criar empresa"
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
             }
         },
-        "/api/companies/{id}": {
+        "/api/companies/{id_companie}": {
             "get": {
                 "tags": [
-                    "Empresas"
+                    "Redes"
                 ],
                 "summary": "Exibe uma empresa",
                 "description": "Retorna os dados de uma empresa pelo ID, incluindo contatos.",
-                "operationId": "cbb78d610c9a622f6cd37e179954f614",
+                "operationId": "71e5597248b4641b8916a53bdd4a2d3f",
                 "parameters": [
                     {
                         "name": "id",
@@ -752,17 +1441,17 @@
                         "description": "Empresa não encontrada"
                     },
                     "500": {
-                        "description": "Erro interno ao buscar empresa"
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
             },
             "put": {
                 "tags": [
-                    "Empresas"
+                    "Redes"
                 ],
                 "summary": "Atualiza uma empresa",
                 "description": "Atualiza os dados de uma empresa e seus contatos.",
-                "operationId": "b20dcbefb41831c0c20215dc5fd2fbce",
+                "operationId": "b930e74d5c9016a6de661536ec316b1d",
                 "parameters": [
                     {
                         "name": "id",
@@ -897,17 +1586,17 @@
                         "description": "Erro de validação"
                     },
                     "500": {
-                        "description": "Erro interno ao atualizar empresa"
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
             },
             "delete": {
                 "tags": [
-                    "Empresas"
+                    "Redes"
                 ],
                 "summary": "Remove uma empresa",
                 "description": "Remove uma empresa e seus contatos.",
-                "operationId": "a03e15f9fe8316d7c6edabd56c521f23",
+                "operationId": "843d201bf4cb787b3285cf9bf5c37b10",
                 "parameters": [
                     {
                         "name": "id",
@@ -943,7 +1632,301 @@
                         "description": "Empresa não encontrada"
                     },
                     "500": {
-                        "description": "Erro interno ao remover empresa"
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
+                    }
+                }
+            }
+        },
+        "/api/roles": {
+            "get": {
+                "tags": [
+                    "Papéis"
+                ],
+                "summary": "Lista todos os papéis (roles)",
+                "operationId": "77e3636d8592997ce9d6d27b50857a69",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Número da página",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Itens por página (padrão: 10)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 10
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de papéis retornada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Lista de papéis obtida com sucesso."
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "data": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/Role"
+                                                    }
+                                                },
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 20
+                                                },
+                                                "last_page": {
+                                                    "type": "integer",
+                                                    "example": 2
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Papéis"
+                ],
+                "summary": "Cria um novo papel (role)",
+                "operationId": "4a563842fbfcad237f63da43065fca3d",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "admin"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Administrador do sistema"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Papel criado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Papel criado com sucesso."
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Role"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Erro de validação"
+                    }
+                }
+            }
+        },
+        "/api/roles/{id}": {
+            "get": {
+                "tags": [
+                    "Papéis"
+                ],
+                "summary": "Exibe um papel (role)",
+                "operationId": "7fb0667a295b7678a30353aa11739683",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Papel encontrado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Papel encontrado."
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Role"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Papel não encontrado"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Papéis"
+                ],
+                "summary": "Atualiza um papel (role)",
+                "operationId": "786d6990093a8eb3a56931f19a827e43",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "admin"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Administrador do sistema"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Papel atualizado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Papel atualizado com sucesso."
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Role"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Papel não encontrado"
+                    },
+                    "422": {
+                        "description": "Erro de validação"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Papéis"
+                ],
+                "summary": "Remove um papel (role)",
+                "operationId": "8285c46981c60ad600aa4077307aec04",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Papel removido com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Papel removido com sucesso."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Papel não encontrado"
                     }
                 }
             }
@@ -1003,7 +1986,7 @@
                                                     "type": "array",
                                                     "items": {
                                                         "properties": {
-                                                            "id": {
+                                                            "id_sector": {
                                                                 "type": "integer",
                                                                 "example": 1
                                                             },
@@ -1049,7 +2032,7 @@
                         }
                     },
                     "500": {
-                        "description": "Erro interno ao buscar setores"
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
             },
@@ -1117,19 +2100,19 @@
                         "description": "Erro de validação"
                     },
                     "500": {
-                        "description": "Erro interno ao criar setor"
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
             }
         },
-        "/api/sectors/{id}": {
+        "/api/sectors/{id_sector}": {
             "get": {
                 "tags": [
                     "Setores"
                 ],
                 "summary": "Exibe um setor",
                 "description": "Retorna os dados de um setor pelo ID.",
-                "operationId": "4eac8c3383beaadc218e99377dc4c98c",
+                "operationId": "b57a5df221a9ce4a7356e7c8ee129aba",
                 "parameters": [
                     {
                         "name": "id",
@@ -1196,7 +2179,7 @@
                         "description": "Setor não encontrado"
                     },
                     "500": {
-                        "description": "Erro interno ao buscar setor"
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
             },
@@ -1206,7 +2189,7 @@
                 ],
                 "summary": "Atualiza um setor",
                 "description": "Atualiza os dados de um setor existente.",
-                "operationId": "9fe94fdb55e84def52733d540f2fc339",
+                "operationId": "53c9dfe4d5f1ebbd2e65ca0ca822cbed",
                 "parameters": [
                     {
                         "name": "id",
@@ -1279,7 +2262,7 @@
                         "description": "Erro de validação"
                     },
                     "500": {
-                        "description": "Erro interno ao atualizar setor"
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
             },
@@ -1289,7 +2272,7 @@
                 ],
                 "summary": "Remove um setor",
                 "description": "Remove um setor pelo ID.",
-                "operationId": "f8dc666b109a399119a9aefe5d7c6fb3",
+                "operationId": "949054e78808649cf9b21e4eb007fbe6",
                 "parameters": [
                     {
                         "name": "id",
@@ -1327,7 +2310,7 @@
                         "description": "Setor não encontrado"
                     },
                     "500": {
-                        "description": "Erro interno ao remover setor"
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
             }
@@ -1387,7 +2370,7 @@
                                                     "type": "array",
                                                     "items": {
                                                         "properties": {
-                                                            "id": {
+                                                            "id_status": {
                                                                 "type": "integer",
                                                                 "example": 1
                                                             },
@@ -1433,7 +2416,7 @@
                         }
                     },
                     "500": {
-                        "description": "Erro interno ao buscar status"
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
             },
@@ -1501,19 +2484,19 @@
                         "description": "Erro de validação"
                     },
                     "500": {
-                        "description": "Erro interno ao criar status"
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
             }
         },
-        "/api/status/{id}": {
+        "/api/status/{id_status}": {
             "get": {
                 "tags": [
                     "Status"
                 ],
                 "summary": "Exibe um status",
                 "description": "Retorna os dados de um status pelo ID.",
-                "operationId": "8a6aa2edf816734b6daa1b25f3f529e3",
+                "operationId": "33fbe161b3407db5ff49b0c62d16b32e",
                 "parameters": [
                     {
                         "name": "id",
@@ -1580,7 +2563,7 @@
                         "description": "Status não encontrado"
                     },
                     "500": {
-                        "description": "Erro interno ao buscar status"
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
             },
@@ -1590,7 +2573,7 @@
                 ],
                 "summary": "Atualiza um status",
                 "description": "Atualiza os dados de um status existente.",
-                "operationId": "b7877753d6ede5509f07ac9cead60734",
+                "operationId": "abaa99f25a949903f18bbdf547e3a9bb",
                 "parameters": [
                     {
                         "name": "id",
@@ -1663,7 +2646,7 @@
                         "description": "Erro de validação"
                     },
                     "500": {
-                        "description": "Erro interno ao atualizar status"
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
             },
@@ -1673,7 +2656,7 @@
                 ],
                 "summary": "Remove um status",
                 "description": "Remove um status pelo ID.",
-                "operationId": "5c95658333774ec5e84cde0a11daa1c3",
+                "operationId": "3fc3f1d4b68bef78a32e0bea29d3d7a2",
                 "parameters": [
                     {
                         "name": "id",
@@ -1711,7 +2694,7 @@
                         "description": "Status não encontrado"
                     },
                     "500": {
-                        "description": "Erro interno ao remover status"
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
             }
@@ -1771,7 +2754,7 @@
                                                     "type": "array",
                                                     "items": {
                                                         "properties": {
-                                                            "id": {
+                                                            "id_store": {
                                                                 "type": "integer",
                                                                 "example": 1
                                                             },
@@ -1783,7 +2766,7 @@
                                                                 "type": "array",
                                                                 "items": {
                                                                     "properties": {
-                                                                        "id": {
+                                                                        "id_contact": {
                                                                             "type": "integer",
                                                                             "example": 1
                                                                         },
@@ -1829,7 +2812,7 @@
                         }
                     },
                     "500": {
-                        "description": "Erro interno ao buscar lojas"
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
             },
@@ -1933,14 +2916,14 @@
                 }
             }
         },
-        "/api/stores/{id}": {
+        "/api/stores/{id_store}": {
             "get": {
                 "tags": [
                     "Lojas"
                 ],
                 "summary": "Exibe uma loja",
                 "description": "Retorna os dados de uma loja pelo ID, incluindo contatos.",
-                "operationId": "cd24cde4c43f6c4aeb2ed9725fca9624",
+                "operationId": "b1921fb89282027df70332f753178aa4",
                 "parameters": [
                     {
                         "name": "id",
@@ -1982,7 +2965,7 @@
                                                     "type": "array",
                                                     "items": {
                                                         "properties": {
-                                                            "id": {
+                                                            "id_contact": {
                                                                 "type": "integer",
                                                                 "example": 1
                                                             },
@@ -2019,7 +3002,7 @@
                         "description": "Loja não encontrada"
                     },
                     "500": {
-                        "description": "Erro interno ao buscar loja"
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
             },
@@ -2029,7 +3012,7 @@
                 ],
                 "summary": "Atualiza uma loja",
                 "description": "Atualiza os dados de uma loja e seus contatos.",
-                "operationId": "88ff3f89a8f75ba1778135a219a7df23",
+                "operationId": "dee0ded648b52cb19d465658d67cf510",
                 "parameters": [
                     {
                         "name": "id",
@@ -2059,7 +3042,7 @@
                                         "type": "array",
                                         "items": {
                                             "properties": {
-                                                "id": {
+                                                "id_contact": {
                                                     "type": "integer",
                                                     "example": 1
                                                 },
@@ -2140,7 +3123,7 @@
                 ],
                 "summary": "Remove uma loja",
                 "description": "Remove uma loja e desassocia os contatos.",
-                "operationId": "93650469eaff668e6c504e674efdc02a",
+                "operationId": "7f2c64b107a4da952232e7f39af1b3f3",
                 "parameters": [
                     {
                         "name": "id",
@@ -2186,7 +3169,7 @@
         "/api/system-logs": {
             "get": {
                 "tags": [
-                    "SystemLog"
+                    "Logs do sistema"
                 ],
                 "summary": "Listar logs do sistema",
                 "description": "Retorna uma lista paginada de logs do sistema.",
@@ -2219,22 +3202,26 @@
                     },
                     "401": {
                         "description": "Não autorizado"
+                    },
+                    "500": {
+                        "description": "Ops, algo inesperado aconteceu. Tente novamente mais tarde."
                     }
                 }
             }
         },
-        "/api/system-logs/{systemLog}": {
+        "/api/system-logs/{id_system_log}": {
             "get": {
                 "tags": [
-                    "SystemLog"
+                    "Logs do sistema"
                 ],
                 "summary": "Exibir log do sistema",
                 "description": "Exibe um log do sistema específico.",
-                "operationId": "75ce81b4319d523ff97d05f6127405a4",
+                "operationId": "a07cf2f860f20ebbe621e8a7587abc33",
                 "parameters": [
                     {
-                        "name": "systemLog",
+                        "name": "id_system_log",
                         "in": "path",
+                        "description": "ID do log do sistema",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -2247,6 +3234,9 @@
                     },
                     "404": {
                         "description": "Não encontrado"
+                    },
+                    "500": {
+                        "description": "Ops, algo inesperado aconteceu. Tente novamente mais tarde."
                     }
                 }
             }
@@ -2318,6 +3308,26 @@
                                                                 "type": "string",
                                                                 "example": "joao@email.com"
                                                             },
+                                                            "level": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "properties": {
+                                                                        "id": {
+                                                                            "type": "integer",
+                                                                            "example": 1
+                                                                        },
+                                                                        "name": {
+                                                                            "type": "string",
+                                                                            "example": "Admin"
+                                                                        },
+                                                                        "permission": {
+                                                                            "type": "string",
+                                                                            "example": "C,R,U,D"
+                                                                        }
+                                                                    },
+                                                                    "type": "object"
+                                                                }
+                                                            },
                                                             "created_at": {
                                                                 "type": "string",
                                                                 "format": "date-time",
@@ -2356,7 +3366,7 @@
                         }
                     },
                     "500": {
-                        "description": "Erro interno ao buscar usuários"
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
             },
@@ -2438,19 +3448,19 @@
                         "description": "Erro de validação"
                     },
                     "500": {
-                        "description": "Erro interno ao criar usuário"
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
             }
         },
-        "/api/users/{id}": {
+        "/api/users/{id_user}": {
             "get": {
                 "tags": [
                     "Usuários"
                 ],
                 "summary": "Exibe um usuário",
                 "description": "Retorna os dados de um usuário pelo ID.",
-                "operationId": "36a33ff774d5cba33c039dec2c3e0287",
+                "operationId": "dd259f1f0755a25c8b3bc8509c0384f1",
                 "parameters": [
                     {
                         "name": "id",
@@ -2521,7 +3531,7 @@
                         "description": "Usuário não encontrado"
                     },
                     "500": {
-                        "description": "Erro interno ao buscar usuário"
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
             },
@@ -2531,7 +3541,7 @@
                 ],
                 "summary": "Atualiza um usuário",
                 "description": "Atualiza os dados de um usuário existente.",
-                "operationId": "b9091397c8b25f12c6adb74be6ce3a5a",
+                "operationId": "e929fe12b6119f20389b11e1100218ce",
                 "parameters": [
                     {
                         "name": "id",
@@ -2618,7 +3628,7 @@
                         "description": "Erro de validação"
                     },
                     "500": {
-                        "description": "Erro interno ao atualizar usuário"
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
             },
@@ -2628,7 +3638,7 @@
                 ],
                 "summary": "Remove um usuário",
                 "description": "Remove um usuário pelo ID.",
-                "operationId": "fa56cffde745d3f152f95cbacd936c0b",
+                "operationId": "3c8810913ff5c1f35b095ed60be0fa89",
                 "parameters": [
                     {
                         "name": "id",
@@ -2666,19 +3676,19 @@
                         "description": "Usuário não encontrado"
                     },
                     "500": {
-                        "description": "Erro interno ao remover usuário"
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
             }
         },
-        "/api/users/{id}/assign": {
+        "/api/users/{id_user}/assign": {
             "post": {
                 "tags": [
                     "Usuários"
                 ],
                 "summary": "Atribui papéis e permissões ao usuário",
-                "description": "Atribui um ou mais papéis (roles) e permissões ao usuário informado.",
-                "operationId": "72a4e7e5bbbf3ba38c63668593d55527",
+                "description": "Atribui um ou mais papéis (roles) e permissões ao usuário informado. Agora aceita um array de objetos, cada um com um role e suas permissions.",
+                "operationId": "96d25bea319177c531a006632b33b841",
                 "parameters": [
                     {
                         "name": "id",
@@ -2692,27 +3702,49 @@
                     }
                 ],
                 "requestBody": {
-                    "required": false,
+                    "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
                                 "properties": {
-                                    "roles": {
+                                    "level": {
                                         "type": "array",
                                         "items": {
-                                            "type": "string"
+                                            "properties": {
+                                                "role": {
+                                                    "type": "string",
+                                                    "example": "manager"
+                                                },
+                                                "permissions": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    },
+                                                    "example": [
+                                                        "C",
+                                                        "R"
+                                                    ]
+                                                }
+                                            },
+                                            "type": "object"
                                         },
                                         "example": [
-                                            "admin"
-                                        ]
-                                    },
-                                    "permissions": {
-                                        "type": "array",
-                                        "items": {
-                                            "type": "string"
-                                        },
-                                        "example": [
-                                            "read users"
+                                            {
+                                                "role": "manager",
+                                                "permissions": [
+                                                    "C",
+                                                    "R"
+                                                ]
+                                            },
+                                            {
+                                                "role": "midia",
+                                                "permissions": [
+                                                    "C",
+                                                    "R",
+                                                    "U",
+                                                    "D"
+                                                ]
+                                            }
                                         ]
                                     }
                                 },
@@ -2737,21 +3769,26 @@
                                             "example": "Papéis e permissões atualizados com sucesso."
                                         },
                                         "data": {
-                                            "properties": {
-                                                "roles": {
-                                                    "type": "array",
-                                                    "items": {
-                                                        "type": "object"
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "role": {
+                                                        "type": "string",
+                                                        "example": "manager"
+                                                    },
+                                                    "permissions": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "string"
+                                                        },
+                                                        "example": [
+                                                            "C",
+                                                            "R"
+                                                        ]
                                                     }
                                                 },
-                                                "permissions": {
-                                                    "type": "array",
-                                                    "items": {
-                                                        "type": "object"
-                                                    }
-                                                }
-                                            },
-                                            "type": "object"
+                                                "type": "object"
+                                            }
                                         }
                                     },
                                     "type": "object"
@@ -2772,22 +3809,71 @@
             }
         }
     },
+    "components": {
+        "schemas": {
+            "Role": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "admin"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Administrador do sistema"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-07-04T14:21:51.000000Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-07-04T14:21:51.000000Z"
+                    },
+                    "deleted_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": null,
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
     "tags": [
         {
-            "name": "Action",
+            "name": "Ações",
             "description": "Gerenciamento de ações do sistema"
         },
         {
-            "name": "Empresas",
+            "name": "Ativos",
+            "description": "Gerenciamento de ativos de cada loja"
+        },
+        {
+            "name": "Redes",
             "description": "Gerenciamento de empresas (redes) e seus contatos."
         },
         {
-            "name": "SystemLog",
+            "name": "Logs do sistema",
             "description": "Logs do sistema"
+        },
+        {
+            "name": "Tipos de Ativo",
+            "description": "Tipos de Ativo"
         },
         {
             "name": "Autenticação",
             "description": "Autenticação"
+        },
+        {
+            "name": "Papéis",
+            "description": "Papéis"
         },
         {
             "name": "Setores",

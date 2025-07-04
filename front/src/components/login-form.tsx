@@ -9,14 +9,14 @@ import { PasswordInput } from "@/components/ui/password-input"
 import { FormMessage, FormError } from "@/components/ui/form-message"
 import { useLoginForm } from "@/hooks/use-login-form"
 import Image from "next/image"
-import { Loader2 } from "lucide-react"
+import { Loader2, Check } from "lucide-react"
 
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-  const { form, onSubmit, isPending, message } = useLoginForm();
+  const { form, onSubmit, isPending, isSuccess, message } = useLoginForm();
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -71,6 +71,11 @@ export function LoginForm({
                 {isPending ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Verificando...
+                  </>
+                ) : isSuccess ? (
+                  <>
+                    <Check className="mr-2 h-4 w-4" />
                     Entrando...
                   </>
                 ) : (
