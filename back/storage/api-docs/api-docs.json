@@ -52,48 +52,6 @@
                 }
             }
         },
-        "/api/action": {
-            "post": {
-                "tags": [
-                    "Ações"
-                ],
-                "summary": "Criar ação",
-                "description": "Cria uma nova ação.",
-                "operationId": "7c1409027af1e3b942435b2e66a9cbaf",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "name"
-                                ],
-                                "properties": {
-                                    "name": {
-                                        "type": "string"
-                                    },
-                                    "description": {
-                                        "type": "string"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Criado"
-                    },
-                    "400": {
-                        "description": "Erro de validação"
-                    },
-                    "500": {
-                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
-                    }
-                }
-            }
-        },
         "/api/actions/{id_action}": {
             "get": {
                 "tags": [
@@ -116,90 +74,6 @@
                 "responses": {
                     "200": {
                         "description": "Sucesso"
-                    },
-                    "404": {
-                        "description": "Não encontrado"
-                    },
-                    "500": {
-                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
-                    }
-                }
-            },
-            "put": {
-                "tags": [
-                    "Ações"
-                ],
-                "summary": "Atualizar ação",
-                "description": "Atualiza uma ação existente.",
-                "operationId": "87d1513604beac66ed6e6b1b65809497",
-                "parameters": [
-                    {
-                        "name": "id_action",
-                        "in": "path",
-                        "description": "ID da ação",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "name"
-                                ],
-                                "properties": {
-                                    "name": {
-                                        "type": "string"
-                                    },
-                                    "description": {
-                                        "type": "string"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Ação atualizada com sucesso"
-                    },
-                    "400": {
-                        "description": "Erro de validação"
-                    },
-                    "404": {
-                        "description": "Não encontrado"
-                    },
-                    "500": {
-                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
-                    }
-                }
-            },
-            "delete": {
-                "tags": [
-                    "Ações"
-                ],
-                "summary": "Remover ação",
-                "description": "Remove uma ação existente.",
-                "operationId": "0c33a55388c27d3816de4e2040683dfc",
-                "parameters": [
-                    {
-                        "name": "id_action",
-                        "in": "path",
-                        "description": "ID da ação",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Ação removida com sucesso"
                     },
                     "404": {
                         "description": "Não encontrado"
@@ -3247,7 +3121,7 @@
                     "Usuários"
                 ],
                 "summary": "Lista usuários paginados",
-                "description": "Retorna uma lista paginada de usuários. Parâmetros de filtro e paginação podem ser usados.",
+                "description": "Retorna uma lista paginada de usuários. Parâmetros de filtro e paginação podem ser usados. O parâmetro 'active' permite filtrar usuários ativos, deletados ou ambos.",
                 "operationId": "c457726701591d1183b53aa71fc13441",
                 "parameters": [
                     {
@@ -3268,6 +3142,16 @@
                         "schema": {
                             "type": "integer",
                             "example": 10
+                        }
+                    },
+                    {
+                        "name": "active",
+                        "in": "query",
+                        "description": "Filtra usuários ativos (true), deletados (false) ou ambos (não informado)",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean",
+                            "example": true
                         }
                     }
                 ],
@@ -3295,57 +3179,7 @@
                                                 "data": {
                                                     "type": "array",
                                                     "items": {
-                                                        "properties": {
-                                                            "id": {
-                                                                "type": "integer",
-                                                                "example": 1
-                                                            },
-                                                            "name": {
-                                                                "type": "string",
-                                                                "example": "João da Silva"
-                                                            },
-                                                            "email": {
-                                                                "type": "string",
-                                                                "example": "joao@email.com"
-                                                            },
-                                                            "level": {
-                                                                "type": "array",
-                                                                "items": {
-                                                                    "properties": {
-                                                                        "id": {
-                                                                            "type": "integer",
-                                                                            "example": 1
-                                                                        },
-                                                                        "name": {
-                                                                            "type": "string",
-                                                                            "example": "Admin"
-                                                                        },
-                                                                        "permission": {
-                                                                            "type": "string",
-                                                                            "example": "C,R,U,D"
-                                                                        }
-                                                                    },
-                                                                    "type": "object"
-                                                                }
-                                                            },
-                                                            "created_at": {
-                                                                "type": "string",
-                                                                "format": "date-time",
-                                                                "example": "2025-07-01T10:00:00Z"
-                                                            },
-                                                            "updated_at": {
-                                                                "type": "string",
-                                                                "format": "date-time",
-                                                                "example": "2025-07-01T10:00:00Z"
-                                                            },
-                                                            "deleted_at": {
-                                                                "type": "string",
-                                                                "format": "date-time",
-                                                                "example": null,
-                                                                "nullable": true
-                                                            }
-                                                        },
-                                                        "type": "object"
+                                                        "$ref": "#/components/schemas/UserWithLevel"
                                                     }
                                                 },
                                                 "total": {
@@ -3422,21 +3256,7 @@
                                             "example": "Usuário criado com sucesso."
                                         },
                                         "data": {
-                                            "properties": {
-                                                "id": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
-                                                "name": {
-                                                    "type": "string",
-                                                    "example": "João da Silva"
-                                                },
-                                                "email": {
-                                                    "type": "string",
-                                                    "example": "joao@email.com"
-                                                }
-                                            },
-                                            "type": "object"
+                                            "$ref": "#/components/schemas/UserWithLevel"
                                         }
                                     },
                                     "type": "object"
@@ -3459,7 +3279,7 @@
                     "Usuários"
                 ],
                 "summary": "Exibe um usuário",
-                "description": "Retorna os dados de um usuário pelo ID.",
+                "description": "Retorna os dados de um usuário pelo ID. O parâmetro 'active' permite buscar um usuário ativo, deletado ou ambos.",
                 "operationId": "dd259f1f0755a25c8b3bc8509c0384f1",
                 "parameters": [
                     {
@@ -3470,6 +3290,16 @@
                         "schema": {
                             "type": "integer",
                             "example": 1
+                        }
+                    },
+                    {
+                        "name": "active",
+                        "in": "query",
+                        "description": "Filtra usuário ativo (true), deletado (false) ou ambos (não informado)",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean",
+                            "example": true
                         }
                     }
                 ],
@@ -3489,37 +3319,7 @@
                                             "example": "Usuário encontrado."
                                         },
                                         "data": {
-                                            "properties": {
-                                                "id": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
-                                                "name": {
-                                                    "type": "string",
-                                                    "example": "João da Silva"
-                                                },
-                                                "email": {
-                                                    "type": "string",
-                                                    "example": "joao@email.com"
-                                                },
-                                                "created_at": {
-                                                    "type": "string",
-                                                    "format": "date-time",
-                                                    "example": "2025-07-01T10:00:00Z"
-                                                },
-                                                "updated_at": {
-                                                    "type": "string",
-                                                    "format": "date-time",
-                                                    "example": "2025-07-01T10:00:00Z"
-                                                },
-                                                "deleted_at": {
-                                                    "type": "string",
-                                                    "format": "date-time",
-                                                    "example": null,
-                                                    "nullable": true
-                                                }
-                                            },
-                                            "type": "object"
+                                            "$ref": "#/components/schemas/UserWithLevel"
                                         }
                                     },
                                     "type": "object"
@@ -3599,21 +3399,7 @@
                                             "example": "Usuário atualizado com sucesso."
                                         },
                                         "data": {
-                                            "properties": {
-                                                "id": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
-                                                "name": {
-                                                    "type": "string",
-                                                    "example": "João da Silva"
-                                                },
-                                                "email": {
-                                                    "type": "string",
-                                                    "example": "joao@email.com"
-                                                }
-                                            },
-                                            "type": "object"
+                                            "$ref": "#/components/schemas/UserWithLevel"
                                         }
                                     },
                                     "type": "object"
@@ -3631,14 +3417,16 @@
                         "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
-            },
+            }
+        },
+        "/api/users/{id}": {
             "delete": {
                 "tags": [
                     "Usuários"
                 ],
                 "summary": "Remove um usuário",
                 "description": "Remove um usuário pelo ID.",
-                "operationId": "3c8810913ff5c1f35b095ed60be0fa89",
+                "operationId": "fa56cffde745d3f152f95cbacd936c0b",
                 "parameters": [
                     {
                         "name": "id",
@@ -3807,6 +3595,207 @@
                     }
                 }
             }
+        },
+        "/api/users/update-password": {
+            "post": {
+                "tags": [
+                    "Usuários"
+                ],
+                "summary": "Usuário altera a própria senha",
+                "operationId": "9ea6fc863476a63a469e42c80cf0cca2",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "password",
+                                    "password_confirmation"
+                                ],
+                                "properties": {
+                                    "password": {
+                                        "type": "string",
+                                        "example": "novaSenha123"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "example": "novaSenha123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Senha alterada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Senha alterada com sucesso."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Erro de validação"
+                    },
+                    "500": {
+                        "description": "Erro interno ao alterar senha"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/users/{id}/update-password-admin": {
+            "post": {
+                "tags": [
+                    "Usuários"
+                ],
+                "summary": "Admin altera a senha de um usuário",
+                "operationId": "e0244c35c0c1a545b6f45e2065fe81ac",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "password",
+                                    "password_confirmation"
+                                ],
+                                "properties": {
+                                    "password": {
+                                        "type": "string",
+                                        "example": "novaSenha123"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "example": "novaSenha123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Senha alterada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Senha alterada com sucesso."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Sem permissão"
+                    },
+                    "404": {
+                        "description": "Usuário não encontrado"
+                    },
+                    "422": {
+                        "description": "Erro de validação"
+                    },
+                    "500": {
+                        "description": "Erro interno ao alterar senha"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/users/{id}/restore": {
+            "post": {
+                "tags": [
+                    "Usuários"
+                ],
+                "summary": "Restaura um usuário excluído (soft delete)",
+                "description": "Restaura um usuário previamente excluído, tornando-o ativo novamente.",
+                "operationId": "a3087db765f18596ec09f9c3abb4fdc5",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do usuário",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Usuário restaurado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Usuário restaurado com sucesso."
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/UserWithLevel"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Usuário não encontrado ou não está excluído"
+                    },
+                    "500": {
+                        "description": "Erro interno ao restaurar usuário"
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -3840,6 +3829,62 @@
                         "format": "date-time",
                         "example": null,
                         "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "UserWithLevel": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "João da Silva"
+                    },
+                    "email": {
+                        "type": "string",
+                        "example": "joao@email.com"
+                    },
+                    "level": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/RoleWithPermissions"
+                        }
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-07-01T10:00:00Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-07-01T10:00:00Z"
+                    },
+                    "deleted_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": null,
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "RoleWithPermissions": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Admin"
+                    },
+                    "permission": {
+                        "type": "string",
+                        "example": "C,R,U,D"
                     }
                 },
                 "type": "object"

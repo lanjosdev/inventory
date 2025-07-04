@@ -71,7 +71,7 @@ class User extends Authenticatable
     {
         return [
             'name' => 'required|max:255|min:4',
-            'email' => 'required|email|max:255|unique:users,email',
+            'email' => 'required|email|max:255',
             'password' => 'required|min:8|max:30',
         ];
     }
@@ -88,6 +88,39 @@ class User extends Authenticatable
             'password.required' => 'A senha é obrigatória.',
             'password.min' => 'A senha deve ter no mínimo 8 caracteres.',
             'password.max' => 'A senha deve ter no máximo 30 caracteres.'
+        ];
+    }
+
+    // Regras para alteração de senha pelo próprio usuário
+    public static function rulesUpdatePassword()
+    {
+        return [
+            'password' => 'required|min:8|max:30|confirmed',
+        ];
+    }
+    public static function feedbackUpdatePassword()
+    {
+        return [
+            'password.required' => 'A nova senha é obrigatória.',
+            'password.min' => 'A nova senha deve ter no mínimo 8 caracteres.',
+            'password.max' => 'A nova senha deve ter no máximo 30 caracteres.',
+            'password.confirmed' => 'A confirmação da senha não confere.'
+        ];
+    }
+    // Regras para alteração de senha por admin
+    public static function rulesUpdatePasswordAdmin()
+    {
+        return [
+            'password' => 'required|min:8|max:30|confirmed',
+        ];
+    }
+    public static function feedbackUpdatePasswordAdmin()
+    {
+        return [
+            'password.required' => 'A nova senha é obrigatória.',
+            'password.min' => 'A nova senha deve ter no mínimo 8 caracteres.',
+            'password.max' => 'A nova senha deve ter no máximo 30 caracteres.',
+            'password.confirmed' => 'A confirmação da senha não confere.'
         ];
     }
 

@@ -18,6 +18,21 @@ class LoginControllerTest extends TestCase
             'password' => Hash::make('senhaSegura123'),
         ]);
 
+        // Cria um role e associa ao usuário
+        $role = \App\Models\Role::create([
+            'name' => 'Admin',
+            'description' => 'Administrador do sistema',
+        ]);
+        $user->roles()->attach($role->id);
+        // Cria permissões e associa ao role
+        $permissions = collect(['C', 'R', 'U', 'D'])->map(function($perm) {
+            return \App\Models\Permission::create([
+                'name' => $perm,
+                'description' => 'Permissão ' . $perm,
+            ]);
+        });
+        $role->permissions()->sync($permissions->pluck('id')->toArray());
+
         $payload = [
             'email' => 'login@email.com',
             'password' => 'senhaSegura123',
@@ -35,10 +50,19 @@ class LoginControllerTest extends TestCase
                     'user' => [
                         'id',
                         'name',
-                        'email'
-                    ],
-                    'level'
+                        'email',
+                        'level' => [
+                            ['id', 'name', 'permission']
+                        ],
+                        'created_at',
+                        'updated_at',
+                        'deleted_at',
+                    ]
                 ]
+            ])
+            ->assertJsonFragment([
+                'name' => 'Admin',
+                'permission' => 'C,R,U,D'
             ]);
     }
 

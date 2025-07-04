@@ -19,22 +19,11 @@ class UserController extends Controller
      * @OA\Get(
      *     path="/api/users",
      *     summary="Lista usuários paginados",
-     *     description="Retorna uma lista paginada de usuários. Parâmetros de filtro e paginação podem ser usados.",
+     *     description="Retorna uma lista paginada de usuários. Parâmetros de filtro e paginação podem ser usados. O parâmetro 'active' permite filtrar usuários ativos, deletados ou ambos.",
      *     tags={"Usuários"},
-     *     @OA\Parameter(
-     *         name="page",
-     *         in="query",
-     *         description="Número da página",
-     *         required=false,
-     *         @OA\Schema(type="integer", example=1)
-     *     ),
-     *     @OA\Parameter(
-     *         name="per_page",
-     *         in="query",
-     *         description="Itens por página (padrão: 10)",
-     *         required=false,
-     *         @OA\Schema(type="integer", example=10)
-     *     ),
+     *     @OA\Parameter(name="page", in="query", description="Número da página", required=false, @OA\Schema(type="integer", example=1)),
+     *     @OA\Parameter(name="per_page", in="query", description="Itens por página (padrão: 10)", required=false, @OA\Schema(type="integer", example=10)),
+     *     @OA\Parameter(name="active", in="query", description="Filtra usuários ativos (true), deletados (false) ou ambos (não informado)", required=false, @OA\Schema(type="boolean", example=true)),
      *     @OA\Response(
      *         response=200,
      *         description="Lista de usuários retornada com sucesso",
@@ -44,37 +33,48 @@ class UserController extends Controller
      *             @OA\Property(property="data", type="object",
      *                 @OA\Property(property="current_page", type="integer", example=1),
      *                 @OA\Property(property="data", type="array",
-     *                     @OA\Items(
-     *                         @OA\Property(property="id", type="integer", example=1),
-     *                         @OA\Property(property="name", type="string", example="João da Silva"),
-     *                         @OA\Property(property="email", type="string", example="joao@email.com"),
-     *                         @OA\Property(property="level", type="array",
-     *                             @OA\Items(
-     *                                 @OA\Property(property="id", type="integer", example=1),
-     *                                 @OA\Property(property="name", type="string", example="Admin"),
-     *                                 @OA\Property(property="permission", type="string", example="C,R,U,D")
-     *                             )
-     *                         ),
-     *                         @OA\Property(property="created_at", type="string", format="date-time", example="2025-07-01T10:00:00Z"),
-     *                         @OA\Property(property="updated_at", type="string", format="date-time", example="2025-07-01T10:00:00Z"),
-     *                         @OA\Property(property="deleted_at", type="string", format="date-time", nullable=true, example=null)
-     *                     )
+     *                     @OA\Items(ref="#/components/schemas/UserWithLevel")
      *                 ),
      *                 @OA\Property(property="total", type="integer", example=20),
      *                 @OA\Property(property="last_page", type="integer", example=2)
      *             )
      *         )
      *     ),
-     *     @OA\Response(
-     *         response=500,
-     *         description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
-     *     )
+     *     @OA\Response(response=500, description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.")
+     * )
+     *
+     * @OA\Schema(
+     *   schema="UserWithLevel",
+     *   @OA\Property(property="id", type="integer", example=1),
+     *   @OA\Property(property="name", type="string", example="João da Silva"),
+     *   @OA\Property(property="email", type="string", example="joao@email.com"),
+     *   @OA\Property(property="level", type="array",
+     *     @OA\Items(ref="#/components/schemas/RoleWithPermissions")
+     *   ),
+     *   @OA\Property(property="created_at", type="string", format="date-time", example="2025-07-01T10:00:00Z"),
+     *   @OA\Property(property="updated_at", type="string", format="date-time", example="2025-07-01T10:00:00Z"),
+     *   @OA\Property(property="deleted_at", type="string", format="date-time", nullable=true, example=null)
+     * )
+     *
+     * @OA\Schema(
+     *   schema="RoleWithPermissions",
+     *   @OA\Property(property="id", type="integer", example=1),
+     *   @OA\Property(property="name", type="string", example="Admin"),
+     *   @OA\Property(property="permission", type="string", example="C,R,U,D")
      * )
      */
     public function index(Request $request)
     {
         try {
-            $users = User::paginate(10)->appends(request()->all());
+            $active = $request->query('active', null);
+            if ($active === 'true' || $active === true) {
+                $query = User::query();
+            } elseif ($active === 'false' || $active === false) {
+                $query = User::onlyTrashed();
+            } else {
+                $query = User::withTrashed();
+            }
+            $users = $query->paginate(10)->appends($request->all());
             $users->getCollection()->transform(function ($user) {
                 return [
                     'id' => $user->id,
@@ -106,45 +106,34 @@ class UserController extends Controller
      * @OA\Get(
      *     path="/api/users/{id_user}",
      *     summary="Exibe um usuário",
-     *     description="Retorna os dados de um usuário pelo ID.",
+     *     description="Retorna os dados de um usuário pelo ID. O parâmetro 'active' permite buscar um usuário ativo, deletado ou ambos.",
      *     tags={"Usuários"},
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         description="ID do usuário",
-     *         required=true,
-     *         @OA\Schema(type="integer", example=1)
-     *     ),
+     *     @OA\Parameter(name="id", in="path", description="ID do usuário", required=true, @OA\Schema(type="integer", example=1)),
+     *     @OA\Parameter(name="active", in="query", description="Filtra usuário ativo (true), deletado (false) ou ambos (não informado)", required=false, @OA\Schema(type="boolean", example=true)),
      *     @OA\Response(
      *         response=200,
      *         description="Usuário encontrado com sucesso",
      *         @OA\JsonContent(
      *             @OA\Property(property="success", type="boolean", example=true),
      *             @OA\Property(property="message", type="string", example="Usuário encontrado."),
-     *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="id", type="integer", example=1),
-     *                 @OA\Property(property="name", type="string", example="João da Silva"),
-     *                 @OA\Property(property="email", type="string", example="joao@email.com"),
-     *                 @OA\Property(property="created_at", type="string", format="date-time", example="2025-07-01T10:00:00Z"),
-     *                 @OA\Property(property="updated_at", type="string", format="date-time", example="2025-07-01T10:00:00Z"),
-     *                 @OA\Property(property="deleted_at", type="string", format="date-time", nullable=true, example=null)
-     *             )
+     *             @OA\Property(property="data", ref="#/components/schemas/UserWithLevel")
      *         )
      *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Usuário não encontrado"
-     *     ),
-     *     @OA\Response(
-     *         response=500,
-     *         description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
-     *     )
+     *     @OA\Response(response=404, description="Usuário não encontrado"),
+     *     @OA\Response(response=500, description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.")
      * )
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
         try {
-            $user = User::find($id);
+            $active = $request->query('active', null);
+            if ($active === 'true' || $active === true) {
+                $user = User::find($id);
+            } elseif ($active === 'false' || $active === false) {
+                $user = User::onlyTrashed()->find($id);
+            } else {
+                $user = User::withTrashed()->find($id);
+            }
             if (!$user) {
                 return ResponseHelper::error('Usuário não encontrado.', 404);
             }
@@ -194,21 +183,11 @@ class UserController extends Controller
      *         @OA\JsonContent(
      *             @OA\Property(property="success", type="boolean", example=true),
      *             @OA\Property(property="message", type="string", example="Usuário criado com sucesso."),
-     *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="id", type="integer", example=1),
-     *                 @OA\Property(property="name", type="string", example="João da Silva"),
-     *                 @OA\Property(property="email", type="string", example="joao@email.com")
-     *             )
+     *             @OA\Property(property="data", ref="#/components/schemas/UserWithLevel")
      *         )
      *     ),
-     *     @OA\Response(
-     *         response=422,
-     *         description="Erro de validação"
-     *     ),
-     *     @OA\Response(
-     *         response=500,
-     *         description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
-     *     )
+     *     @OA\Response(response=422, description="Erro de validação"),
+     *     @OA\Response(response=500, description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.")
      * )
      */
     public function store(Request $request)
@@ -220,7 +199,7 @@ class UserController extends Controller
             // Log de auditoria - criação
             SystemLog::create([
                 'fk_user' => $request->user()->id ?? null,
-                'fk_action' => ActionModel::where('name', 'criação')->value('id'),
+                'fk_action' => ActionModel::where('name', 'criou')->value('id'),
                 'name_table' => 'users',
                 'record_id' => $user->id,
                 'description' => 'Usuário criado: ' . json_encode($user->toArray()),
@@ -247,13 +226,7 @@ class UserController extends Controller
      *     summary="Atualiza um usuário",
      *     description="Atualiza os dados de um usuário existente.",
      *     tags={"Usuários"},
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         description="ID do usuário",
-     *         required=true,
-     *         @OA\Schema(type="integer", example=1)
-     *     ),
+     *     @OA\Parameter(name="id", in="path", description="ID do usuário", required=true, @OA\Schema(type="integer", example=1)),
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -269,25 +242,12 @@ class UserController extends Controller
      *         @OA\JsonContent(
      *             @OA\Property(property="success", type="boolean", example=true),
      *             @OA\Property(property="message", type="string", example="Usuário atualizado com sucesso."),
-     *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="id", type="integer", example=1),
-     *                 @OA\Property(property="name", type="string", example="João da Silva"),
-     *                 @OA\Property(property="email", type="string", example="joao@email.com")
-     *             )
+     *             @OA\Property(property="data", ref="#/components/schemas/UserWithLevel")
      *         )
      *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Usuário não encontrado"
-     *     ),
-     *     @OA\Response(
-     *         response=422,
-     *         description="Erro de validação"
-     *     ),
-     *     @OA\Response(
-     *         response=500,
-     *         description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
-     *     )
+     *     @OA\Response(response=404, description="Usuário não encontrado"),
+     *     @OA\Response(response=422, description="Erro de validação"),
+     *     @OA\Response(response=500, description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.")
      * )
      */
     public function update(Request $request, $id)
@@ -299,12 +259,22 @@ class UserController extends Controller
                 return ResponseHelper::error('Usuário não encontrado.', 404);
             }
             $validated = $request->validate(User::rules(), User::feedback());
+
+            // Lógica de verificação de e-mail duplicado
+            if ($user->email !== $validated['email']) {
+                $emailExists = User::where('email', $validated['email'])->where('id', '!=', $id)->exists();
+                if ($emailExists) {
+                    return ResponseHelper::error([
+                        'email' => ['Este e-mail já está cadastrado.']
+                    ], 422);
+                }
+            }
             $userOriginal = $user->getOriginal(); // Obtém os dados originais do usuário antes da atualização
             $user->update($validated);
             // Log de auditoria - atualização
             SystemLog::create([
                 'fk_user' => $request->user()->id ?? null,
-                'fk_action' => ActionModel::where('name', 'atualização')->value('id'),
+                'fk_action' => ActionModel::where('name', 'editou')->value('id'),
                 'name_table' => 'users',
                 'record_id' => $user->id,
                 'description' => 'Usuário atualizado: de ' . json_encode($userOriginal) . ' para ' . json_encode($user->toArray()),
@@ -327,7 +297,7 @@ class UserController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/api/users/{id_user}",
+     *     path="/api/users/{id}",
      *     summary="Remove um usuário",
      *     description="Remove um usuário pelo ID.",
      *     tags={"Usuários"},
@@ -368,7 +338,7 @@ class UserController extends Controller
             // Log de auditoria - remoção
             SystemLog::create([
                 'fk_user' => $request->user()->id ?? null,
-                'fk_action' => ActionModel::where('name', 'remoção')->value('id'),
+                'fk_action' => ActionModel::where('name', 'removeu')->value('id'),
                 'name_table' => 'users',
                 'record_id' => $user->id,
                 'description' => 'Usuário removido: ' . json_encode($user->toArray()),
@@ -392,13 +362,7 @@ class UserController extends Controller
      *     summary="Atribui papéis e permissões ao usuário",
      *     description="Atribui um ou mais papéis (roles) e permissões ao usuário informado. Agora aceita um array de objetos, cada um com um role e suas permissions.",
      *     tags={"Usuários"},
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         description="ID do usuário",
-     *         required=true,
-     *         @OA\Schema(type="integer", example=1)
-     *     ),
+     *     @OA\Parameter(name="id", in="path", description="ID do usuário", required=true, @OA\Schema(type="integer", example=1)),
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -432,18 +396,9 @@ class UserController extends Controller
      *             )
      *         )
      *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Usuário não encontrado"
-     *     ),
-     *     @OA\Response(
-     *         response=422,
-     *         description="Erro de validação"
-     *     ),
-     *     @OA\Response(
-     *         response=500,
-     *         description="Erro interno ao atribuir papéis/permissões"
-     *     )
+     *     @OA\Response(response=404, description="Usuário não encontrado"),
+     *     @OA\Response(response=422, description="Erro de validação"),
+     *     @OA\Response(response=500, description="Erro interno ao atribuir papéis/permissões")
      * )
      */
     public function assignRolesPermissions(Request $request, $id)
@@ -502,7 +457,7 @@ class UserController extends Controller
             ]);
             DB::commit();
             // Retorna os roles e permissions atuais do usuário
-            $response = $user->roles->map(function($role) {
+            $response = $user->roles->map(function ($role) {
                 return [
                     'role' => $role->name,
                     'permissions' => $role->permissions->pluck('name')->values(),
@@ -520,6 +475,218 @@ class UserController extends Controller
             DB::rollBack();
             Log::error('Error: ' . $e->getMessage());
             return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
+        }
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/users/update-password",
+     *     summary="Usuário altera a própria senha",
+     *     tags={"Usuários"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"password", "password_confirmation"},
+     *             @OA\Property(property="password", type="string", example="novaSenha123"),
+     *             @OA\Property(property="password_confirmation", type="string", example="novaSenha123")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Senha alterada com sucesso",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Senha alterada com sucesso.")
+     *         )
+     *     ),
+     *     @OA\Response(response=422, description="Erro de validação"),
+     *     @OA\Response(response=500, description="Erro interno ao alterar senha")
+     * )
+     */
+    public function updatePassword(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            $user = $request->user();
+            $oldPassword = $user->password;
+
+            $validated = $request->validate(User::rulesUpdatePassword(), User::feedbackUpdatePassword());
+            if (\Illuminate\Support\Facades\Hash::check($request->password, $oldPassword)) {
+                return ResponseHelper::error('Senha já utilizada anteriormente.', 422);
+            }
+
+            if ($validated) {
+                $user->password = \Illuminate\Support\Facades\Hash::make($request->password);
+                $user->save();
+            }
+
+            // Log de auditoria
+            SystemLog::create([
+                'fk_user' => $user->id,
+                'fk_action' => ActionModel::where('name', 'editou')->value('id'),
+                'name_table' => 'users',
+                'record_id' => $user->id,
+                'description' => 'Usuário atualizou a própria senha.'
+            ]);
+            DB::commit();
+            return ResponseHelper::success('Senha alterada com sucesso.');
+        } catch (ValidationException $ve) {
+            DB::rollBack();
+            return ResponseHelper::error($ve->errors(), 422);
+        } catch (QueryException $qe) {
+            DB::rollBack();
+            Log::error('Error DB: ' . $qe->getMessage());
+            return ResponseHelper::error('Erro interno ao alterar senha.', 500);
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::error('Error: ' . $e->getMessage());
+            return ResponseHelper::error('Erro interno ao alterar senha.', 500);
+        }
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/users/{id}/update-password-admin",
+     *     summary="Admin altera a senha de um usuário",
+     *     tags={"Usuários"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"password", "password_confirmation"},
+     *             @OA\Property(property="password", type="string", example="novaSenha123"),
+     *             @OA\Property(property="password_confirmation", type="string", example="novaSenha123")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Senha alterada com sucesso",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Senha alterada com sucesso.")
+     *         )
+     *     ),
+     *     @OA\Response(response=403, description="Sem permissão"),
+     *     @OA\Response(response=404, description="Usuário não encontrado"),
+     *     @OA\Response(response=422, description="Erro de validação"),
+     *     @OA\Response(response=500, description="Erro interno ao alterar senha")
+     * )
+     */
+    public function updatePasswordAdmin(Request $request, $id)
+    {
+        DB::beginTransaction();
+        try {
+            $admin = $request->user();
+            // Exemplo: checagem de permissão admin (ajuste conforme sua lógica de roles)
+            if (!$admin->roles()->where('name', 'admin')->exists()) {
+                return ResponseHelper::error('Você não tem permissão de acesso para seguir adiante.', 403);
+            }
+
+            $user = User::find($id);
+            if (!$user) {
+                return ResponseHelper::error('Nenhum usuário encontrado.', 404);
+            }
+            $validated = $request->validate(User::rulesUpdatePasswordAdmin(), User::feedbackUpdatePasswordAdmin());
+
+            if ($validated) {
+                $user->password = \Illuminate\Support\Facades\Hash::make($request->password);
+                $user->save();
+            }
+            // Log de auditoria
+            SystemLog::create([
+                'fk_user' => $admin->id,
+                'fk_action' => ActionModel::where('name', 'editou')->value('id'),
+                'name_table' => 'users',
+                'record_id' => $user->id,
+                'description' => 'Admin atualizou a senha do usuário.'
+            ]);
+            DB::commit();
+            return ResponseHelper::success('Senha alterada com sucesso.');
+        } catch (ValidationException $ve) {
+            DB::rollBack();
+            return ResponseHelper::error($ve->errors(), 422);
+        } catch (QueryException $qe) {
+            DB::rollBack();
+            Log::error('Error DB: ' . $qe->getMessage());
+            return ResponseHelper::error('Erro interno ao alterar senha.', 500);
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::error('Error: ' . $e->getMessage());
+            return ResponseHelper::error('Erro interno ao alterar senha.', 500);
+        }
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/users/{id}/restore",
+     *     summary="Restaura um usuário excluído (soft delete)",
+     *     description="Restaura um usuário previamente excluído, tornando-o ativo novamente.",
+     *     tags={"Usuários"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID do usuário",
+     *         required=true,
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Usuário restaurado com sucesso",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Usuário restaurado com sucesso."),
+     *             @OA\Property(property="data", ref="#/components/schemas/UserWithLevel")
+     *         )
+     *     ),
+     *     @OA\Response(response=404, description="Usuário não encontrado ou não está excluído"),
+     *     @OA\Response(response=500, description="Erro interno ao restaurar usuário")
+     * )
+     */
+    public function restore(Request $request, $id)
+    {
+        DB::beginTransaction();
+        try {
+            $user = User::withTrashed()->find($id);
+            if (!$user || !$user->trashed()) {
+                return ResponseHelper::error('Usuário não encontrado ou não está excluído.', 404);
+            }
+            $user->restore();
+            // Log de auditoria - restauração
+            SystemLog::create([
+                'fk_user' => $request->user()->id ?? null,
+                'fk_action' => ActionModel::where('name', 'restaurou')->value('id'),
+                'name_table' => 'users',
+                'record_id' => $user->id,
+                'description' => 'Usuário restaurado: ' . json_encode($user->toArray()),
+            ]);
+            DB::commit();
+            // Monta resposta padrão
+            $userData = [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'level' => $user->roles->map(function ($role) {
+                    return [
+                        'id' => $role->id,
+                        'name' => $role->name,
+                        'permission' => $role->permissions()->pluck('name')->implode(',')
+                    ];
+                }),
+                'created_at' => $user->created_at ?? null,
+                'updated_at' => $user->updated_at ?? null,
+                'deleted_at' => $user->deleted_at ?? null,
+            ];
+            return ResponseHelper::success('Usuário restaurado com sucesso.', $userData);
+        } catch (QueryException $qe) {
+            DB::rollBack();
+            Log::error('Error DB: ' . $qe->getMessage());
+            return ResponseHelper::error('Erro interno ao restaurar usuário.', 500);
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::error('Error: ' . $e->getMessage());
+            return ResponseHelper::error('Erro interno ao restaurar usuário.', 500);
         }
     }
 }

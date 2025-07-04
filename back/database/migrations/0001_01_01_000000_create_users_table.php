@@ -33,6 +33,15 @@ return new class extends Migration
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+        
+        DB::table('users')->insert([
+            'name' => 'Lucas Anjos',
+            'email' => 'lucas@lucas.com',
+            'password' => Hash::make('123456789'),
+            'email_verified_at' => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();

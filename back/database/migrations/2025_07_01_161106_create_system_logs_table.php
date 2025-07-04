@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('fk_action')->constrained('actions')->onUpdate('cascade');
             $table->string('name_table', 255);
             $table->integer('record_id');
-            $table->string('description', 255);
+            $table->text('description', 10000);
             $table->timestamps();
             $table->softDeletes();
         });
