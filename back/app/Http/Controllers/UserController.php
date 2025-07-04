@@ -33,7 +33,21 @@ class UserController extends Controller
      *             @OA\Property(property="data", type="object",
      *                 @OA\Property(property="current_page", type="integer", example=1),
      *                 @OA\Property(property="data", type="array",
-     *                     @OA\Items(ref="#/components/schemas/UserWithLevel")
+     *                     @OA\Items(
+     *                         @OA\Property(property="id", type="integer", example=1),
+     *                         @OA\Property(property="name", type="string", example="João da Silva"),
+     *                         @OA\Property(property="email", type="string", example="joao@email.com"),
+     *                         @OA\Property(property="level", type="array",
+     *                             @OA\Items(
+     *                                 @OA\Property(property="id", type="integer", example=1),
+     *                                 @OA\Property(property="name", type="string", example="Admin"),
+     *                                 @OA\Property(property="permission", type="string", example="C,R,U,D")
+     *                             )
+     *                         ),
+     *                         @OA\Property(property="created_at", type="string", format="date-time", example="2025-07-01T10:00:00Z"),
+     *                         @OA\Property(property="updated_at", type="string", format="date-time", example="2025-07-01T10:00:00Z"),
+     *                         @OA\Property(property="deleted_at", type="string", format="date-time", nullable=true, example=null)
+     *                     )
      *                 ),
      *                 @OA\Property(property="total", type="integer", example=20),
      *                 @OA\Property(property="last_page", type="integer", example=2)
@@ -41,26 +55,6 @@ class UserController extends Controller
      *         )
      *     ),
      *     @OA\Response(response=500, description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.")
-     * )
-     *
-     * @OA\Schema(
-     *   schema="UserWithLevel",
-     *   @OA\Property(property="id", type="integer", example=1),
-     *   @OA\Property(property="name", type="string", example="João da Silva"),
-     *   @OA\Property(property="email", type="string", example="joao@email.com"),
-     *   @OA\Property(property="level", type="array",
-     *     @OA\Items(ref="#/components/schemas/RoleWithPermissions")
-     *   ),
-     *   @OA\Property(property="created_at", type="string", format="date-time", example="2025-07-01T10:00:00Z"),
-     *   @OA\Property(property="updated_at", type="string", format="date-time", example="2025-07-01T10:00:00Z"),
-     *   @OA\Property(property="deleted_at", type="string", format="date-time", nullable=true, example=null)
-     * )
-     *
-     * @OA\Schema(
-     *   schema="RoleWithPermissions",
-     *   @OA\Property(property="id", type="integer", example=1),
-     *   @OA\Property(property="name", type="string", example="Admin"),
-     *   @OA\Property(property="permission", type="string", example="C,R,U,D")
      * )
      */
     public function index(Request $request)
@@ -116,7 +110,21 @@ class UserController extends Controller
      *         @OA\JsonContent(
      *             @OA\Property(property="success", type="boolean", example=true),
      *             @OA\Property(property="message", type="string", example="Usuário encontrado."),
-     *             @OA\Property(property="data", ref="#/components/schemas/UserWithLevel")
+     *             @OA\Property(property="data",
+     *                 @OA\Property(property="id", type="integer", example=1),
+     *                 @OA\Property(property="name", type="string", example="João da Silva"),
+     *                 @OA\Property(property="email", type="string", example="joao@email.com"),
+     *                 @OA\Property(property="level", type="array",
+     *                     @OA\Items(
+     *                         @OA\Property(property="id", type="integer", example=1),
+     *                         @OA\Property(property="name", type="string", example="Admin"),
+     *                         @OA\Property(property="permission", type="string", example="C,R,U,D")
+     *                     )
+     *                 ),
+     *                 @OA\Property(property="created_at", type="string", format="date-time", example="2025-07-01T10:00:00Z"),
+     *                 @OA\Property(property="updated_at", type="string", format="date-time", example="2025-07-01T10:00:00Z"),
+     *                 @OA\Property(property="deleted_at", type="string", format="date-time", nullable=true, example=null)
+     *             )
      *         )
      *     ),
      *     @OA\Response(response=404, description="Usuário não encontrado"),
@@ -183,7 +191,21 @@ class UserController extends Controller
      *         @OA\JsonContent(
      *             @OA\Property(property="success", type="boolean", example=true),
      *             @OA\Property(property="message", type="string", example="Usuário criado com sucesso."),
-     *             @OA\Property(property="data", ref="#/components/schemas/UserWithLevel")
+     *             @OA\Property(property="data",
+     *                 @OA\Property(property="id", type="integer", example=1),
+     *                 @OA\Property(property="name", type="string", example="João da Silva"),
+     *                 @OA\Property(property="email", type="string", example="joao@email.com"),
+     *                 @OA\Property(property="level", type="array",
+     *                     @OA\Items(
+     *                         @OA\Property(property="id", type="integer", example=1),
+     *                         @OA\Property(property="name", type="string", example="Admin"),
+     *                         @OA\Property(property="permission", type="string", example="C,R,U,D")
+     *                     )
+     *                 ),
+     *                 @OA\Property(property="created_at", type="string", format="date-time", example="2025-07-01T10:00:00Z"),
+     *                 @OA\Property(property="updated_at", type="string", format="date-time", example="2025-07-01T10:00:00Z"),
+     *                 @OA\Property(property="deleted_at", type="string", format="date-time", nullable=true, example=null)
+     *             )
      *         )
      *     ),
      *     @OA\Response(response=422, description="Erro de validação"),
@@ -242,7 +264,21 @@ class UserController extends Controller
      *         @OA\JsonContent(
      *             @OA\Property(property="success", type="boolean", example=true),
      *             @OA\Property(property="message", type="string", example="Usuário atualizado com sucesso."),
-     *             @OA\Property(property="data", ref="#/components/schemas/UserWithLevel")
+     *             @OA\Property(property="data",
+     *                 @OA\Property(property="id", type="integer", example=1),
+     *                 @OA\Property(property="name", type="string", example="João da Silva"),
+     *                 @OA\Property(property="email", type="string", example="joao@email.com"),
+     *                 @OA\Property(property="level", type="array",
+     *                     @OA\Items(
+     *                         @OA\Property(property="id", type="integer", example=1),
+     *                         @OA\Property(property="name", type="string", example="Admin"),
+     *                         @OA\Property(property="permission", type="string", example="C,R,U,D")
+     *                     )
+     *                 ),
+     *                 @OA\Property(property="created_at", type="string", format="date-time", example="2025-07-01T10:00:00Z"),
+     *                 @OA\Property(property="updated_at", type="string", format="date-time", example="2025-07-01T10:00:00Z"),
+     *                 @OA\Property(property="deleted_at", type="string", format="date-time", nullable=true, example=null)
+     *             )
      *         )
      *     ),
      *     @OA\Response(response=404, description="Usuário não encontrado"),
@@ -372,7 +408,7 @@ class UserController extends Controller
      *                 @OA\Items(
      *                     type="object",
      *                     @OA\Property(property="role", type="string", example="manager"),
-     *                     @OA\Property(property="permissions", type="array", @OA\Items(type="string"), example={"C","R"})
+     *                     @OA\Property(property="permissions", type="array", @OA\Items(type="string", example="C"))
      *                 ),
      *                 example={
      *                     {"role": "manager", "permissions": {"C", "R"}},
@@ -391,7 +427,7 @@ class UserController extends Controller
      *                 @OA\Items(
      *                     type="object",
      *                     @OA\Property(property="role", type="string", example="manager"),
-     *                     @OA\Property(property="permissions", type="array", @OA\Items(type="string"), example={"C","R"})
+     *                     @OA\Property(property="permissions", type="array", @OA\Items(type="string", example="C"))
      *                 )
      *             )
      *         )
@@ -637,7 +673,21 @@ class UserController extends Controller
      *         @OA\JsonContent(
      *             @OA\Property(property="success", type="boolean", example=true),
      *             @OA\Property(property="message", type="string", example="Usuário restaurado com sucesso."),
-     *             @OA\Property(property="data", ref="#/components/schemas/UserWithLevel")
+     *             @OA\Property(property="data",
+     *                 @OA\Property(property="id", type="integer", example=1),
+     *                 @OA\Property(property="name", type="string", example="João da Silva"),
+     *                 @OA\Property(property="email", type="string", example="joao@email.com"),
+     *                 @OA\Property(property="level", type="array",
+     *                     @OA\Items(
+     *                         @OA\Property(property="id", type="integer", example=1),
+     *                         @OA\Property(property="name", type="string", example="Admin"),
+     *                         @OA\Property(property="permission", type="string", example="C,R,U,D")
+     *                     )
+     *                 ),
+     *                 @OA\Property(property="created_at", type="string", format="date-time", example="2025-07-01T10:00:00Z"),
+     *                 @OA\Property(property="updated_at", type="string", format="date-time", example="2025-07-01T10:00:00Z"),
+     *                 @OA\Property(property="deleted_at", type="string", format="date-time", nullable=true, example=null)
+     *             )
      *         )
      *     ),
      *     @OA\Response(response=404, description="Usuário não encontrado ou não está excluído"),

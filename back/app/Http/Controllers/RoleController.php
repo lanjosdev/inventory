@@ -11,18 +11,7 @@ use Illuminate\Validation\ValidationException;
 use App\Models\SystemLog;
 use App\Models\Action;
 
-/**
- * @OA\Schema(
- *   schema="Role",
- *   type="object",
- *   @OA\Property(property="id", type="integer", example=1),
- *   @OA\Property(property="name", type="string", example="admin"),
- *   @OA\Property(property="description", type="string", example="Administrador do sistema"),
- *   @OA\Property(property="created_at", type="string", format="date-time", example="2025-07-04T14:21:51.000000Z"),
- *   @OA\Property(property="updated_at", type="string", format="date-time", example="2025-07-04T14:21:51.000000Z"),
- *   @OA\Property(property="deleted_at", type="string", format="date-time", nullable=true, example=null)
- * )
- */
+
 class RoleController extends Controller
 {
     /**
@@ -52,7 +41,17 @@ class RoleController extends Controller
      *             @OA\Property(property="message", type="string", example="Lista de papéis obtida com sucesso."),
      *             @OA\Property(property="data", type="object",
      *                 @OA\Property(property="current_page", type="integer", example=1),
-     *                 @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/Role")),
+     *                 @OA\Property(property="data", type="array",
+     *                     @OA\Items(
+     *                         @OA\Property(property="id", type="integer", example=1),
+     *                         @OA\Property(property="name", type="string", example="Admin"),
+     *                         @OA\Property(property="description", type="string", example="Administrador do sistema"),
+     *                         @OA\Property(property="created_at", type="string", format="date-time", example="2025-07-01T10:00:00Z"),
+     *                         @OA\Property(property="updated_at", type="string", format="date-time", example="2025-07-01T10:00:00Z"),
+     *                         @OA\Property(property="deleted_at", type="string", format="date-time", nullable=true, example=null),
+     *                         @OA\Property(property="permissions", type="array", @OA\Items(type="string", example="C"))
+     *                     )
+     *                 ),
      *                 @OA\Property(property="total", type="integer", example=20),
      *                 @OA\Property(property="last_page", type="integer", example=2)
      *             )
@@ -84,7 +83,15 @@ class RoleController extends Controller
      *         @OA\JsonContent(
      *             @OA\Property(property="success", type="boolean", example=true),
      *             @OA\Property(property="message", type="string", example="Papel encontrado."),
-     *             @OA\Property(property="data", ref="#/components/schemas/Role")
+     *             @OA\Property(property="data",
+     *                 @OA\Property(property="id", type="integer", example=1),
+     *                 @OA\Property(property="name", type="string", example="Admin"),
+     *                 @OA\Property(property="description", type="string", example="Administrador do sistema"),
+     *                 @OA\Property(property="created_at", type="string", format="date-time", example="2025-07-01T10:00:00Z"),
+     *                 @OA\Property(property="updated_at", type="string", format="date-time", example="2025-07-01T10:00:00Z"),
+     *                 @OA\Property(property="deleted_at", type="string", format="date-time", nullable=true, example=null),
+     *                 @OA\Property(property="permissions", type="array", @OA\Items(type="string", example="C"))
+     *             )
      *         )
      *     ),
      *     @OA\Response(response=404, description="Papel não encontrado")
@@ -118,7 +125,15 @@ class RoleController extends Controller
      *         @OA\JsonContent(
      *             @OA\Property(property="success", type="boolean", example=true),
      *             @OA\Property(property="message", type="string", example="Papel criado com sucesso."),
-     *             @OA\Property(property="data", ref="#/components/schemas/Role")
+     *             @OA\Property(property="data",
+     *                 @OA\Property(property="id", type="integer", example=1),
+     *                 @OA\Property(property="name", type="string", example="Admin"),
+     *                 @OA\Property(property="description", type="string", example="Administrador do sistema"),
+     *                 @OA\Property(property="created_at", type="string", format="date-time", example="2025-07-01T10:00:00Z"),
+     *                 @OA\Property(property="updated_at", type="string", format="date-time", example="2025-07-01T10:00:00Z"),
+     *                 @OA\Property(property="deleted_at", type="string", format="date-time", nullable=true, example=null),
+     *                 @OA\Property(property="permissions", type="array", @OA\Items(type="string", example="C"))
+     *             )
      *         )
      *     ),
      *     @OA\Response(response=422, description="Erro de validação")
@@ -166,7 +181,15 @@ class RoleController extends Controller
      *         @OA\JsonContent(
      *             @OA\Property(property="success", type="boolean", example=true),
      *             @OA\Property(property="message", type="string", example="Papel atualizado com sucesso."),
-     *             @OA\Property(property="data", ref="#/components/schemas/Role")
+     *             @OA\Property(property="data",
+     *                 @OA\Property(property="id", type="integer", example=1),
+     *                 @OA\Property(property="name", type="string", example="Admin"),
+     *                 @OA\Property(property="description", type="string", example="Administrador do sistema"),
+     *                 @OA\Property(property="created_at", type="string", format="date-time", example="2025-07-01T10:00:00Z"),
+     *                 @OA\Property(property="updated_at", type="string", format="date-time", example="2025-07-01T10:00:00Z"),
+     *                 @OA\Property(property="deleted_at", type="string", format="date-time", nullable=true, example=null),
+     *                 @OA\Property(property="permissions", type="array", @OA\Items(type="string", example="C"))
+     *             )
      *         )
      *     ),
      *     @OA\Response(response=404, description="Papel não encontrado"),
