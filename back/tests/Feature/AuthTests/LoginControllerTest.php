@@ -21,9 +21,9 @@ class LoginControllerTest extends TestCase
         // Cria um role e associa ao usuário
         $role = \App\Models\Role::create([
             'name' => 'Admin',
-            'description' => 'Administrador do sistema',
         ]);
         $user->roles()->attach($role->id);
+        
         // Cria permissões e associa ao role
         $permissions = collect(['C', 'R', 'U', 'D'])->map(function($perm) {
             return \App\Models\Permission::create([
