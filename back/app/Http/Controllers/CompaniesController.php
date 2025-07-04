@@ -79,6 +79,7 @@ class CompaniesController extends Controller
                     'name' => $company->name,
                     'created_at' => $company->created_at ?? null,
                     'updated_at' => $company->updated_at ?? null,
+                    'deleted_at' => $company->deleted_at ?? null,
                     'contacts' => $company->contacts->map(function ($contact) {
                         return [
                             'id' => $contact->id,
@@ -234,6 +235,7 @@ class CompaniesController extends Controller
                 'name' => $company->name,
                 'created_at' => $company->created_at ?? null,
                 'updated_at' => $company->updated_at ?? null,
+                'deleted_at' => $company->deleted_at ?? null,
                 'contacts' => $company->contacts->map(function ($contact) {
                     return [
                         'id' => $contact->id,
