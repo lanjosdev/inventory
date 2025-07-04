@@ -450,7 +450,7 @@ class UserController extends Controller
             // Log de auditoria - atribuição de papéis/permissões
             SystemLog::create([
                 'fk_user' => $request->user()->id ?? null,
-                'fk_action' => ActionModel::where('name', 'atribuição')->value('id'),
+                'fk_action' => ActionModel::where('name', 'Editou nível de acesso/permissão')->value('id'),
                 'name_table' => 'users',
                 'record_id' => $user->id,
                 'description' => 'Papéis e permissões atribuídos: ' . json_encode($levels),

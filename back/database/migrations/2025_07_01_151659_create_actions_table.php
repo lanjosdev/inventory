@@ -26,8 +26,7 @@ return new class extends Migration
             ['name' => 'Removeu', 'description' => 'Removeu um registro na base de dados', 'created_at' => now(), 'updated_at' => now()],
             ['name' => 'Conectou', 'description' => 'O usuário entrou na aplicação', 'created_at' => now(), 'updated_at' => now()],
             ['name' => 'Desconectou', 'description' => 'O usuário saiu na aplicação', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'Editou nível de acesso', 'description' => 'Tem um ou mais nível de acesso dentro da plataforma', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'Editou permissão de acesso', 'description' => 'Tem um mais permissão dentro da plataforma', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Editou nível de acesso/permissão', 'description' => 'Tem um ou mais nível de acesso e ou uma ou mais permissões', 'created_at' => now(), 'updated_at' => now()],
             ['name' => 'Restaurou', 'description' => 'Recuperou dos deletados', 'created_at' => now(), 'updated_at' => now()],
         ]);
     }
