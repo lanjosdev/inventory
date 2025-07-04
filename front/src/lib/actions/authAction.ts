@@ -77,3 +77,25 @@ export async function loginAction(data: LoginFormData): Promise<ActionResult> {
         }
     }
 }
+
+/**
+ * Realiza o logout do usuário, removendo o cookie de autenticação.
+ * @returns Um objeto indicando o resultado da operação.
+ */
+export async function logoutAction(): Promise<ActionResult> {
+    try {
+        const authTokenName = process.env.NEXT_COOKIE_AUTH_TOKEN_NAME || 'auth_token_bizsys'
+        cookies().delete(authTokenName)
+
+        return {
+            success: true,
+            message: 'Logout realizado com sucesso!',
+        }
+    } catch (error) {
+        console.error('Erro inesperado na action de logout:', error)
+        return {
+            success: false,
+            message: 'Ocorreu um erro ao tentar fazer logout. Tente novamente.',
+        }
+    }
+}
