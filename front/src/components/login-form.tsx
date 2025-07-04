@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { PasswordInput } from "@/components/ui/password-input"
 import Image from "next/image"
 
 export function LoginForm({
@@ -34,7 +35,10 @@ export function LoginForm({
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="password">Senha</Label>
-                <Input id="password" type="password" required />
+                <PasswordInput
+                  id="password"
+                  required
+                />
               </div>
               <Button type="submit" className="w-full">
                 Entrar
