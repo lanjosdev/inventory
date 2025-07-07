@@ -18,6 +18,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <div className="bg-primary rounded-lg p-2 mx-2">
             <Store className="h-4 w-4 text-primary-foreground" />
           </div>
+          
+          <b className="group-data-[collapsible=icon]:hidden">Logo</b>
         </Link>
       </SidebarHeader>
 

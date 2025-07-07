@@ -52,3 +52,53 @@ export type ActionResult = {
   errors?: Record<string, string[] | undefined>
   user?: User
 }
+
+/**
+ * Representa uma rede de supermercados.
+ */
+export interface Network {
+  id: number
+  name: string
+  description: string
+  created_at: string
+  updated_at: string
+  deleted_at: string | null
+  stores_count?: number
+}
+
+/**
+ * Representa uma loja de supermercado.
+ */
+export interface Store {
+  id: number
+  name: string
+  address: string
+  phone: string
+  email: string
+  network_id: number
+  network?: Network
+  created_at: string
+  updated_at: string
+  deleted_at: string | null
+}
+
+/**
+ * Representa estatísticas gerais do sistema.
+ */
+export interface DashboardStats {
+  total_networks: number
+  total_stores: number
+  active_networks: number
+  active_stores: number
+  recent_networks: Network[]
+  recent_stores: Store[]
+}
+
+/**
+ * Resposta da API para estatísticas do dashboard.
+ */
+export interface DashboardStatsResponse {
+  success: boolean
+  message: string
+  data: DashboardStats
+}

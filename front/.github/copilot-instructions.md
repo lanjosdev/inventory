@@ -1,6 +1,6 @@
 # Instruções para o GitHub Copilot (Copilot Instructions)
 
-Este projeto é uma aplicação web **frontend** em **Next.js 14 (App Router)** que permite aos usuários realizar operações **CRUD** (Criar, Ler, Atualizar, Excluir) para **redes de supermercados** e suas **filiais/lojas** associadas a cada rede. 
+Este projeto é uma aplicação web **frontend** em **Next.js 14 (App Router)** que permite aos usuários realizar operações **CRUD** (Criar, Ler, Atualizar, Excluir) para **redes de supermercados** e suas **lojas** associadas a cada rede. 
 
 As requisições são feitas a um **backend externo** via **API REST**.  
 
