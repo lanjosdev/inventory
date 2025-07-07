@@ -64,8 +64,12 @@ Route::middleware('auth:sanctum')->group(function () {
         'parameters' => ['status' => 'id_status']
     ]);
 
-    //ações
-    Route::apiResource('action', ActionController::class, [
-        'parameters' => ['action' => 'id_action']
+    // ativos (assets) aninhados em stores
+    Route::apiResource('stores.assets', App\Http\Controllers\AssetController::class, [
+        'parameters' => [
+            'stores' => 'id_store',
+            'assets' => 'asset'
+        ]
     ]);
+
 });

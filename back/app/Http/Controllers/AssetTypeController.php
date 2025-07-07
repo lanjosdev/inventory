@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Database\QueryException;
 use Exception;
-use App\Http\Requests\AssetTypeRequest;
 
 class AssetTypeController extends Controller
 {

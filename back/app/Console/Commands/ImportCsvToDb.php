@@ -97,7 +97,7 @@ class ImportCsvToDb extends Command
                 ]);
             }
 
-            $this->info('Importação dos produtos concluída com sucesso!');
+            $this->info('Importação das filiais realizada com sucesso.');
         } catch (Exception $e) {
             $this->error("Erro ao importar produtos: " . $e->getMessage());
             Log::error('Erro na importação CSV: ' . $e->getMessage());

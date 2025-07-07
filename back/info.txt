@@ -1,0 +1,5 @@
+php artisan import:csv C:\Users\Victor\Desktop\plataforma-midia-ads\back\public\testeFiliais.csv
+
+php artisan import:locais-veiculacao C:\Users\Victor\Desktop\plataforma-midia-ads\back\public\locais.csv
+
+php artisan l5-swagger:generate --all
