@@ -52,6 +52,7 @@ export async function getCompanyByIdAction(id: number) {
 export async function createCompanyAction(data: CreateCompanyRequest) {
   try {
     const response = await CompanyService.createCompany(data)
+    console.log('EEEmpresa criada:', response)
     
     // Revalidar a página para atualizar os dados
     revalidatePath('/redes')

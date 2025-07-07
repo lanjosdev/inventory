@@ -9,7 +9,7 @@ import {
   DropdownMenuItem, 
   DropdownMenuTrigger 
 } from '@/components/ui/dropdown-menu'
-import { MoreHorizontal, Edit, Trash2, Eye, Users } from 'lucide-react'
+import { MoreHorizontal, Edit, Trash2, Eye, Building2 } from 'lucide-react'
 import type { Company } from '@/types'
 
 interface CompanyListProps {
@@ -44,11 +44,11 @@ export function CompanyList({ companies, onEdit, onDelete, onView, isLoading }: 
     return (
       <Card className="p-8 text-center">
         <div className="mx-auto w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mb-4">
-          <Users className="w-6 h-6 text-gray-400" />
+          <Building2 className="w-6 h-6 text-gray-400" />
         </div>
-        <h3 className="text-lg font-semibold mb-2">Nenhuma empresa encontrada</h3>
-        <p className="text-gray-500 mb-4">
-          Comece criando sua primeira empresa para gerenciar suas redes de supermercados.
+        <h3 className="text-lg font-semibold mb-2">Nenhuma rede encontrada</h3>
+        <p className="text-sm text-gray-500 mb-4">
+          Comece adicionando uma nova rede para gerenciar suas lojas e contatos.
         </p>
       </Card>
     )

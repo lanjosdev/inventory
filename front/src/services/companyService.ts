@@ -15,7 +15,7 @@ export class CompanyService {
    * Lista todas as empresas/redes com paginação.
    */
   static async getCompanies(page: number = 1, perPage: number = 10): Promise<CompaniesResponse> {
-    const url = `/api/companies?page=${page}&per_page=${perPage}`
+    const url = `/companies?page=${page}&per_page=${perPage}`
     return await api.authFetch<CompaniesResponse>(url)
   }
 
@@ -31,7 +31,7 @@ export class CompanyService {
    * Cria uma nova empresa/rede.
    */
   static async createCompany(data: CreateCompanyRequest): Promise<CompanyCreateResponse> {
-    const url = '/api/companies'
+    const url = '/companies'
     return await api.authFetch<CompanyCreateResponse>(url, {
       method: 'POST',
       body: JSON.stringify(data)

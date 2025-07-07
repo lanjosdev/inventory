@@ -52,18 +52,10 @@ export function NavUser({
     startTransition(async () => {
       const result = await logoutAction()
       if (result.success) {
-        toast({
-          title: "Logout",
-          description: result.message,
-          variant: "default",
-        })
+        toast.success("Logout", result.message)
         router.push("/login")
       } else {
-        toast({
-          title: "Erro no Logout",
-          description: result.message,
-          variant: "destructive",
-        })
+        toast.error("Erro no Logout", result.message)
       }
     })
   }

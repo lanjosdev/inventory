@@ -20,7 +20,7 @@ export async function loginAction(data: LoginFormData): Promise<ActionResult> {
 
         // 2. Chamada ao serviço de autenticação, que encapsula a lógica da API.
         const response: LoginSuccessResponse = await loginService(validatedData)
-        // console.log('RRResposta do serviço de login:', response)
+        // console.log('Resposta do serviço de login:', response)
 
         // 3. Tratamento da resposta de sucesso: armazenar o token em um cookie.
         const authTokenName = process.env.NEXT_COOKIE_AUTH_TOKEN_NAME || 'auth_token_bizsys'

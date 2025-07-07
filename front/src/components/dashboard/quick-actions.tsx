@@ -1,7 +1,10 @@
+'use client';
+
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Store, Building2, Search, Settings } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useRouter } from 'next/navigation';
 
 interface QuickAction {
   id: string;
@@ -14,6 +17,8 @@ interface QuickAction {
 }
 
 export function QuickActions() {
+  const router = useRouter();
+
   const actions: QuickAction[] = [
     {
       id: 'add-network',
@@ -21,8 +26,7 @@ export function QuickActions() {
       description: 'Criar uma nova rede de supermercados',
       icon: <Building2 className="h-4 w-4 text-blue-600 dark:text-blue-400" />,
       onClick: () => {
-        // TODO: Implementar navegação para criação de rede
-        console.log('Criar nova rede');
+        router.push('/redes/cadastrar');
       },
       variant: 'default',
       colorClass: 'hover:bg-blue-50 hover:border-blue-200 dark:hover:bg-blue-950/50 border-blue-100 bg-blue-50/30 text-blue-700 dark:border-blue-800 dark:bg-blue-950/30 dark:text-blue-300',
@@ -33,8 +37,8 @@ export function QuickActions() {
       description: 'Adicionar uma nova loja a uma rede',
       icon: <Store className="h-4 w-4 text-green-600 dark:text-green-400" />,
       onClick: () => {
-        // TODO: Implementar navegação para criação de loja
-        console.log('Criar nova loja');
+        // TODO: Ajustar a rota para o cadastro de loja quando estiver pronta
+        console.log('/lojas/cadastrar');
       },
       variant: 'default',
       colorClass: 'hover:bg-green-50 hover:border-green-200 dark:hover:bg-green-950/50 border-green-100 bg-green-50/30 text-green-700 dark:border-green-800 dark:bg-green-950/30 dark:text-green-300',

@@ -43,18 +43,10 @@ export function useCompanies(perPage: number = 10): UseCompaniesReturn {
         setTotalPages(result.data.last_page)
         setTotal(result.data.total)
       } else {
-        toast({
-          title: 'Erro',
-          description: result.message || 'Erro ao carregar empresas',
-          variant: 'destructive'
-        })
+        toast.error('Erro', result.message || 'Erro ao carregar empresas')
       }
     } catch {
-      toast({
-        title: 'Erro',
-        description: 'Erro inesperado ao carregar empresas',
-        variant: 'destructive'
-      })
+      toast.error('Erro', 'Erro inesperado ao carregar empresas')
     } finally {
       setIsLoading(false)
     }
@@ -65,26 +57,15 @@ export function useCompanies(perPage: number = 10): UseCompaniesReturn {
       const result = await createCompanyAction(data)
       
       if (result.success) {
-        toast({
-          title: 'Sucesso',
-          description: result.message || 'Empresa criada com sucesso',
-        })
+        toast.success('Sucesso', result.message || 'Empresa criada com sucesso')
         await fetchCompanies(1) // Recarrega a primeira página
         return true
       } else {
-        toast({
-          title: 'Erro',
-          description: result.message || 'Erro ao criar empresa',
-          variant: 'destructive'
-        })
+        toast.error('Erro', result.message || 'Erro ao criar empresa')
         return false
       }
     } catch {
-      toast({
-        title: 'Erro',
-        description: 'Erro inesperado ao criar empresa',
-        variant: 'destructive'
-      })
+      toast.error('Erro', 'Erro inesperado ao criar empresa')
       return false
     }
   }
@@ -94,26 +75,15 @@ export function useCompanies(perPage: number = 10): UseCompaniesReturn {
       const result = await updateCompanyAction(id, data)
       
       if (result.success) {
-        toast({
-          title: 'Sucesso',
-          description: result.message || 'Empresa atualizada com sucesso',
-        })
+        toast.success('Sucesso', result.message || 'Empresa atualizada com sucesso')
         await fetchCompanies(currentPage) // Recarrega a página atual
         return true
       } else {
-        toast({
-          title: 'Erro',
-          description: result.message || 'Erro ao atualizar empresa',
-          variant: 'destructive'
-        })
+        toast.error('Erro', result.message || 'Erro ao atualizar empresa')
         return false
       }
     } catch {
-      toast({
-        title: 'Erro',
-        description: 'Erro inesperado ao atualizar empresa',
-        variant: 'destructive'
-      })
+      toast.error('Erro', 'Erro inesperado ao atualizar empresa')
       return false
     }
   }
@@ -123,26 +93,15 @@ export function useCompanies(perPage: number = 10): UseCompaniesReturn {
       const result = await deleteCompanyAction(id)
       
       if (result.success) {
-        toast({
-          title: 'Sucesso',
-          description: result.message || 'Empresa excluída com sucesso',
-        })
+        toast.success('Sucesso', result.message || 'Empresa excluída com sucesso')
         await fetchCompanies(currentPage) // Recarrega a página atual
         return true
       } else {
-        toast({
-          title: 'Erro',
-          description: result.message || 'Erro ao excluir empresa',
-          variant: 'destructive'
-        })
+        toast.error('Erro', result.message || 'Erro ao excluir empresa')
         return false
       }
     } catch {
-      toast({
-        title: 'Erro',
-        description: 'Erro inesperado ao excluir empresa',
-        variant: 'destructive'
-      })
+      toast.error('Erro', 'Erro inesperado ao excluir empresa')
       return false
     }
   }

@@ -92,7 +92,9 @@ class ApiClient {
    * @returns A resposta da requisição.
    */
   async authFetch<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
-    const token = cookies().get('auth_token')?.value;
+    const authTokenName = process.env.NEXT_COOKIE_AUTH_TOKEN_NAME || 'auth_token_bizsys'
+    const token = cookies().get(authTokenName)?.value;
+    // console.log('Token de autenticação:', token);
 
     if (!token) {
       // Lança um erro específico se o token não for encontrado.

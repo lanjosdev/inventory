@@ -1,20 +1,19 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Plus, Search, Building2 } from 'lucide-react'
-import { CompanyForm } from './company-form'
 import { CompanyList } from './company-list'
 import { CompanyDetails } from './company-details'
 import { DeleteConfirmation } from './delete-confirmation'
 import { Pagination } from './pagination'
 import { useCompanies } from '@/hooks/use-companies'
 import type { Company } from '@/types'
-import type { CreateCompanyForm, UpdateCompanyForm } from '@/lib/validations/company'
 
-type ViewMode = 'list' | 'create' | 'edit' | 'details' | 'delete'
+type ViewMode = 'list' | 'edit' | 'details' | 'delete'
 
 export function CompaniesPage() {
   const [viewMode, setViewMode] = useState<ViewMode>('list')
@@ -27,8 +26,6 @@ export function CompaniesPage() {
     currentPage,
     totalPages,
     total,
-    createCompany,
-    updateCompany,
     deleteCompany,
     setCurrentPage
   } = useCompanies()
@@ -41,11 +38,6 @@ export function CompaniesPage() {
       contact.email.toLowerCase().includes(searchTerm.toLowerCase())
     )
   )
-
-  const handleCreate = () => {
-    setSelectedCompany(null)
-    setViewMode('create')
-  }
 
   const handleEdit = (company: Company) => {
     setSelectedCompany(company)
@@ -67,21 +59,14 @@ export function CompaniesPage() {
     setViewMode('list')
   }
 
-  const handleSubmitCreate = async (data: CreateCompanyForm) => {
-    const success = await createCompany(data)
-    if (success) {
-      handleBack()
-    }
-  }
-
-  const handleSubmitUpdate = async (data: UpdateCompanyForm) => {
-    if (!selectedCompany) return
+  // const handleSubmitUpdate = async (data: UpdateCompanyForm) => {
+  //   if (!selectedCompany) return
     
-    const success = await updateCompany(selectedCompany.id_company, data)
-    if (success) {
-      handleBack()
-    }
-  }
+  //   const success = await updateCompany(selectedCompany.id_company, data)
+  //   if (success) {
+  //     handleBack()
+  //   }
+  // }
 
   const handleConfirmDelete = async () => {
     if (!selectedCompany) return
@@ -92,30 +77,18 @@ export function CompaniesPage() {
     }
   }
 
-  if (viewMode === 'create') {
-    return (
-      <div className="container mx-auto p-6">
-        <CompanyForm
-          onSubmit={handleSubmitCreate}
-          onCancel={handleBack}
-          isLoading={isLoading}
-        />
-      </div>
-    )
-  }
-
-  if (viewMode === 'edit' && selectedCompany) {
-    return (
-      <div className="container mx-auto p-6">
-        <CompanyForm
-          company={selectedCompany}
-          onSubmit={handleSubmitUpdate}
-          onCancel={handleBack}
-          isLoading={isLoading}
-        />
-      </div>
-    )
-  }
+  // if (viewMode === 'edit' && selectedCompany) {
+  //   return (
+  //     <div className="container mx-auto p-6">
+  //       <CompanyForm
+  //         company={selectedCompany}
+  //         onSubmit={handleSubmitUpdate}
+  //         onCancel={handleBack}
+  //         isLoading={isLoading}
+  //       />
+  //     </div>
+  //   )
+  // }
 
   if (viewMode === 'details' && selectedCompany) {
     return (
@@ -132,20 +105,23 @@ export function CompaniesPage() {
   return (
     <div className="container mx-auto p-6 space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold flex items-center gap-2">
-            <Building2 className="w-8 h-8" />
-            Empresas
+            <Building2 className="w-8 h-8 text-blue-600" />
+            Redes de Supermercados
           </h1>
           <p className="text-gray-600 mt-1">
             Gerencie suas redes de supermercados e contatos
           </p>
         </div>
-        <Button onClick={handleCreate} className="flex items-center gap-2">
-          <Plus className="w-4 h-4" />
-          Nova Empresa
-        </Button>
+        
+        <Link href="/redes/cadastrar" passHref>
+          <Button className="flex items-center gap-2 w-full sm:w-auto">
+            <Plus className="w-4 h-4" />
+            Nova Rede
+          </Button>
+        </Link>
       </div>
 
       {/* Stats */}
@@ -155,7 +131,7 @@ export function CompaniesPage() {
             <div className="flex items-center gap-2">
               <Building2 className="w-5 h-5 text-blue-600" />
               <div>
-                <p className="text-sm text-gray-600">Total de Empresas</p>
+                <p className="text-sm text-gray-600">Total de Redes</p>
                 <p className="text-2xl font-bold">{total}</p>
               </div>
             </div>
@@ -193,11 +169,12 @@ export function CompaniesPage() {
             Buscar Empresas
           </CardTitle>
         </CardHeader>
+
         <CardContent>
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
             <Input
-              placeholder="Buscar por nome da empresa, contato ou e-mail..."
+              placeholder="Buscar por nome da rede, contato ou e-mail..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10"

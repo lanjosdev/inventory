@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
-import { Plus, X } from 'lucide-react'
+import { Plus, X, Building2 } from 'lucide-react'
 import { createCompanySchema, updateCompanySchema } from '@/lib/validations/company'
 import type { CreateCompanyForm, UpdateCompanyForm } from '@/lib/validations/company'
 import type { Company } from '@/types'
@@ -75,15 +75,16 @@ export function CompanyForm({ company, onSubmit, onCancel, isLoading }: CompanyF
   return (
     <Card className="w-full max-w-2xl mx-auto">
       <CardHeader>
-        <CardTitle>
-          {isEditing ? 'Editar Empresa' : 'Nova Empresa'}
+        <CardTitle className="flex items-center gap-2">
+          <Building2 className="w-6 h-6 text-blue-600" />
+          {isEditing ? 'Editar Rede' : 'Nova Rede'}
         </CardTitle>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
           {/* Nome da Empresa */}
           <div className="space-y-2">
-            <Label htmlFor="name">Nome da Empresa</Label>
+            <Label htmlFor="name">Nome da Rede</Label>
             <Input
               id="name"
               {...register('name')}
@@ -203,7 +204,7 @@ export function CompanyForm({ company, onSubmit, onCancel, isLoading }: CompanyF
               disabled={isSubmitting || isLoading}
               className="flex-1"
             >
-              {isSubmitting ? 'Salvando...' : isEditing ? 'Atualizar' : 'Criar'}
+              {isSubmitting ? 'Salvando...' : isEditing ? 'Atualizar' : 'Cadastrar'}
             </Button>
             <Button
               type="button"
