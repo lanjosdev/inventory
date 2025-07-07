@@ -102,3 +102,94 @@ export interface DashboardStatsResponse {
   message: string
   data: DashboardStats
 }
+
+/**
+ * Representa um contato de uma empresa/rede.
+ */
+export interface Contact {
+  id_contact: number
+  name: string
+  email: string
+  phone: string
+  observation?: string | null
+}
+
+/**
+ * Representa uma empresa/rede de supermercados baseada na API.
+ */
+export interface Company {
+  id_company: number
+  name: string
+  created_at: string
+  updated_at: string
+  contacts: Contact[]
+}
+
+/**
+ * Dados para criação de uma nova empresa/rede.
+ */
+export interface CreateCompanyRequest {
+  name: string
+  contacts: {
+    name: string
+    email: string
+    phone: string
+    observation?: string
+  }[]
+}
+
+/**
+ * Dados para atualização de uma empresa/rede.
+ */
+export interface UpdateCompanyRequest {
+  name: string
+  contacts: {
+    id_contact?: number
+    name: string
+    email: string
+    phone: string
+    observation?: string
+  }[]
+}
+
+/**
+ * Resposta paginada da API para empresas/redes.
+ */
+export interface CompaniesResponse {
+  success: boolean
+  message: string
+  data: {
+    current_page: number
+    data: Company[]
+    total: number
+    last_page: number
+  }
+}
+
+/**
+ * Resposta da API para uma empresa/rede específica.
+ */
+export interface CompanyResponse {
+  success: boolean
+  message: string
+  data: Company
+}
+
+/**
+ * Resposta da API para criação/atualização de empresa/rede.
+ */
+export interface CompanyCreateResponse {
+  success: boolean
+  message: string
+  data: {
+    id: number
+    name: string
+    contacts: {
+      id: number
+      name: string
+      email: string
+      phone: string
+      observation?: string
+    }[]
+  }
+}
