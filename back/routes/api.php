@@ -64,11 +64,11 @@ Route::middleware('auth:sanctum')->group(function () {
         'parameters' => ['status' => 'id_status']
     ]);
 
-    // ativos (assets) aninhados em stores
+    // ativos (assets) aninhados em lojas
     Route::apiResource('stores.assets', App\Http\Controllers\AssetController::class, [
         'parameters' => [
             'stores' => 'id_store',
-            'assets' => 'asset'
+            'assets' => 'asset',
         ]
     ]);
 

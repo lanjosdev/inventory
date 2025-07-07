@@ -47,7 +47,6 @@ class ImportLocaisVeiculacao extends Command
                 $this->error('Nenhuma loja encontrada no banco de dados.');
                 return 1;
             }
-
             // OTIMIZAÇÃO 2: Cria um array para guardar todos os assets que serão inseridos.
             $allAssetsToInsert = [];
 
