@@ -23,7 +23,7 @@ export class CompanyService {
    * Busca uma empresa/rede específica pelo ID.
    */
   static async getCompanyById(id: number): Promise<CompanyResponse> {
-    const url = `/api/companies/${id}`
+    const url = `/companies/${id}`
     return await api.authFetch<CompanyResponse>(url)
   }
 

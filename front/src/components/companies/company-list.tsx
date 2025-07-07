@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { 
@@ -16,11 +17,10 @@ interface CompanyListProps {
   companies: Company[]
   onEdit: (company: Company) => void
   onDelete: (company: Company) => void
-  onView: (company: Company) => void
   isLoading?: boolean
 }
 
-export function CompanyList({ companies, onEdit, onDelete, onView, isLoading }: CompanyListProps) {
+export function CompanyList({ companies, onEdit, onDelete, isLoading }: CompanyListProps) {
   if (isLoading) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -58,11 +58,10 @@ export function CompanyList({ companies, onEdit, onDelete, onView, isLoading }: 
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {companies.map((company) => (
         <CompanyCard
-          key={company.id_company}
+          key={company.id}
           company={company}
           onEdit={onEdit}
           onDelete={onDelete}
-          onView={onView}
         />
       ))}
     </div>
@@ -73,10 +72,9 @@ interface CompanyCardProps {
   company: Company
   onEdit: (company: Company) => void
   onDelete: (company: Company) => void
-  onView: (company: Company) => void
 }
 
-function CompanyCard({ company, onEdit, onDelete, onView }: CompanyCardProps) {
+function CompanyCard({ company, onEdit, onDelete }: CompanyCardProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   return (
@@ -98,9 +96,11 @@ function CompanyCard({ company, onEdit, onDelete, onView }: CompanyCardProps) {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => onView(company)}>
-                <Eye className="w-4 h-4 mr-2" />
-                Visualizar
+              <DropdownMenuItem asChild>
+                <Link href={`/redes/${company.id}`}>
+                  <Eye className="w-4 h-4 mr-2" />
+                  Visualizar
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => onEdit(company)}>
                 <Edit className="w-4 h-4 mr-2" />

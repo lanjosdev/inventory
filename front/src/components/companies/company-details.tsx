@@ -6,11 +6,12 @@ import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { Edit, ArrowLeft, Mail, Phone, User, Calendar } from 'lucide-react'
 import type { Company } from '@/types'
+import Link from 'next/link'
 
 interface CompanyDetailsProps {
   company: Company
-  onEdit: (company: Company) => void
-  onBack: () => void
+  onEdit?: (company: Company) => void
+  onBack?: () => void
 }
 
 export function CompanyDetails({ company, onEdit, onBack }: CompanyDetailsProps) {
@@ -19,10 +20,19 @@ export function CompanyDetails({ company, onEdit, onBack }: CompanyDetailsProps)
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <Button variant="ghost" size="sm" onClick={onBack}>
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Voltar
-          </Button>
+          {onBack ? (
+            <Button variant="ghost" size="sm" onClick={onBack}>
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Voltar
+            </Button>
+          ) : (
+            <Link href="/redes" passHref>
+              <Button variant="ghost" size="sm">
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Voltar para Redes
+              </Button>
+            </Link>
+          )}
           <div>
             <h1 className="text-2xl font-bold">{company.name}</h1>
             <p className="text-gray-500">
@@ -30,10 +40,19 @@ export function CompanyDetails({ company, onEdit, onBack }: CompanyDetailsProps)
             </p>
           </div>
         </div>
-        <Button onClick={() => onEdit(company)}>
-          <Edit className="w-4 h-4 mr-2" />
-          Editar
-        </Button>
+        {onEdit ? (
+          <Button onClick={() => onEdit(company)}>
+            <Edit className="w-4 h-4 mr-2" />
+            Editar
+          </Button>
+        ) : (
+          <Link href={`/redes/${company.id}/editar`} passHref>
+            <Button>
+              <Edit className="w-4 h-4 mr-2" />
+              Editar
+            </Button>
+          </Link>
+        )}
       </div>
 
       {/* Informações Gerais */}
@@ -51,8 +70,8 @@ export function CompanyDetails({ company, onEdit, onBack }: CompanyDetailsProps)
               <p className="text-lg font-semibold">{company.name}</p>
             </div>
             <div>
-              <Label>ID da Empresa</Label>
-              <p className="text-lg font-semibold">#{company.id_company}</p>
+              <Label>ID da Rede</Label>
+              <p className="text-lg font-semibold">#{company.id}</p>
             </div>
             <div>
               <Label>Data de Criação</Label>

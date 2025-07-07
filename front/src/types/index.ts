@@ -118,7 +118,7 @@ export interface Contact {
  * Representa uma empresa/rede de supermercados baseada na API.
  */
 export interface Company {
-  id_company: number
+  id: number
   name: string
   created_at: string
   updated_at: string
@@ -172,7 +172,7 @@ export interface CompaniesResponse {
 export interface CompanyResponse {
   success: boolean
   message: string
-  data: Company
+  data: Company | null
 }
 
 /**

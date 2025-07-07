@@ -44,10 +44,10 @@ export function CompaniesPage() {
     setViewMode('edit')
   }
 
-  const handleView = (company: Company) => {
-    setSelectedCompany(company)
-    setViewMode('details')
-  }
+  // const handleView = (company: Company) => {
+  //   setSelectedCompany(company)
+  //   setViewMode('details')
+  // }
 
   const handleDelete = (company: Company) => {
     setSelectedCompany(company)
@@ -71,7 +71,7 @@ export function CompaniesPage() {
   const handleConfirmDelete = async () => {
     if (!selectedCompany) return
     
-    const success = await deleteCompany(selectedCompany.id_company)
+    const success = await deleteCompany(selectedCompany.id)
     if (success) {
       handleBack()
     }
@@ -188,7 +188,7 @@ export function CompaniesPage() {
         companies={searchTerm ? filteredCompanies : companies}
         onEdit={handleEdit}
         onDelete={handleDelete}
-        onView={handleView}
+        // onView={handleView}
         isLoading={isLoading}
       />
 
