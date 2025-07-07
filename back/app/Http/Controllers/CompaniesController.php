@@ -12,6 +12,7 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Database\QueryException;
 use Exception;
 use App\Helpers\ResponseHelper;
+use App\Models\ContactCompanies;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -72,7 +73,7 @@ class CompaniesController extends Controller
             } else {
                 $query = Companies::withTrashed();
             }
-            $companies = $query->with('contacts')->paginate($perPage)->appends($request->all());
+            $companies = $query->with('contacts')->whereNotNull('deleted_at')->paginate($perPage)->appends($request->all());
             $companies->getCollection()->transform(function ($company) {
                 return [
                     'id' => $company->id,
@@ -221,11 +222,11 @@ class CompaniesController extends Controller
         try {
             $active = $request->query('active', null);
             if ($active === 'true' || $active === true) {
-                $company = Companies::with('contacts')->find($id);
+                $company = Companies::with('contacts')->whereNotNull('deleted_at')->find($id);
             } elseif ($active === 'false' || $active === false) {
-                $company = Companies::onlyTrashed()->with('contacts')->find($id);
+                $company = Companies::onlyTrashed()->with('contacts')->whereNotNull('deleted_at')->find($id);
             } else {
-                $company = Companies::withTrashed()->with('contacts')->find($id);
+                $company = Companies::withTrashed()->with('contacts')->whereNotNull('deleted_at')->find($id);
             }
             if (!$company) {
                 return ResponseHelper::error('Empresa não encontrada.', 404);
@@ -437,9 +438,33 @@ class CompaniesController extends Controller
      *             )
      *         )
      *     ),
-     *     @OA\Response(response=404, description="Empresa não encontrada"),
-     *     @OA\Response(response=422, description="Erro de validação"),
-     *     @OA\Response(response=500, description="Erro interno ao adicionar contato")
+     *     @OA\Response(
+     *         response=404,
+     *         description="Empresa não encontrada",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Empresa não encontrada."),
+     *             @OA\Property(property="data", type="null", example=null)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Erro de validação",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=false),
+     *             @OA\Property(property="message", type="object", example={"email": {"O campo email é obrigatório."}}),
+     *             @OA\Property(property="data", type="null", example=null)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Erro interno ao adicionar contato",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Erro interno ao adicionar contato."),
+     *             @OA\Property(property="data", type="null", example=null)
+     *         )
+     *     )
      * )
      */
     public function addContactToCompany(Request $request, $id_companie)
@@ -450,14 +475,15 @@ class CompaniesController extends Controller
             if (!$company) {
                 return ResponseHelper::error('Empresa não encontrada.', 404);
             }
-            $validated = $request->validate([
-                'name' => 'required|string|max:255',
-                'email' => 'required|email|max:255',
-                'phone' => 'required|string|max:30',
-                'observation' => 'nullable|string|max:255',
-            ]);
-            $contact = Contact::create($validated);
-            $company->contacts()->attach($contact->id);
+            $validated = $request->validate(
+                ContactCompanies::rules(),
+                ContactCompanies::feedback()
+            );
+
+            if ($validated) {
+                $contact = Contact::create($validated);
+                $company->contacts()->attach($contact->id);
+            }
             DB::commit();
             return ResponseHelper::success('Contato adicionado à empresa com sucesso.', [
                 'company_id' => $company->id,
@@ -477,7 +503,3 @@ class CompaniesController extends Controller
         }
     }
 }
-
-// Rota para adicionar contato a uma empresa (rede)
-// Adicione no arquivo de rotas (routes/api.php):
-// Route::post('companies/{id_companie}/contacts', [CompaniesController::class, 'addContactToCompany']);

@@ -399,4 +399,77 @@ class StoreController extends Controller
             return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         }
     }
+
+    /**
+     * @OA\Post(
+     *     path="/api/stores/{id_store}/contacts",
+     *     summary="Adiciona um contato a uma loja",
+     *     description="Cria um novo contato e faz a relação com a loja informada.",
+     *     tags={"Lojas"},
+     *     @OA\Parameter(name="id_store", in="path", required=true, description="ID da loja", @OA\Schema(type="integer", example=1)),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"name", "email", "phone"},
+     *             @OA\Property(property="name", type="string", example="Contato Novo"),
+     *             @OA\Property(property="email", type="string", example="contato@loja.com"),
+     *             @OA\Property(property="phone", type="string", example="11999999999"),
+     *             @OA\Property(property="observation", type="string", example="Observação do contato", nullable=true)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Contato criado e relacionado à loja com sucesso",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Contato adicionado à loja com sucesso."),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="store_id", type="integer", example=1),
+     *                 @OA\Property(property="contact", type="object",
+     *                     @OA\Property(property="id", type="integer", example=10),
+     *                     @OA\Property(property="name", type="string", example="Contato Novo"),
+     *                     @OA\Property(property="email", type="string", example="contato@loja.com"),
+     *                     @OA\Property(property="phone", type="string", example="11999999999"),
+     *                     @OA\Property(property="observation", type="string", example="Observação do contato", nullable=true)
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(response=404, description="Loja não encontrada"),
+     *     @OA\Response(response=422, description="Erro de validação"),
+     *     @OA\Response(response=500, description="Erro interno ao adicionar contato")
+     * )
+     */
+    public function addContactToStore(Request $request, $id_store)
+    {
+        DB::beginTransaction();
+        try {
+            $store = Store::find($id_store);
+            if (!$store) {
+                return ResponseHelper::error('Loja não encontrada.', 404);
+            }
+            $validated = $request->validate(
+                Contact::rules(),
+                Contact::feedback()
+            );
+            $contact = Contact::create($validated);
+            $store->contacts()->attach($contact->id);
+            DB::commit();
+            return ResponseHelper::success('Contato adicionado à loja com sucesso.', [
+                'store_id' => $store->id,
+                'contact' => $contact
+            ], 201);
+        } catch (\Illuminate\Validation\ValidationException $ve) {
+            DB::rollBack();
+            return ResponseHelper::error($ve->errors(), 422);
+        } catch (QueryException $qe) {
+            DB::rollBack();
+            Log::error('Erro DB: ' . $qe->getMessage());
+            return ResponseHelper::error('Erro interno ao adicionar contato.', 500);
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::error('Erro: ' . $e->getMessage());
+            return ResponseHelper::error('Erro interno ao adicionar contato.', 500);
+        }
+    }
 }
