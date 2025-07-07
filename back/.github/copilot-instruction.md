@@ -104,7 +104,7 @@ Todas as ações de atualização, criação ou remoção (exceto listagem geral
 
 O log deve conter informações cruciais para relatórios e auditoria, incluindo:
 
-- Tipo da ação (criação, atualização, remoção)
+- Tipo da ação (criou, editou, removeu, restaurou, etc.)
 - Usuário responsável (ID ou identificador)
 - Data e hora da operação
 - Dados relevantes antes e depois da alteração (quando aplicável)
