@@ -44,6 +44,7 @@ Route::middleware('auth:sanctum')->group(function () {
     ]);
 
     //redes
+    Route::post('companies/{id_companie}/contacts', [CompaniesController::class, 'addContactToCompany']);
     Route::apiResource('companies', CompaniesController::class, [
         'parameters' => ['companies' => 'id_company']
     ]);
