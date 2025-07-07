@@ -73,7 +73,8 @@ class CompaniesController extends Controller
             } else {
                 $query = Companies::withTrashed();
             }
-            $companies = $query->with('contacts')->whereNotNull('deleted_at')->paginate($perPage)->appends($request->all());
+            
+            $companies = $query->with('contacts')->whereNull('deleted_at')->paginate($perPage)->appends($request->all());
             $companies->getCollection()->transform(function ($company) {
                 return [
                     'id' => $company->id,
@@ -92,6 +93,7 @@ class CompaniesController extends Controller
                     }),
                 ];
             });
+
             return ResponseHelper::success('Lista de empresas obtida com sucesso.', $companies);
         } catch (QueryException $qe) {
             Log::error('Error DB: ' . $qe->getMessage());
@@ -222,7 +224,7 @@ class CompaniesController extends Controller
         try {
             $active = $request->query('active', null);
             if ($active === 'true' || $active === true) {
-                $company = Companies::with('contacts')->whereNotNull('deleted_at')->find($id);
+                $company = Companies::with('contacts')->find($id);
             } elseif ($active === 'false' || $active === false) {
                 $company = Companies::onlyTrashed()->with('contacts')->whereNotNull('deleted_at')->find($id);
             } else {

@@ -9,81 +9,6 @@
         "version": "1.0.0"
     },
     "paths": {
-        "/api/actions": {
-            "get": {
-                "tags": [
-                    "Ações"
-                ],
-                "summary": "Listar ações",
-                "description": "Retorna uma lista paginada de ações.",
-                "operationId": "a9d7c561614fd277a97feeccca3fdafb",
-                "parameters": [
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "description": "Número da página para paginação",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "default": 1
-                        }
-                    },
-                    {
-                        "name": "per_page",
-                        "in": "query",
-                        "description": "Quantidade de itens por página",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "default": 10
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Sucesso"
-                    },
-                    "401": {
-                        "description": "Não autorizado"
-                    },
-                    "500": {
-                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
-                    }
-                }
-            }
-        },
-        "/api/actions/{id_action}": {
-            "get": {
-                "tags": [
-                    "Ações"
-                ],
-                "summary": "Exibir ação",
-                "description": "Exibe uma ação específica.",
-                "operationId": "cdffda7410fffd48a66cb189cbf3ea9e",
-                "parameters": [
-                    {
-                        "name": "id_action",
-                        "in": "path",
-                        "description": "ID da ação",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Sucesso"
-                    },
-                    "404": {
-                        "description": "Não encontrado"
-                    },
-                    "500": {
-                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
-                    }
-                }
-            }
-        },
         "/stores/{id_store}/assets": {
             "get": {
                 "tags": [
@@ -1645,13 +1570,80 @@
                         }
                     },
                     "404": {
-                        "description": "Empresa não encontrada"
+                        "description": "Empresa não encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Empresa não encontrada."
+                                        },
+                                        "data": {
+                                            "type": "null",
+                                            "example": null
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "422": {
-                        "description": "Erro de validação"
+                        "description": "Erro de validação",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "object",
+                                            "example": {
+                                                "email": [
+                                                    "O campo email é obrigatório."
+                                                ]
+                                            }
+                                        },
+                                        "data": {
+                                            "type": "null",
+                                            "example": null
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "500": {
-                        "description": "Erro interno ao adicionar contato"
+                        "description": "Erro interno ao adicionar contato",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Erro interno ao adicionar contato."
+                                        },
+                                        "data": {
+                                            "type": "null",
+                                            "example": null
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -3333,6 +3325,128 @@
                 }
             }
         },
+        "/api/stores/{id_store}/contacts": {
+            "post": {
+                "tags": [
+                    "Lojas"
+                ],
+                "summary": "Adiciona um contato a uma loja",
+                "description": "Cria um novo contato e faz a relação com a loja informada.",
+                "operationId": "88d5b4c96f22b0c66951e22f528eea11",
+                "parameters": [
+                    {
+                        "name": "id_store",
+                        "in": "path",
+                        "description": "ID da loja",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "phone"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Contato Novo"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "contato@loja.com"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "11999999999"
+                                    },
+                                    "observation": {
+                                        "type": "string",
+                                        "example": "Observação do contato",
+                                        "nullable": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Contato criado e relacionado à loja com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Contato adicionado à loja com sucesso."
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "store_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "contact": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": 10
+                                                        },
+                                                        "name": {
+                                                            "type": "string",
+                                                            "example": "Contato Novo"
+                                                        },
+                                                        "email": {
+                                                            "type": "string",
+                                                            "example": "contato@loja.com"
+                                                        },
+                                                        "phone": {
+                                                            "type": "string",
+                                                            "example": "11999999999"
+                                                        },
+                                                        "observation": {
+                                                            "type": "string",
+                                                            "example": "Observação do contato",
+                                                            "nullable": true
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Loja não encontrada"
+                    },
+                    "422": {
+                        "description": "Erro de validação"
+                    },
+                    "500": {
+                        "description": "Erro interno ao adicionar contato"
+                    }
+                }
+            }
+        },
         "/api/system-logs": {
             "get": {
                 "tags": [
@@ -4336,10 +4450,6 @@
         }
     },
     "tags": [
-        {
-            "name": "Ações",
-            "description": "Gerenciamento de ações do sistema"
-        },
         {
             "name": "Ativos",
             "description": "Gerenciamento de ativos de cada loja"
