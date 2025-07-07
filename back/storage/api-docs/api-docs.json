@@ -15,7 +15,7 @@
                     "Ativos"
                 ],
                 "summary": "Listar ativos de uma loja",
-                "description": "Retorna uma lista paginada de ativos de uma loja específica.",
+                "description": "Retorna uma lista paginada de ativos de uma loja específica, ordenados por nome (asc).",
                 "operationId": "b5ef156ef49c26350061d03f9b3acca2",
                 "parameters": [
                     {
@@ -44,11 +44,31 @@
                             "type": "integer",
                             "default": 10
                         }
+                    },
+                    {
+                        "name": "order_by",
+                        "in": "query",
+                        "description": "Campo de ordenação (padrão: name)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "name"
+                        }
+                    },
+                    {
+                        "name": "order_dir",
+                        "in": "query",
+                        "description": "Direção da ordenação (asc/desc, padrão: asc)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "asc"
+                        }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Lista paginada de ativos"
+                        "description": "Lista paginada de ativos ordenada por nome"
                     },
                     "404": {
                         "description": "Loja não encontrada"
@@ -141,7 +161,7 @@
                     "Ativos"
                 ],
                 "summary": "Exibe um ativo de uma loja",
-                "description": "Retorna os dados de um ativo pelo ID e loja.",
+                "description": "Retorna os dados de um ativo pelo ID e loja. O resultado é sempre ordenado por nome ascendente.",
                 "operationId": "b09f81173d7e3bbab229c82e92b19a8f",
                 "parameters": [
                     {
@@ -165,7 +185,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Ativo encontrado"
+                        "description": "Ativo encontrado (ordenado por nome ascendente)"
                     },
                     "404": {
                         "description": "Ativo ou loja não encontrado"

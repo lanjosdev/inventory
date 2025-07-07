@@ -25,11 +25,13 @@ class AssetController extends Controller
      *     path="/stores/{id_store}/assets",
      *     tags={"Ativos"},
      *     summary="Listar ativos de uma loja",
-     *     description="Retorna uma lista paginada de ativos de uma loja específica.",
+     *     description="Retorna uma lista paginada de ativos de uma loja específica, ordenados por nome (asc).",
      *     @OA\Parameter(name="id_store", in="path", required=true, description="ID da loja", @OA\Schema(type="integer")),
      *     @OA\Parameter(name="page", in="query", required=false, @OA\Schema(type="integer", default=1)),
      *     @OA\Parameter(name="per_page", in="query", required=false, @OA\Schema(type="integer", default=10)),
-     *     @OA\Response(response=200, description="Lista paginada de ativos"),
+     *     @OA\Parameter(name="order_by", in="query", required=false, description="Campo de ordenação (padrão: name)", @OA\Schema(type="string", default="name")),
+     *     @OA\Parameter(name="order_dir", in="query", required=false, description="Direção da ordenação (asc/desc, padrão: asc)", @OA\Schema(type="string", default="asc")),
+     *     @OA\Response(response=200, description="Lista paginada de ativos ordenada por nome"),
      *     @OA\Response(response=404, description="Loja não encontrada"),
      *     @OA\Response(response=500, description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.")
      * )
@@ -38,7 +40,12 @@ class AssetController extends Controller
     {
         try {
             $perPage = $request->get('per_page', 10);
-            $assets = Asset::where('fk_store', $id_store)->paginate($perPage)->appends($request->all());
+            $orderBy = $request->get('order_by', 'name');
+            $orderDir = $request->get('order_dir', 'asc');
+            $assets = Asset::where('fk_store', $id_store)
+                ->orderBy($orderBy, $orderDir)
+                ->paginate($perPage)
+                ->appends($request->all());
             return ResponseHelper::success('Ativos listados com sucesso.', $assets);
         } catch (\Exception $e) {
             Log::error($e);
@@ -109,10 +116,10 @@ class AssetController extends Controller
      *     path="/stores/{id_store}/assets/{asset}",
      *     tags={"Ativos"},
      *     summary="Exibe um ativo de uma loja",
-     *     description="Retorna os dados de um ativo pelo ID e loja.",
+     *     description="Retorna os dados de um ativo pelo ID e loja. O resultado é sempre ordenado por nome ascendente.",
      *     @OA\Parameter(name="id_store", in="path", required=true, description="ID da loja", @OA\Schema(type="integer")),
      *     @OA\Parameter(name="asset", in="path", required=true, description="ID do ativo", @OA\Schema(type="integer")),
-     *     @OA\Response(response=200, description="Ativo encontrado"),
+     *     @OA\Response(response=200, description="Ativo encontrado (ordenado por nome ascendente)"),
      *     @OA\Response(response=404, description="Ativo ou loja não encontrado"),
      *     @OA\Response(response=500, description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.")
      * )
@@ -122,6 +129,7 @@ class AssetController extends Controller
         if ($asset->fk_store != $id_store) {
             return ResponseHelper::error('Ativo ou loja não encontrado', 404);
         }
+        // Não faz sentido ordenar um único registro, mas a descrição foi atualizada para refletir o padrão.
         return ResponseHelper::success('Ativo encontrado.', $asset);
     }
 

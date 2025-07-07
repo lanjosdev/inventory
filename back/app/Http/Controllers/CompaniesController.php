@@ -164,7 +164,7 @@ class CompaniesController extends Controller
             $company->contacts()->sync($contactIds);
             SystemLog::create([
                 'fk_user' => $request->user()->id ?? null,
-                'fk_action' => ActionModel::where('name', 'criação')->value('id'),
+                'fk_action' => ActionModel::where('name', 'criou')->value('id'),
                 'name_table' => 'companies',
                 'record_id' => $company->id,
                 'description' => 'Empresa criada: ' . json_encode($company->toArray()),
