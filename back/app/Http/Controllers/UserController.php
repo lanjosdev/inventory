@@ -218,7 +218,7 @@ class UserController extends Controller
         try {
             $validated = $request->validate(User::rules(), User::feedback());
             $user = User::create($validated);
-            // Log de auditoria - criação
+            // Log de auditoria - criou
             SystemLog::create([
                 'fk_user' => $request->user()->id ?? null,
                 'fk_action' => ActionModel::where('name', 'criou')->value('id'),
@@ -305,9 +305,9 @@ class UserController extends Controller
                     ], 422);
                 }
             }
-            $userOriginal = $user->getOriginal(); // Obtém os dados originais do usuário antes da atualização
+            $userOriginal = $user->getOriginal(); // Obtém os dados originais do usuário antes da Editou
             $user->update($validated);
-            // Log de auditoria - atualização
+            // Log de auditoria - Editou
             SystemLog::create([
                 'fk_user' => $request->user()->id ?? null,
                 'fk_action' => ActionModel::where('name', 'editou')->value('id'),
@@ -371,7 +371,7 @@ class UserController extends Controller
                 return ResponseHelper::error('Usuário não encontrado.', 404);
             }
             $user->delete();
-            // Log de auditoria - remoção
+            // Log de auditoria - removeu
             SystemLog::create([
                 'fk_user' => $request->user()->id ?? null,
                 'fk_action' => ActionModel::where('name', 'removeu')->value('id'),

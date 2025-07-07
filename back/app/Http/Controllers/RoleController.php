@@ -144,10 +144,10 @@ class RoleController extends Controller
         try {
             $validated = $request->validate(Role::rules(), Role::feedback());
             $role = Role::create($validated);
-            // Log de auditoria - criação
+            // Log de auditoria - criou
             SystemLog::create([
                 'fk_user' => $request->user()->id ?? null,
-                'fk_action' => Action::where('name', 'criação')->value('id'),
+                'fk_action' => Action::where('name', 'criou')->value('id'),
                 'name_table' => 'roles',
                 'record_id' => $role->id,
                 'description' => 'Papel criado: ' . json_encode($role->toArray()),
@@ -206,10 +206,10 @@ class RoleController extends Controller
             $validated = $request->validate(Role::rules($id), Role::feedback());
             $roleOriginal = $role->getOriginal();
             $role->update($validated);
-            // Log de auditoria - atualização
+            // Log de auditoria - Editou
             SystemLog::create([
                 'fk_user' => $request->user()->id ?? null,
-                'fk_action' => Action::where('name', 'atualização')->value('id'),
+                'fk_action' => Action::where('name', 'Editou')->value('id'),
                 'name_table' => 'roles',
                 'record_id' => $role->id,
                 'description' => 'Papel atualizado: de ' . json_encode($roleOriginal) . ' para ' . json_encode($role->toArray()),
@@ -248,10 +248,10 @@ class RoleController extends Controller
         }
         try {
             $role->delete();
-            // Log de auditoria - remoção
+            // Log de auditoria - removeu
             SystemLog::create([
                 'fk_user' => request()->user()->id ?? null,
-                'fk_action' => Action::where('name', 'remoção')->value('id'),
+                'fk_action' => Action::where('name', 'removeu')->value('id'),
                 'name_table' => 'roles',
                 'record_id' => $role->id,
                 'description' => 'Papel removido: ' . json_encode($role->toArray()),

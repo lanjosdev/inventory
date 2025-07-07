@@ -73,7 +73,7 @@ class CompaniesController extends Controller
             } else {
                 $query = Companies::withTrashed();
             }
-            
+
             $companies = $query->with('contacts')->whereNull('deleted_at')->paginate($perPage)->appends($request->all());
             $companies->getCollection()->transform(function ($company) {
                 return [
@@ -334,7 +334,7 @@ class CompaniesController extends Controller
             $company->contacts()->sync($contactIds);
             SystemLog::create([
                 'fk_user' => $request->user()->id ?? null,
-                'fk_action' => ActionModel::where('name', 'atualização')->value('id'),
+                'fk_action' => ActionModel::where('name', 'Editou')->value('id'),
                 'name_table' => 'companies',
                 'record_id' => $company->id,
                 'description' => 'Empresa atualizada: ' . json_encode($company->toArray()),
@@ -387,7 +387,7 @@ class CompaniesController extends Controller
             $company->delete();
             SystemLog::create([
                 'fk_user' => $request->user()->id ?? null,
-                'fk_action' => ActionModel::where('name', 'remoção')->value('id'),
+                'fk_action' => ActionModel::where('name', 'removeu')->value('id'),
                 'name_table' => 'companies',
                 'record_id' => $company->id,
                 'description' => 'Empresa removida: ' . json_encode($company->toArray()),
