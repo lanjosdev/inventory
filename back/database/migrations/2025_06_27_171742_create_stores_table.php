@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('stores', function (Blueprint $table) {
             $table->id();
             $table->string('name', 255);
-            $table->foreignId('fk_companie')->constrained('companies')->onUpdate('cascade');
+            $table->foreignId('fk_companie')->constrained('companies')->onUpdate('cascade')->onDelete('restrict');
             $table->string('cnpj', 255)->nullable();
             $table->timestamps();
             $table->softDeletes();

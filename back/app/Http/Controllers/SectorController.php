@@ -183,10 +183,10 @@ class SectorController extends Controller
      *     )
      * )
      */
-    public function show($id)
+    public function show($id_sector)
     {
         try {
-            $sector = Sector::find($id);
+            $sector = Sector::find($id_sector);
             if (!$sector) {
                 return ResponseHelper::error('Setor não encontrado.', 404);
             }
@@ -255,11 +255,11 @@ class SectorController extends Controller
      *     )
      * )
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id_sector)
     {
         DB::beginTransaction();
         try {
-            $sector = Sector::find($id);
+            $sector = Sector::find($id_sector);
             if (!$sector) {
                 return ResponseHelper::error('Setor não encontrado.', 404);
             }
@@ -314,11 +314,11 @@ class SectorController extends Controller
      *     )
      * )
      */
-    public function destroy($id)
+    public function destroy($id_sector)
     {
         DB::beginTransaction();
         try {
-            $sector = Sector::find($id);
+            $sector = Sector::find($id_sector);
             if (!$sector) {
                 return ResponseHelper::error('Setor não encontrado.', 404);
             }

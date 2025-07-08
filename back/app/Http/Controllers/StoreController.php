@@ -45,6 +45,11 @@ class StoreController extends Controller
      *                     @OA\Items(
      *                         @OA\Property(property="id_store", type="integer", example=1),
      *                         @OA\Property(property="name", type="string", example="Loja XPTO"),
+     *                         @OA\Property(property="cnpj", type="string", example="12345678000195"),
+     *                         @OA\Property(property="company", type="object",
+     *                              @OA\Property(property="id", type="integer", example=1),
+     *                              @OA\Property(property="name", type="string", example="Rede Exemplo")
+     *                         ),
      *                         @OA\Property(property="contacts", type="array", @OA\Items(
      *                             @OA\Property(property="id_contact", type="integer", example=1),
      *                             @OA\Property(property="name", type="string", example="Contato 1"),
@@ -69,11 +74,16 @@ class StoreController extends Controller
     {
         try {
             $perPage = $request->query('per_page', 10);
-            $stores = Store::with('contacts')->paginate($perPage);
+            $stores = Store::with(['contacts', 'company'])->paginate($perPage);
             $stores->getCollection()->transform(function ($store) {
                 return [
                     'id' => $store->id,
                     'name' => $store->name,
+                    'cnpj' => $store->cnpj,
+                    'company' => $store->company ? [
+                        'id' => $store->company->id,
+                        'name' => $store->company->name,
+                    ] : null,
                     'contacts' => $store->contacts->map(function ($contact) {
                         return [
                             'id' => $contact->id,
@@ -117,6 +127,11 @@ class StoreController extends Controller
      *             @OA\Property(property="data", type="object",
      *                 @OA\Property(property="id", type="integer", example=1),
      *                 @OA\Property(property="name", type="string", example="Loja XPTO"),
+     *                 @OA\Property(property="cnpj", type="string", example="12345678000195"),
+     *                 @OA\Property(property="company", type="object",
+     *                      @OA\Property(property="id", type="integer", example=1),
+     *                      @OA\Property(property="name", type="string", example="Rede Exemplo")
+     *                 ),
      *                 @OA\Property(property="contacts", type="array", @OA\Items(
      *                     @OA\Property(property="id_contact", type="integer", example=1),
      *                     @OA\Property(property="name", type="string", example="Contato 1"),
@@ -140,13 +155,18 @@ class StoreController extends Controller
     public function show($id)
     {
         try {
-            $store = Store::with('contacts')->find($id);
+            $store = Store::with(['contacts', 'company'])->find($id);
             if (!$store) {
                 return ResponseHelper::error('Loja não encontrada.', 404);
             }
             $data = [
                 'id' => $store->id,
                 'name' => $store->name,
+                'cnpj' => $store->cnpj,
+                'company' => $store->company ? [
+                    'id' => $store->company->id,
+                    'name' => $store->company->name,
+                ] : null,
                 'contacts' => $store->contacts->map(function ($contact) {
                     return [
                         'id' => $contact->id,
@@ -176,8 +196,10 @@ class StoreController extends Controller
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             required={"name", "contacts"},
+     *             required={"name", "contacts", "fk_companie", "cnpj"},
      *             @OA\Property(property="name", type="string", example="Loja XPTO"),
+     *             @OA\Property(property="fk_companie", type="integer", example=1, description="ID da rede (empresa) à qual a loja pertence."),
+     *             @OA\Property(property="cnpj", type="string", example="12345678000195"),
      *             @OA\Property(property="contacts", type="array", minItems=1, @OA\Items(
      *                 required={"name", "email", "phone"},
      *                 @OA\Property(property="name", type="string", example="Contato 1"),
@@ -195,7 +217,9 @@ class StoreController extends Controller
      *             @OA\Property(property="message", type="string", example="Loja criada com sucesso."),
      *             @OA\Property(property="data", type="object",
      *                 @OA\Property(property="id", type="integer", example=1),
-     *                 @OA\Property(property="name", type="string", example="Loja XPTO")
+     *                 @OA\Property(property="name", type="string", example="Loja XPTO"),
+     *                 @OA\Property(property="cnpj", type="string", example="12345678000195"),
+     *                 @OA\Property(property="fk_companie", type="integer", example=1)
      *             )
      *         )
      *     ),
@@ -261,12 +285,14 @@ class StoreController extends Controller
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             required={"name"},
-     *             @OA\Property(property="name", type="string", example="Loja XPTO"),
+     *             required={"name", "fk_companie", "cnpj"},
+     *             @OA\Property(property="name", type="string", example="Loja XPTO Atualizada"),
+     *             @OA\Property(property="fk_companie", type="integer", example=1, description="ID da rede (empresa) à qual a loja pertence."),
+     *             @OA\Property(property="cnpj", type="string", example="12345678000195"),
      *             @OA\Property(property="contacts", type="array", @OA\Items(
-     *                 @OA\Property(property="id_contact", type="integer", example=1),
-     *                 @OA\Property(property="name", type="string", example="Contato 1"),
-     *                 @OA\Property(property="email", type="string", example="contato@email.com"),
+     *                 @OA\Property(property="id", type="integer", example=1),
+     *                 @OA\Property(property="name", type="string", example="Contato 1 Atualizado"),
+     *                 @OA\Property(property="email", type="string", example="contato.novo@email.com"),
      *                 @OA\Property(property="phone", type="string", example="11999999999"),
      *                 @OA\Property(property="observation", type="string", example="Observação")
      *             ))
@@ -280,7 +306,16 @@ class StoreController extends Controller
      *             @OA\Property(property="message", type="string", example="Loja atualizada com sucesso."),
      *             @OA\Property(property="data", type="object",
      *                 @OA\Property(property="id", type="integer", example=1),
-     *                 @OA\Property(property="name", type="string", example="Loja XPTO")
+     *                 @OA\Property(property="name", type="string", example="Loja XPTO Atualizada"),
+     *                 @OA\Property(property="cnpj", type="string", example="12345678000195"),
+     *                 @OA\Property(property="company", type="object",
+     *                      @OA\Property(property="id", type="integer", example=1),
+     *                      @OA\Property(property="name", type="string", example="Rede Exemplo")
+     *                 ),
+     *                 @OA\Property(property="contacts", type="array", @OA\Items(
+     *                      @OA\Property(property="id", type="integer", example=1),
+     *                      @OA\Property(property="name", type="string", example="Contato 1 Atualizado")
+     *                 ))
      *             )
      *         )
      *     ),
@@ -330,7 +365,7 @@ class StoreController extends Controller
             }
             $store->contacts()->sync($contactIds);
             DB::commit();
-            $store->load('contacts');
+            $store->load(['contacts', 'company']);
             return ResponseHelper::success('Loja atualizada com sucesso.', $store);
         } catch (\Illuminate\Validation\ValidationException $ve) {
             DB::rollBack();

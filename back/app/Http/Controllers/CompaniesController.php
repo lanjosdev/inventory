@@ -118,7 +118,7 @@ class CompaniesController extends Controller
      *             @OA\Property(property="contacts", type="array", minItems=1, @OA\Items(
      *                 required={"name", "email", "phone"},
      *                 @OA\Property(property="name", type="string", example="Contato Principal"),
-     *                 @OA\Property(property="email", type="string", example="contato@email.com"),
+     *                 @OA\Property(property="email", type="string", format="email", example="contato@email.com"),
      *                 @OA\Property(property="phone", type="string", example="11999999999"),
      *                 @OA\Property(property="observation", type="string", example="Observação do contato", nullable=true)
      *             ))
@@ -138,7 +138,7 @@ class CompaniesController extends Controller
      *                     @OA\Property(property="name", type="string", example="Contato Principal"),
      *                     @OA\Property(property="email", type="string", example="contato@email.com"),
      *                     @OA\Property(property="phone", type="string", example="11999999999"),
-     *                     @OA\Property(property="observation", type="string", example="Observação do contato")
+     *                     @OA\Property(property="observation", type="string", example="Observação do contato", nullable=true)
      *                 ))
      *             )
      *         )
@@ -152,8 +152,8 @@ class CompaniesController extends Controller
         DB::beginTransaction();
         try {
             $validated = $request->validate(
-                Companies::rules(),
-                Companies::feedback()
+                Companies::rulesCreate(),
+                Companies::feedbackCreate()
             );
             $company = Companies::create(['name' => $validated['name']]);
             $contactIds = [];
@@ -262,23 +262,15 @@ class CompaniesController extends Controller
     /**
      * @OA\Put(
      *     path="/api/companies/{id_companie}",
-     *     summary="Atualiza uma empresa",
-     *     description="Atualiza os dados de uma empresa e seus contatos.",
+     *     summary="Atualiza o nome de uma empresa",
+     *     description="Atualiza apenas o nome da empresa (rede) pelo ID.",
      *     tags={"Redes"},
      *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             required={"name", "contacts"},
-     *             @OA\Property(property="name", type="string", example="Empresa XPTO Atualizada"),
-     *             @OA\Property(property="contacts", type="array", minItems=1, @OA\Items(
-     *                 required={"name", "email", "phone"},
-     *                 @OA\Property(property="id", type="integer", example=1),
-     *                 @OA\Property(property="name", type="string", example="Contato Atualizado"),
-     *                 @OA\Property(property="email", type="string", example="novo@email.com"),
-     *                 @OA\Property(property="phone", type="string", example="11988887777"),
-     *                 @OA\Property(property="observation", type="string", example="Nova observação", nullable=true)
-     *             ))
+     *             required={"name"},
+     *             @OA\Property(property="name", type="string", example="Empresa XPTO Atualizada")
      *         )
      *     ),
      *     @OA\Response(
@@ -289,14 +281,7 @@ class CompaniesController extends Controller
      *             @OA\Property(property="message", type="string", example="Empresa atualizada com sucesso."),
      *             @OA\Property(property="data", type="object",
      *                 @OA\Property(property="id", type="integer", example=1),
-     *                 @OA\Property(property="name", type="string", example="Empresa XPTO Atualizada"),
-     *                 @OA\Property(property="contacts", type="array", @OA\Items(
-     *                     @OA\Property(property="id", type="integer", example=1),
-     *                     @OA\Property(property="name", type="string", example="Contato Atualizado"),
-     *                     @OA\Property(property="email", type="string", example="novo@email.com"),
-     *                     @OA\Property(property="phone", type="string", example="11988887777"),
-     *                     @OA\Property(property="observation", type="string", example="Nova observação")
-     *                 ))
+     *                 @OA\Property(property="name", type="string", example="Empresa XPTO Atualizada")
      *             )
      *         )
      *     ),
@@ -314,24 +299,12 @@ class CompaniesController extends Controller
                 return ResponseHelper::error('Empresa não encontrada.', 404);
             }
             $validated = $request->validate(
-                Companies::rules(),
-                Companies::feedback()
+                Companies::rulesUpdate(),
+                Companies::feedbackUpdate()
             );
             $company->update(['name' => $validated['name']]);
-            $contactIds = [];
-            foreach ($validated['contacts'] as $contactData) {
-                if (isset($contactData['id'])) {
-                    $contact = Contact::find($contactData['id']);
-                    if ($contact) {
-                        $contact->update($contactData);
-                        $contactIds[] = $contact->id;
-                    }
-                } else {
-                    $contact = Contact::create($contactData);
-                    $contactIds[] = $contact->id;
-                }
-            }
-            $company->contacts()->sync($contactIds);
+            $company->save();
+            
             SystemLog::create([
                 'fk_user' => $request->user()->id ?? null,
                 'fk_action' => ActionModel::where('name', 'Editou')->value('id'),
@@ -340,7 +313,6 @@ class CompaniesController extends Controller
                 'description' => 'Empresa atualizada: ' . json_encode($company->toArray()),
             ]);
             DB::commit();
-            $company->load('contacts');
             return ResponseHelper::success('Empresa atualizada com sucesso.', $company);
         } catch (ValidationException $ve) {
             DB::rollBack();
@@ -383,7 +355,6 @@ class CompaniesController extends Controller
             if (!$company) {
                 return ResponseHelper::error('Empresa não encontrada.', 404);
             }
-            $company->contacts()->detach();
             $company->delete();
             SystemLog::create([
                 'fk_user' => $request->user()->id ?? null,

@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Contact extends Model
 {
+    use SoftDeletes;
+    
     protected $table = 'contacts';
 
     protected $fillable = [
@@ -45,20 +48,6 @@ class Contact extends Model
             'phone.digits' => 'O telefone deve ter 11 caracteres.',
 
             'observation.max' => 'A observação deve ter no máximo 255 caracteres.',
-
-            'contacts.required' => 'É obrigatório informar ao menos um contato.',
-            'contacts.array' => 'O campo contatos deve ser um array.',
-            'contacts.min' => 'É obrigatório informar ao menos um contato.',
-            'contacts.*.name.required' => 'O nome do contato é obrigatório.',
-            'contacts.*.name.max' => 'O nome do contato deve ter no máximo 255 caracteres.',
-            'contacts.*.name.min' => 'O nome do contato deve ter no mínimo 3 caracteres.',
-            'contacts.*.email.required' => 'O e-mail do contato é obrigatório.',
-            'contacts.*.email.email' => 'O e-mail do contato deve ser válido.',
-            'contacts.*.email.max' => 'O e-mail do contato deve ter no máximo 255 caracteres.',
-            'contacts.*.email.min' => 'O e-mail do contato deve ter no mínimo 7 caracteres.',
-            'contacts.*.phone.required' => 'O telefone do contato é obrigatório.',
-            'contacts.*.phone.max' => 'O telefone do contato deve ter no máximo 11 caracteres.',
-            'contacts.*.observation.max' => 'A observação do contato deve ter no máximo 255 caracteres.',
         ];
     }
 

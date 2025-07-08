@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('assets', function (Blueprint $table) {
             $table->id();
             $table->string('name', 255);
-            $table->foreignId('fk_store')->constrained('stores')->onUpdate('cascade');
-            $table->foreignId('fk_sector')->constrained('stores')->onUpdate('cascade');
-            $table->foreignId('fk_asset_type')->constrained('asset_types')->onUpdate('cascade');
-            $table->foreignId('fk_status')->constrained('asset_types')->onUpdate('cascade');
+            $table->foreignId('fk_store')->constrained('stores')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreignId('fk_sector')->constrained('stores')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreignId('fk_asset_type')->constrained('asset_types')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreignId('fk_status')->constrained('asset_types')->onUpdate('cascade')->onDelete('restrict');
             $table->string('observation', 255)->nullable();
             $table->timestamps();
             $table->softDeletes();

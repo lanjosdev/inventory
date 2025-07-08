@@ -9,8 +9,8 @@ return new class extends Migration {
     {
         Schema::create('contact_stores', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('fk_store')->constrained('stores')->onUpdate('cascade');
-            $table->foreignId('fk_contact')->constrained('contacts')->onUpdate('cascade');
+            $table->foreignId('fk_store')->constrained('stores')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreignId('fk_contact')->constrained('contacts')->onUpdate('cascade')->onDelete('restrict');
             $table->timestamps();
             $table->softDeletes();
         });

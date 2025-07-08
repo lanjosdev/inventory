@@ -72,4 +72,8 @@ Route::middleware('auth:sanctum')->group(function () {
         ]
     ]);
 
+    Route::apiResource('contacts', App\Http\Controllers\ContactController::class, [
+        'parameters' => ['contacts' => 'id']
+    ]);
+
 });

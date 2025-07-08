@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Log;
 use League\Csv\Reader;
 use Exception;
 
-class ImportCsvToDb extends Command
+class ImportStores extends Command
 {
     /**
      * The name and signature of the console command.
@@ -48,7 +48,7 @@ class ImportCsvToDb extends Command
             $csv->setHeaderOffset(0);
             $csv->setDelimiter(',');
 
-            $companyCounters = [];
+            // $companyCounters = [];
             foreach ($csv as $record) {
                 if (!isset($record['name']) || !isset($record['rede'])) {
                     $this->error("Linha inválida no CSV: " . json_encode($record));
@@ -63,12 +63,12 @@ class ImportCsvToDb extends Command
                 }
                 $fkCompanie = $company->id;
 
-                if (!isset($companyCounters[$fkCompanie])) {
-                    $companyCounters[$fkCompanie] = 1;
-                } else {
-                    $companyCounters[$fkCompanie]++;
-                }
-                $storeName = mb_strtoupper($record['name'], 'UTF-8') . '-' . $companyCounters[$fkCompanie];
+                // if (!isset($companyCounters[$fkCompanie])) {
+                //     $companyCounters[$fkCompanie] = 1;
+                // } else {
+                //     $companyCounters[$fkCompanie]++;
+                // }
+                $storeName = mb_strtoupper($record['name'], 'UTF-8') /*. '-' . $companyCounters[$fkCompanie]*/;
 
                 // Inserir loja e obter ID
                 $storeId = DB::table('stores')->insertGetId([

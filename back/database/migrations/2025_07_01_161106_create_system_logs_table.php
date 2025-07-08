@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('system_logs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('fk_user')->constrained('users')->onUpdate('cascade');
-            $table->foreignId('fk_action')->constrained('actions')->onUpdate('cascade');
+            $table->foreignId('fk_action')->constrained('actions')->onUpdate('cascade')->onDelete('restrict');
             $table->string('name_table', 255);
             $table->integer('record_id');
             $table->text('description', 10000);

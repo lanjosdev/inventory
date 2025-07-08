@@ -1092,6 +1092,7 @@
                                                 },
                                                 "email": {
                                                     "type": "string",
+                                                    "format": "email",
                                                     "example": "contato@email.com"
                                                 },
                                                 "phone": {
@@ -1161,7 +1162,8 @@
                                                             },
                                                             "observation": {
                                                                 "type": "string",
-                                                                "example": "Observação do contato"
+                                                                "example": "Observação do contato",
+                                                                "nullable": true
                                                             }
                                                         },
                                                         "type": "object"
@@ -1291,8 +1293,8 @@
                 "tags": [
                     "Redes"
                 ],
-                "summary": "Atualiza uma empresa",
-                "description": "Atualiza os dados de uma empresa e seus contatos.",
+                "summary": "Atualiza o nome de uma empresa",
+                "description": "Atualiza apenas o nome da empresa (rede) pelo ID.",
                 "operationId": "b930e74d5c9016a6de661536ec316b1d",
                 "parameters": [
                     {
@@ -1310,48 +1312,12 @@
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "name",
-                                    "contacts"
+                                    "name"
                                 ],
                                 "properties": {
                                     "name": {
                                         "type": "string",
                                         "example": "Empresa XPTO Atualizada"
-                                    },
-                                    "contacts": {
-                                        "type": "array",
-                                        "items": {
-                                            "required": [
-                                                "name",
-                                                "email",
-                                                "phone"
-                                            ],
-                                            "properties": {
-                                                "id": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
-                                                "name": {
-                                                    "type": "string",
-                                                    "example": "Contato Atualizado"
-                                                },
-                                                "email": {
-                                                    "type": "string",
-                                                    "example": "novo@email.com"
-                                                },
-                                                "phone": {
-                                                    "type": "string",
-                                                    "example": "11988887777"
-                                                },
-                                                "observation": {
-                                                    "type": "string",
-                                                    "example": "Nova observação",
-                                                    "nullable": true
-                                                }
-                                            },
-                                            "type": "object"
-                                        },
-                                        "minItems": 1
                                     }
                                 },
                                 "type": "object"
@@ -1383,34 +1349,6 @@
                                                 "name": {
                                                     "type": "string",
                                                     "example": "Empresa XPTO Atualizada"
-                                                },
-                                                "contacts": {
-                                                    "type": "array",
-                                                    "items": {
-                                                        "properties": {
-                                                            "id": {
-                                                                "type": "integer",
-                                                                "example": 1
-                                                            },
-                                                            "name": {
-                                                                "type": "string",
-                                                                "example": "Contato Atualizado"
-                                                            },
-                                                            "email": {
-                                                                "type": "string",
-                                                                "example": "novo@email.com"
-                                                            },
-                                                            "phone": {
-                                                                "type": "string",
-                                                                "example": "11988887777"
-                                                            },
-                                                            "observation": {
-                                                                "type": "string",
-                                                                "example": "Nova observação"
-                                                            }
-                                                        },
-                                                        "type": "object"
-                                                    }
                                                 }
                                             },
                                             "type": "object"
@@ -1664,6 +1602,252 @@
                                 }
                             }
                         }
+                    }
+                }
+            }
+        },
+        "/api/contacts/{id}": {
+            "get": {
+                "tags": [
+                    "Contatos"
+                ],
+                "summary": "Exibe um contato",
+                "description": "Retorna os dados de um contato pelo ID.",
+                "operationId": "4b37f4c90f5cd7974a09bd688ac4d3dd",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Contato encontrado.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Contato encontrado."
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Contato Exemplo"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "contato@email.com"
+                                                },
+                                                "phone": {
+                                                    "type": "string",
+                                                    "example": "11999999999"
+                                                },
+                                                "observation": {
+                                                    "type": "string",
+                                                    "example": "Observação do contato",
+                                                    "nullable": true
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Contato não encontrado"
+                    },
+                    "500": {
+                        "description": "Erro ao buscar contato."
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Contatos"
+                ],
+                "summary": "Atualiza um contato",
+                "description": "Atualiza os dados de um contato pelo ID.",
+                "operationId": "554514967b71c75698b6cef012de4420",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "phone"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Contato Atualizado"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "novo@email.com"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "11988887777"
+                                    },
+                                    "observation": {
+                                        "type": "string",
+                                        "example": "Nova observação",
+                                        "nullable": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Contato atualizado com sucesso.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Contato atualizado com sucesso."
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Contato Atualizado"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "novo@email.com"
+                                                },
+                                                "phone": {
+                                                    "type": "string",
+                                                    "example": "11988887777"
+                                                },
+                                                "observation": {
+                                                    "type": "string",
+                                                    "example": "Nova observação",
+                                                    "nullable": true
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Contato não encontrado"
+                    },
+                    "422": {
+                        "description": "Erro de validação"
+                    },
+                    "500": {
+                        "description": "Erro ao atualizar contato."
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Contatos"
+                ],
+                "summary": "Remove um contato",
+                "description": "Remove um contato pelo ID.",
+                "operationId": "3a78f2af1871a21a2b5a492134d72017",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Contato removido com sucesso.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Contato removido com sucesso."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Contato não encontrado"
+                    },
+                    "500": {
+                        "description": "Erro ao remover contato."
                     }
                 }
             }
@@ -2941,6 +3125,23 @@
                                                                 "type": "string",
                                                                 "example": "Loja XPTO"
                                                             },
+                                                            "cnpj": {
+                                                                "type": "string",
+                                                                "example": "12345678000195"
+                                                            },
+                                                            "company": {
+                                                                "properties": {
+                                                                    "id": {
+                                                                        "type": "integer",
+                                                                        "example": 1
+                                                                    },
+                                                                    "name": {
+                                                                        "type": "string",
+                                                                        "example": "Rede Exemplo"
+                                                                    }
+                                                                },
+                                                                "type": "object"
+                                                            },
                                                             "contacts": {
                                                                 "type": "array",
                                                                 "items": {
@@ -3009,12 +3210,23 @@
                             "schema": {
                                 "required": [
                                     "name",
-                                    "contacts"
+                                    "contacts",
+                                    "fk_companie",
+                                    "cnpj"
                                 ],
                                 "properties": {
                                     "name": {
                                         "type": "string",
                                         "example": "Loja XPTO"
+                                    },
+                                    "fk_companie": {
+                                        "description": "ID da rede (empresa) à qual a loja pertence.",
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "cnpj": {
+                                        "type": "string",
+                                        "example": "12345678000195"
                                     },
                                     "contacts": {
                                         "type": "array",
@@ -3076,6 +3288,14 @@
                                                 "name": {
                                                     "type": "string",
                                                     "example": "Loja XPTO"
+                                                },
+                                                "cnpj": {
+                                                    "type": "string",
+                                                    "example": "12345678000195"
+                                                },
+                                                "fk_companie": {
+                                                    "type": "integer",
+                                                    "example": 1
                                                 }
                                             },
                                             "type": "object"
@@ -3139,6 +3359,23 @@
                                                 "name": {
                                                     "type": "string",
                                                     "example": "Loja XPTO"
+                                                },
+                                                "cnpj": {
+                                                    "type": "string",
+                                                    "example": "12345678000195"
+                                                },
+                                                "company": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "name": {
+                                                            "type": "string",
+                                                            "example": "Rede Exemplo"
+                                                        }
+                                                    },
+                                                    "type": "object"
                                                 },
                                                 "contacts": {
                                                     "type": "array",
@@ -3210,28 +3447,39 @@
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "name"
+                                    "name",
+                                    "fk_companie",
+                                    "cnpj"
                                 ],
                                 "properties": {
                                     "name": {
                                         "type": "string",
-                                        "example": "Loja XPTO"
+                                        "example": "Loja XPTO Atualizada"
+                                    },
+                                    "fk_companie": {
+                                        "description": "ID da rede (empresa) à qual a loja pertence.",
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "cnpj": {
+                                        "type": "string",
+                                        "example": "12345678000195"
                                     },
                                     "contacts": {
                                         "type": "array",
                                         "items": {
                                             "properties": {
-                                                "id_contact": {
+                                                "id": {
                                                     "type": "integer",
                                                     "example": 1
                                                 },
                                                 "name": {
                                                     "type": "string",
-                                                    "example": "Contato 1"
+                                                    "example": "Contato 1 Atualizado"
                                                 },
                                                 "email": {
                                                     "type": "string",
-                                                    "example": "contato@email.com"
+                                                    "example": "contato.novo@email.com"
                                                 },
                                                 "phone": {
                                                     "type": "string",
@@ -3274,7 +3522,40 @@
                                                 },
                                                 "name": {
                                                     "type": "string",
-                                                    "example": "Loja XPTO"
+                                                    "example": "Loja XPTO Atualizada"
+                                                },
+                                                "cnpj": {
+                                                    "type": "string",
+                                                    "example": "12345678000195"
+                                                },
+                                                "company": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "name": {
+                                                            "type": "string",
+                                                            "example": "Rede Exemplo"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "contacts": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "name": {
+                                                                "type": "string",
+                                                                "example": "Contato 1 Atualizado"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
                                                 }
                                             },
                                             "type": "object"
@@ -4477,6 +4758,10 @@
         {
             "name": "Redes",
             "description": "Gerenciamento de empresas (redes) e seus contatos."
+        },
+        {
+            "name": "Contatos",
+            "description": "Gerenciamento de contatos."
         },
         {
             "name": "Logs do sistema",

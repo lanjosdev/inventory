@@ -8,7 +8,7 @@ use App\Models\Store;
 use League\Csv\Reader;
 use Exception;
 
-class ImportLocaisVeiculacao extends Command
+class ImportPlacements extends Command
 {
     /**
      * The name and signature of the console command.
@@ -96,7 +96,6 @@ class ImportLocaisVeiculacao extends Command
             DB::commit();
             $this->info('Importação dos locais de veiculação realizada com sucesso.');
             return 0;
-
         } catch (Exception $e) {
             DB::rollBack();
             $this->error('Erro ao importar: ' . $e->getMessage());
