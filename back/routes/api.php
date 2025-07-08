@@ -58,6 +58,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('stores', StoreController::class, [
         'parameters' => ['stores' => 'id_store']
     ]);
+    
+    Route::post('stores/{id_store}/addresses', [\App\Http\Controllers\StoreController::class, 'addAddressToStore']);
 
     //status
     Route::apiResource('status', StatusController::class, [
@@ -75,5 +77,4 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('contacts', App\Http\Controllers\ContactController::class, [
         'parameters' => ['contacts' => 'id']
     ]);
-
 });

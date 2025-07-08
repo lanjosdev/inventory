@@ -9,6 +9,262 @@
         "version": "1.0.0"
     },
     "paths": {
+        "/api/addresses/{id}": {
+            "get": {
+                "tags": [
+                    "Endereços"
+                ],
+                "summary": "Exibe um endereço",
+                "description": "Retorna os dados de um endereço pelo ID.",
+                "operationId": "de6419a46a2f3639437add4f3cb76e5d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Endereço encontrado.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Endereço encontrado."
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "country": {
+                                                    "type": "string",
+                                                    "example": "Brasil"
+                                                },
+                                                "state": {
+                                                    "type": "string",
+                                                    "example": "São Paulo"
+                                                },
+                                                "city": {
+                                                    "type": "string",
+                                                    "example": "São Paulo"
+                                                },
+                                                "address": {
+                                                    "type": "string",
+                                                    "example": "Rua das Flores, 123"
+                                                },
+                                                "cep": {
+                                                    "type": "string",
+                                                    "example": "01234-567"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Endereço não encontrado"
+                    },
+                    "500": {
+                        "description": "Erro ao buscar endereço."
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Endereços"
+                ],
+                "summary": "Atualiza um endereço",
+                "description": "Atualiza os dados de um endereço pelo ID.",
+                "operationId": "2f078db19c8d7e5a374faa4b048e4c45",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "country",
+                                    "state",
+                                    "city",
+                                    "address",
+                                    "cep"
+                                ],
+                                "properties": {
+                                    "country": {
+                                        "type": "string",
+                                        "example": "Brasil"
+                                    },
+                                    "state": {
+                                        "type": "string",
+                                        "example": "São Paulo"
+                                    },
+                                    "city": {
+                                        "type": "string",
+                                        "example": "São Paulo"
+                                    },
+                                    "address": {
+                                        "type": "string",
+                                        "example": "Rua das Flores, 123"
+                                    },
+                                    "cep": {
+                                        "type": "string",
+                                        "example": "01234-567"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Endereço atualizado com sucesso.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Endereço atualizado com sucesso."
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "country": {
+                                                    "type": "string",
+                                                    "example": "Brasil"
+                                                },
+                                                "state": {
+                                                    "type": "string",
+                                                    "example": "São Paulo"
+                                                },
+                                                "city": {
+                                                    "type": "string",
+                                                    "example": "São Paulo"
+                                                },
+                                                "address": {
+                                                    "type": "string",
+                                                    "example": "Rua das Flores, 123"
+                                                },
+                                                "cep": {
+                                                    "type": "string",
+                                                    "example": "01234-567"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Endereço não encontrado"
+                    },
+                    "422": {
+                        "description": "Erro de validação"
+                    },
+                    "500": {
+                        "description": "Erro ao atualizar endereço."
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Endereços"
+                ],
+                "summary": "Remove um endereço",
+                "description": "Remove um endereço pelo ID.",
+                "operationId": "3380f49103f9fb0f4a126d324894a33a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Endereço removido com sucesso.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Endereço removido com sucesso."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Endereço não encontrado"
+                    },
+                    "500": {
+                        "description": "Erro ao remover endereço."
+                    }
+                }
+            }
+        },
         "/stores/{id_store}/assets": {
             "get": {
                 "tags": [
@@ -3117,7 +3373,7 @@
                                                     "type": "array",
                                                     "items": {
                                                         "properties": {
-                                                            "id_store": {
+                                                            "id": {
                                                                 "type": "integer",
                                                                 "example": 1
                                                             },
@@ -3146,7 +3402,7 @@
                                                                 "type": "array",
                                                                 "items": {
                                                                     "properties": {
-                                                                        "id_contact": {
+                                                                        "id": {
                                                                             "type": "integer",
                                                                             "example": 1
                                                                         },
@@ -3165,6 +3421,38 @@
                                                                         "observation": {
                                                                             "type": "string",
                                                                             "example": "Observação"
+                                                                        }
+                                                                    },
+                                                                    "type": "object"
+                                                                }
+                                                            },
+                                                            "addresses": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "properties": {
+                                                                        "id": {
+                                                                            "type": "integer",
+                                                                            "example": 1
+                                                                        },
+                                                                        "country": {
+                                                                            "type": "string",
+                                                                            "example": "Brasil"
+                                                                        },
+                                                                        "state": {
+                                                                            "type": "string",
+                                                                            "example": "São Paulo"
+                                                                        },
+                                                                        "city": {
+                                                                            "type": "string",
+                                                                            "example": "São Paulo"
+                                                                        },
+                                                                        "address": {
+                                                                            "type": "string",
+                                                                            "example": "Rua das Flores, 123"
+                                                                        },
+                                                                        "cep": {
+                                                                            "type": "string",
+                                                                            "example": "01234-567"
                                                                         }
                                                                     },
                                                                     "type": "object"
@@ -3201,7 +3489,7 @@
                     "Lojas"
                 ],
                 "summary": "Cria uma nova loja",
-                "description": "Cria uma loja e associa contatos.",
+                "description": "Cria uma loja e associa contatos e endereços. O CNPJ deve ser único no sistema.",
                 "operationId": "5562ee6fb25788924172167093719fe9",
                 "requestBody": {
                     "required": true,
@@ -3211,12 +3499,15 @@
                                 "required": [
                                     "name",
                                     "contacts",
+                                    "address",
                                     "fk_companie",
                                     "cnpj"
                                 ],
                                 "properties": {
                                     "name": {
                                         "type": "string",
+                                        "maxLength": 255,
+                                        "minLength": 5,
                                         "example": "Loja XPTO"
                                     },
                                     "fk_companie": {
@@ -3225,7 +3516,9 @@
                                         "example": 1
                                     },
                                     "cnpj": {
+                                        "description": "CNPJ com exatamente 14 dígitos, deve ser único no sistema.",
                                         "type": "string",
+                                        "pattern": "^[0-9]{14}$",
                                         "example": "12345678000195"
                                     },
                                     "contacts": {
@@ -3239,19 +3532,68 @@
                                             "properties": {
                                                 "name": {
                                                     "type": "string",
+                                                    "maxLength": 255,
+                                                    "minLength": 3,
                                                     "example": "Contato 1"
                                                 },
                                                 "email": {
                                                     "type": "string",
+                                                    "format": "email",
+                                                    "maxLength": 255,
+                                                    "minLength": 7,
                                                     "example": "contato@email.com"
                                                 },
                                                 "phone": {
                                                     "type": "string",
+                                                    "maxLength": 11,
                                                     "example": "11999999999"
                                                 },
                                                 "observation": {
                                                     "type": "string",
-                                                    "example": "Observação"
+                                                    "maxLength": 255,
+                                                    "example": "Observação",
+                                                    "nullable": true
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "minItems": 1
+                                    },
+                                    "address": {
+                                        "type": "array",
+                                        "items": {
+                                            "required": [
+                                                "country",
+                                                "state",
+                                                "city",
+                                                "address",
+                                                "cep"
+                                            ],
+                                            "properties": {
+                                                "country": {
+                                                    "type": "string",
+                                                    "maxLength": 255,
+                                                    "example": "Brasil"
+                                                },
+                                                "state": {
+                                                    "type": "string",
+                                                    "maxLength": 255,
+                                                    "example": "São Paulo"
+                                                },
+                                                "city": {
+                                                    "type": "string",
+                                                    "maxLength": 255,
+                                                    "example": "São Paulo"
+                                                },
+                                                "address": {
+                                                    "type": "string",
+                                                    "maxLength": 255,
+                                                    "example": "Rua das Flores, 123"
+                                                },
+                                                "cep": {
+                                                    "type": "string",
+                                                    "maxLength": 255,
+                                                    "example": "01234-567"
                                                 }
                                             },
                                             "type": "object"
@@ -3293,9 +3635,46 @@
                                                     "type": "string",
                                                     "example": "12345678000195"
                                                 },
-                                                "fk_companie": {
-                                                    "type": "integer",
-                                                    "example": 1
+                                                "company": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "name": {
+                                                            "type": "string",
+                                                            "example": "Rede Exemplo"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "contacts": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "name": {
+                                                                "type": "string",
+                                                                "example": "Contato 1"
+                                                            },
+                                                            "email": {
+                                                                "type": "string",
+                                                                "example": "contato@email.com"
+                                                            },
+                                                            "phone": {
+                                                                "type": "string",
+                                                                "example": "11999999999"
+                                                            },
+                                                            "observation": {
+                                                                "type": "string",
+                                                                "example": "Observação"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
                                                 }
                                             },
                                             "type": "object"
@@ -3307,7 +3686,24 @@
                         }
                     },
                     "422": {
-                        "description": "Erro de validação"
+                        "description": "Erro de validação ou CNPJ já registrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "CNPJ já registrado, por favor verifique."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "500": {
                         "description": "Erro interno ao criar loja"
@@ -3381,7 +3777,7 @@
                                                     "type": "array",
                                                     "items": {
                                                         "properties": {
-                                                            "id_contact": {
+                                                            "id": {
                                                                 "type": "integer",
                                                                 "example": 1
                                                             },
@@ -3400,6 +3796,38 @@
                                                             "observation": {
                                                                 "type": "string",
                                                                 "example": "Observação"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "addresses": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "country": {
+                                                                "type": "string",
+                                                                "example": "Brasil"
+                                                            },
+                                                            "state": {
+                                                                "type": "string",
+                                                                "example": "São Paulo"
+                                                            },
+                                                            "city": {
+                                                                "type": "string",
+                                                                "example": "São Paulo"
+                                                            },
+                                                            "address": {
+                                                                "type": "string",
+                                                                "example": "Rua das Flores, 123"
+                                                            },
+                                                            "cep": {
+                                                                "type": "string",
+                                                                "example": "01234-567"
                                                             }
                                                         },
                                                         "type": "object"
@@ -3427,7 +3855,7 @@
                     "Lojas"
                 ],
                 "summary": "Atualiza uma loja",
-                "description": "Atualiza os dados de uma loja e seus contatos.",
+                "description": "Atualiza os dados de uma loja. O CNPJ deve ser único no sistema.",
                 "operationId": "dee0ded648b52cb19d465658d67cf510",
                 "parameters": [
                     {
@@ -3454,6 +3882,8 @@
                                 "properties": {
                                     "name": {
                                         "type": "string",
+                                        "maxLength": 255,
+                                        "minLength": 5,
                                         "example": "Loja XPTO Atualizada"
                                     },
                                     "fk_companie": {
@@ -3462,36 +3892,10 @@
                                         "example": 1
                                     },
                                     "cnpj": {
+                                        "description": "CNPJ com exatamente 14 dígitos, deve ser único no sistema.",
                                         "type": "string",
+                                        "pattern": "^[0-9]{14}$",
                                         "example": "12345678000195"
-                                    },
-                                    "contacts": {
-                                        "type": "array",
-                                        "items": {
-                                            "properties": {
-                                                "id": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
-                                                "name": {
-                                                    "type": "string",
-                                                    "example": "Contato 1 Atualizado"
-                                                },
-                                                "email": {
-                                                    "type": "string",
-                                                    "example": "contato.novo@email.com"
-                                                },
-                                                "phone": {
-                                                    "type": "string",
-                                                    "example": "11999999999"
-                                                },
-                                                "observation": {
-                                                    "type": "string",
-                                                    "example": "Observação"
-                                                }
-                                            },
-                                            "type": "object"
-                                        }
                                     }
                                 },
                                 "type": "object"
@@ -3551,7 +3955,19 @@
                                                             },
                                                             "name": {
                                                                 "type": "string",
-                                                                "example": "Contato 1 Atualizado"
+                                                                "example": "Contato 1"
+                                                            },
+                                                            "email": {
+                                                                "type": "string",
+                                                                "example": "contato@email.com"
+                                                            },
+                                                            "phone": {
+                                                                "type": "string",
+                                                                "example": "11999999999"
+                                                            },
+                                                            "observation": {
+                                                                "type": "string",
+                                                                "example": "Observação"
                                                             }
                                                         },
                                                         "type": "object"
@@ -3570,7 +3986,24 @@
                         "description": "Loja não encontrada"
                     },
                     "422": {
-                        "description": "Erro de validação"
+                        "description": "Erro de validação ou CNPJ já registrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "CNPJ já registrado, por favor verifique."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "500": {
                         "description": "Erro interno ao atualizar loja"
@@ -3744,6 +4177,141 @@
                     },
                     "500": {
                         "description": "Erro interno ao adicionar contato"
+                    }
+                }
+            }
+        },
+        "/api/stores/{id_store}/addresses": {
+            "post": {
+                "tags": [
+                    "Lojas"
+                ],
+                "summary": "Adiciona um endereço a uma loja",
+                "description": "Cria um novo endereço e faz a relação com a loja informada.",
+                "operationId": "6378ba39249dfd6f40dba6e5d33434ed",
+                "parameters": [
+                    {
+                        "name": "id_store",
+                        "in": "path",
+                        "description": "ID da loja",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "country",
+                                    "state",
+                                    "city",
+                                    "address",
+                                    "cep"
+                                ],
+                                "properties": {
+                                    "country": {
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "example": "Brasil"
+                                    },
+                                    "state": {
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "example": "São Paulo"
+                                    },
+                                    "city": {
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "example": "São Paulo"
+                                    },
+                                    "address": {
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "example": "Rua das Flores, 123"
+                                    },
+                                    "cep": {
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "example": "01234-567"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Endereço criado e relacionado à loja com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Endereço adicionado à loja com sucesso."
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "store_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "address": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": 10
+                                                        },
+                                                        "country": {
+                                                            "type": "string",
+                                                            "example": "Brasil"
+                                                        },
+                                                        "state": {
+                                                            "type": "string",
+                                                            "example": "São Paulo"
+                                                        },
+                                                        "city": {
+                                                            "type": "string",
+                                                            "example": "São Paulo"
+                                                        },
+                                                        "address": {
+                                                            "type": "string",
+                                                            "example": "Rua das Flores, 123"
+                                                        },
+                                                        "cep": {
+                                                            "type": "string",
+                                                            "example": "01234-567"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Loja não encontrada"
+                    },
+                    "422": {
+                        "description": "Erro de validação"
+                    },
+                    "500": {
+                        "description": "Erro interno ao adicionar endereço"
                     }
                 }
             }
@@ -4751,6 +5319,10 @@
         }
     },
     "tags": [
+        {
+            "name": "Endereços",
+            "description": "Gerenciamento de endereços."
+        },
         {
             "name": "Ativos",
             "description": "Gerenciamento de ativos de cada loja"
