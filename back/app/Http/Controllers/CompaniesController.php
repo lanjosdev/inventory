@@ -219,16 +219,16 @@ class CompaniesController extends Controller
      *     @OA\Response(response=500, description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.")
      * )
      */
-    public function show(Request $request, $id)
+    public function show(Request $request, $id_company)
     {
         try {
             $active = $request->query('active', null);
             if ($active === 'true' || $active === true) {
-                $company = Companies::with('contacts')->find($id);
+                $company = Companies::with('contacts')->find($id_company);
             } elseif ($active === 'false' || $active === false) {
-                $company = Companies::onlyTrashed()->with('contacts')->whereNotNull('deleted_at')->find($id);
+                $company = Companies::onlyTrashed()->with('contacts')->whereNotNull('deleted_at')->find($id_company);
             } else {
-                $company = Companies::withTrashed()->with('contacts')->whereNotNull('deleted_at')->find($id);
+                $company = Companies::withTrashed()->with('contacts')->whereNotNull('deleted_at')->find($id_company);
             }
             if (!$company) {
                 return ResponseHelper::error('Empresa não encontrada.', 404);
