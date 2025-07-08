@@ -226,9 +226,9 @@ class CompaniesController extends Controller
             if ($active === 'true' || $active === true) {
                 $company = Companies::with('contacts')->find($id_company);
             } elseif ($active === 'false' || $active === false) {
-                $company = Companies::onlyTrashed()->with('contacts')->whereNotNull('deleted_at')->find($id_company);
+                $company = Companies::onlyTrashed()->with('contacts')->find($id_company);
             } else {
-                $company = Companies::withTrashed()->with('contacts')->whereNotNull('deleted_at')->find($id_company);
+                $company = Companies::withTrashed()->with('contacts')->find($id_company);
             }
             if (!$company) {
                 return ResponseHelper::error('Empresa não encontrada.', 404);
@@ -305,11 +305,11 @@ class CompaniesController extends Controller
      *     @OA\Response(response=500, description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.")
      * )
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id_company)
     {
         DB::beginTransaction();
         try {
-            $company = Companies::find($id);
+            $company = Companies::find($id_company);
             if (!$company) {
                 return ResponseHelper::error('Empresa não encontrada.', 404);
             }
@@ -375,11 +375,11 @@ class CompaniesController extends Controller
      *     @OA\Response(response=500, description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.")
      * )
      */
-    public function destroy(Request $request, $id)
+    public function destroy(Request $request, $id_company)
     {
         DB::beginTransaction();
         try {
-            $company = Companies::find($id);
+            $company = Companies::find($id_company);
             if (!$company) {
                 return ResponseHelper::error('Empresa não encontrada.', 404);
             }
