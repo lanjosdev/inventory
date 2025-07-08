@@ -18,6 +18,8 @@ class Address extends Model
     ];
     protected $date = ['deleted_at'];
 
+    
+    
     public function stores()
     {
         return $this->belongsToMany(Store::class, 'address_store', 'address_id', 'store_id');

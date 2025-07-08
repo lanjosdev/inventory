@@ -448,9 +448,10 @@ class CompaniesController extends Controller
             if (!$company) {
                 return ResponseHelper::error('Empresa não encontrada.', 404);
             }
+            
             $validated = $request->validate(
-                ContactCompanies::rules(),
-                ContactCompanies::feedback()
+                Contact::rules(),
+                Contact::feedback()
             );
 
             if ($validated) {
@@ -458,6 +459,7 @@ class CompaniesController extends Controller
                 $company->contacts()->attach($contact->id);
             }
             DB::commit();
+            
             return ResponseHelper::success('Contato adicionado à empresa com sucesso.', [
                 'company_id' => $company->id,
                 'contact' => $contact

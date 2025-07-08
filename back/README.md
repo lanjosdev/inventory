@@ -49,7 +49,7 @@ Esta API permite:
    php artisan key:generate
    # Ajuste as variáveis do .env conforme seu ambiente
    ```
-4. Rode as migrations e seeders:
+4. Rode as migrations:
    ```bash
    php artisan migrate --seed
    ```
@@ -63,11 +63,11 @@ Importe dados em massa usando comandos artisan customizados:
 
 - Importar lojas e filiais:
   ```bash
-  php artisan import:csv public/testeFiliais.csv
+  php artisan import:csv public/stores.csv
   ```
 - Importar locais de veiculação:
   ```bash
-  php artisan import:locais-veiculacao public/locais.csv
+  php artisan import:locais-veiculacao public/placements.csv
   ```
 
 Consulte o arquivo `info.txt` para exemplos de uso.

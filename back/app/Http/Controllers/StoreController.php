@@ -19,20 +19,8 @@ class StoreController extends Controller
      *     summary="Lista lojas paginadas",
      *     description="Retorna uma lista paginada de lojas, incluindo contatos associados.",
      *     tags={"Lojas"},
-     *     @OA\Parameter(
-     *         name="page",
-     *         in="query",
-     *         description="Número da página",
-     *         required=false,
-     *         @OA\Schema(type="integer", example=1)
-     *     ),
-     *     @OA\Parameter(
-     *         name="per_page",
-     *         in="query",
-     *         description="Itens por página (padrão: 10)",
-     *         required=false,
-     *         @OA\Schema(type="integer", example=10)
-     *     ),
+     *     @OA\Parameter(name="page", in="query", description="Número da página", required=false, @OA\Schema(type="integer", example=1)),
+     *     @OA\Parameter(name="per_page", in="query", description="Itens por página (padrão: 10)", required=false, @OA\Schema(type="integer", example=10)),
      *     @OA\Response(
      *         response=200,
      *         description="Lista de lojas retornada com sucesso",
@@ -41,33 +29,13 @@ class StoreController extends Controller
      *             @OA\Property(property="message", type="string", example="Lista de lojas obtida com sucesso."),
      *             @OA\Property(property="data", type="object",
      *                 @OA\Property(property="current_page", type="integer", example=1),
-     *                 @OA\Property(property="data", type="array",
-     *                     @OA\Items(
-     *                         @OA\Property(property="id_store", type="integer", example=1),
-     *                         @OA\Property(property="name", type="string", example="Loja XPTO"),
-     *                         @OA\Property(property="cnpj", type="string", example="12345678000195"),
-     *                         @OA\Property(property="company", type="object",
-     *                              @OA\Property(property="id", type="integer", example=1),
-     *                              @OA\Property(property="name", type="string", example="Rede Exemplo")
-     *                         ),
-     *                         @OA\Property(property="contacts", type="array", @OA\Items(
-     *                             @OA\Property(property="id_contact", type="integer", example=1),
-     *                             @OA\Property(property="name", type="string", example="Contato 1"),
-     *                             @OA\Property(property="email", type="string", example="contato@email.com"),
-     *                             @OA\Property(property="phone", type="string", example="11999999999"),
-     *                             @OA\Property(property="observation", type="string", example="Observação")
-     *                         ))
-     *                     )
-     *                 ),
+     *                 @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/StoreListItem")),
      *                 @OA\Property(property="total", type="integer", example=20),
      *                 @OA\Property(property="last_page", type="integer", example=2)
      *             )
      *         )
      *     ),
-     *     @OA\Response(
-     *         response=500,
-     *         description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
-     *     )
+     *     @OA\Response(response=500, description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.")
      * )
      */
     public function index(Request $request)
@@ -111,45 +79,18 @@ class StoreController extends Controller
      *     summary="Exibe uma loja",
      *     description="Retorna os dados de uma loja pelo ID, incluindo contatos.",
      *     tags={"Lojas"},
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         description="ID da loja",
-     *         required=true,
-     *         @OA\Schema(type="integer", example=1)
-     *     ),
+     *     @OA\Parameter(name="id", in="path", description="ID da loja", required=true, @OA\Schema(type="integer", example=1)),
      *     @OA\Response(
      *         response=200,
      *         description="Loja encontrada com sucesso",
      *         @OA\JsonContent(
      *             @OA\Property(property="success", type="boolean", example=true),
      *             @OA\Property(property="message", type="string", example="Loja encontrada."),
-     *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="id", type="integer", example=1),
-     *                 @OA\Property(property="name", type="string", example="Loja XPTO"),
-     *                 @OA\Property(property="cnpj", type="string", example="12345678000195"),
-     *                 @OA\Property(property="company", type="object",
-     *                      @OA\Property(property="id", type="integer", example=1),
-     *                      @OA\Property(property="name", type="string", example="Rede Exemplo")
-     *                 ),
-     *                 @OA\Property(property="contacts", type="array", @OA\Items(
-     *                     @OA\Property(property="id_contact", type="integer", example=1),
-     *                     @OA\Property(property="name", type="string", example="Contato 1"),
-     *                     @OA\Property(property="email", type="string", example="contato@email.com"),
-     *                     @OA\Property(property="phone", type="string", example="11999999999"),
-     *                     @OA\Property(property="observation", type="string", example="Observação")
-     *                 ))
-     *             )
+     *             @OA\Property(property="data", ref="#/components/schemas/StoreListItem")
      *         )
      *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Loja não encontrada"
-     *     ),
-     *     @OA\Response(
-     *         response=500,
-     *         description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
-     *     )
+     *     @OA\Response(response=404, description="Loja não encontrada"),
+     *     @OA\Response(response=500, description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.")
      * )
      */
     public function show($id)
@@ -197,15 +138,15 @@ class StoreController extends Controller
      *         required=true,
      *         @OA\JsonContent(
      *             required={"name", "contacts", "fk_companie", "cnpj"},
-     *             @OA\Property(property="name", type="string", example="Loja XPTO"),
+     *             @OA\Property(property="name", type="string", minLength=5, maxLength=255, example="Loja XPTO"),
      *             @OA\Property(property="fk_companie", type="integer", example=1, description="ID da rede (empresa) à qual a loja pertence."),
-     *             @OA\Property(property="cnpj", type="string", example="12345678000195"),
+     *             @OA\Property(property="cnpj", type="string", minLength=14, maxLength=14, example="12345678000195"),
      *             @OA\Property(property="contacts", type="array", minItems=1, @OA\Items(
      *                 required={"name", "email", "phone"},
-     *                 @OA\Property(property="name", type="string", example="Contato 1"),
-     *                 @OA\Property(property="email", type="string", example="contato@email.com"),
-     *                 @OA\Property(property="phone", type="string", example="11999999999"),
-     *                 @OA\Property(property="observation", type="string", example="Observação")
+     *                 @OA\Property(property="name", type="string", minLength=3, maxLength=255, example="Contato 1"),
+     *                 @OA\Property(property="email", type="string", format="email", minLength=7, maxLength=255, example="contato@email.com"),
+     *                 @OA\Property(property="phone", type="string", maxLength=11, example="11999999999"),
+     *                 @OA\Property(property="observation", type="string", maxLength=255, example="Observação", nullable=true)
      *             ))
      *         )
      *     ),
@@ -215,22 +156,11 @@ class StoreController extends Controller
      *         @OA\JsonContent(
      *             @OA\Property(property="success", type="boolean", example=true),
      *             @OA\Property(property="message", type="string", example="Loja criada com sucesso."),
-     *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="id", type="integer", example=1),
-     *                 @OA\Property(property="name", type="string", example="Loja XPTO"),
-     *                 @OA\Property(property="cnpj", type="string", example="12345678000195"),
-     *                 @OA\Property(property="fk_companie", type="integer", example=1)
-     *             )
+     *             @OA\Property(property="data", ref="#/components/schemas/StoreListItem")
      *         )
      *     ),
-     *     @OA\Response(
-     *         response=422,
-     *         description="Erro de validação"
-     *     ),
-     *     @OA\Response(
-     *         response=500,
-     *         description="Erro interno ao criar loja"
-     *     )
+     *     @OA\Response(response=422, description="Erro de validação"),
+     *     @OA\Response(response=500, description="Erro interno ao criar loja")
      * )
      */
     public function store(Request $request)
@@ -238,19 +168,29 @@ class StoreController extends Controller
         DB::beginTransaction();
         try {
             $validated = $request->validate(
-                Store::rules(),
-                Store::feedback(),
+                Store::rulesCreate(),
+                Store::feedbackCreate(),
             );
+
+            $existsCNPJ = Store::where('cnpj', $validated['cnpj'])->first();
+
+            if ($existsCNPJ) {
+                return ResponseHelper::error('CNPJ já registrado, por favor verifique.', 422);
+            }
+
             $store = Store::create([
                 'name' => $validated['name'],
                 'fk_companie' => $validated['fk_companie'],
                 'cnpj' => $validated['cnpj'],
             ]);
+
             $contactIds = [];
+
             foreach ($validated['contacts'] as $contactData) {
                 $contact = Contact::create($contactData);
                 $contactIds[] = $contact->id;
             }
+
             $store->contacts()->sync($contactIds);
             DB::commit();
             $store->load('contacts');
@@ -273,29 +213,16 @@ class StoreController extends Controller
      * @OA\Put(
      *     path="/api/stores/{id_store}",
      *     summary="Atualiza uma loja",
-     *     description="Atualiza os dados de uma loja e seus contatos.",
+     *     description="Atualiza os dados de uma loja.",
      *     tags={"Lojas"},
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         description="ID da loja",
-     *         required=true,
-     *         @OA\Schema(type="integer", example=1)
-     *     ),
+     *     @OA\Parameter(name="id", in="path", description="ID da loja", required=true, @OA\Schema(type="integer", example=1)),
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
      *             required={"name", "fk_companie", "cnpj"},
-     *             @OA\Property(property="name", type="string", example="Loja XPTO Atualizada"),
+     *             @OA\Property(property="name", type="string", minLength=5, maxLength=255, example="Loja XPTO Atualizada"),
      *             @OA\Property(property="fk_companie", type="integer", example=1, description="ID da rede (empresa) à qual a loja pertence."),
-     *             @OA\Property(property="cnpj", type="string", example="12345678000195"),
-     *             @OA\Property(property="contacts", type="array", @OA\Items(
-     *                 @OA\Property(property="id", type="integer", example=1),
-     *                 @OA\Property(property="name", type="string", example="Contato 1 Atualizado"),
-     *                 @OA\Property(property="email", type="string", example="contato.novo@email.com"),
-     *                 @OA\Property(property="phone", type="string", example="11999999999"),
-     *                 @OA\Property(property="observation", type="string", example="Observação")
-     *             ))
+     *             @OA\Property(property="cnpj", type="string", minLength=14, maxLength=14, example="12345678000195")
      *         )
      *     ),
      *     @OA\Response(
@@ -304,33 +231,12 @@ class StoreController extends Controller
      *         @OA\JsonContent(
      *             @OA\Property(property="success", type="boolean", example=true),
      *             @OA\Property(property="message", type="string", example="Loja atualizada com sucesso."),
-     *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="id", type="integer", example=1),
-     *                 @OA\Property(property="name", type="string", example="Loja XPTO Atualizada"),
-     *                 @OA\Property(property="cnpj", type="string", example="12345678000195"),
-     *                 @OA\Property(property="company", type="object",
-     *                      @OA\Property(property="id", type="integer", example=1),
-     *                      @OA\Property(property="name", type="string", example="Rede Exemplo")
-     *                 ),
-     *                 @OA\Property(property="contacts", type="array", @OA\Items(
-     *                      @OA\Property(property="id", type="integer", example=1),
-     *                      @OA\Property(property="name", type="string", example="Contato 1 Atualizado")
-     *                 ))
-     *             )
+     *             @OA\Property(property="data", ref="#/components/schemas/StoreListItem")
      *         )
      *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Loja não encontrada"
-     *     ),
-     *     @OA\Response(
-     *         response=422,
-     *         description="Erro de validação"
-     *     ),
-     *     @OA\Response(
-     *         response=500,
-     *         description="Erro interno ao atualizar loja"
-     *     )
+     *     @OA\Response(response=404, description="Loja não encontrada"),
+     *     @OA\Response(response=422, description="Erro de validação"),
+     *     @OA\Response(response=500, description="Erro interno ao atualizar loja")
      * )
      */
     public function update(Request $request, $id)
@@ -341,31 +247,28 @@ class StoreController extends Controller
             if (!$store) {
                 return ResponseHelper::error('Loja não encontrada.', 404);
             }
+
             $validated = $request->validate(
-                Store::rules(),
-                Store::feedback(),
+                Store::rulesUpdate(),
+                Store::feedbackUpdate(),
             );
+
+            if (!$validated['cnpj'] === $store->cnpj) {
+                $existsCNPJ = Store::where('cnpj', $validated['cnpj'])->first();
+
+                if ($existsCNPJ) {
+                    return ResponseHelper::error('CNPJ já registrado, por favor verifique.', 422);
+                }
+            }
+
             $store->update([
                 'name' => $validated['name'],
                 'fk_companie' => $validated['fk_companie'],
                 'cnpj' => $validated['cnpj'],
             ]);
-            $contactIds = [];
-            foreach ($validated['contacts'] as $contactData) {
-                if (isset($contactData['id'])) {
-                    $contact = Contact::find($contactData['id']);
-                    if ($contact) {
-                        $contact->update($contactData);
-                        $contactIds[] = $contact->id;
-                    }
-                } else {
-                    $contact = Contact::create($contactData);
-                    $contactIds[] = $contact->id;
-                }
-            }
-            $store->contacts()->sync($contactIds);
+
             DB::commit();
-            $store->load(['contacts', 'company']);
+
             return ResponseHelper::success('Loja atualizada com sucesso.', $store);
         } catch (\Illuminate\Validation\ValidationException $ve) {
             DB::rollBack();
@@ -387,13 +290,7 @@ class StoreController extends Controller
      *     summary="Remove uma loja",
      *     description="Remove uma loja e desassocia os contatos.",
      *     tags={"Lojas"},
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         description="ID da loja",
-     *         required=true,
-     *         @OA\Schema(type="integer", example=1)
-     *     ),
+     *     @OA\Parameter(name="id", in="path", description="ID da loja", required=true, @OA\Schema(type="integer", example=1)),
      *     @OA\Response(
      *         response=200,
      *         description="Loja removida com sucesso",
@@ -402,14 +299,8 @@ class StoreController extends Controller
      *             @OA\Property(property="message", type="string", example="Loja removida com sucesso.")
      *         )
      *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Loja não encontrada"
-     *     ),
-     *     @OA\Response(
-     *         response=500,
-     *         description="Erro interno ao remover loja"
-     *     )
+     *     @OA\Response(response=404, description="Loja não encontrada"),
+     *     @OA\Response(response=500, description="Erro interno ao remover loja")
      * )
      */
     public function destroy($id)
@@ -480,16 +371,22 @@ class StoreController extends Controller
         DB::beginTransaction();
         try {
             $store = Store::find($id_store);
+
             if (!$store) {
                 return ResponseHelper::error('Loja não encontrada.', 404);
             }
+
             $validated = $request->validate(
                 Contact::rules(),
                 Contact::feedback()
             );
+
             $contact = Contact::create($validated);
+
             $store->contacts()->attach($contact->id);
+
             DB::commit();
+
             return ResponseHelper::success('Contato adicionado à loja com sucesso.', [
                 'store_id' => $store->id,
                 'contact' => $contact
@@ -508,3 +405,27 @@ class StoreController extends Controller
         }
     }
 }
+
+/**
+ * @OA\Schema(
+ *     schema="StoreListItem",
+ *     @OA\Property(property="id", type="integer", example=1),
+ *     @OA\Property(property="name", type="string", example="Loja XPTO"),
+ *     @OA\Property(property="cnpj", type="string", example="12345678000195"),
+ *     @OA\Property(property="company", type="object",
+ *         @OA\Property(property="id", type="integer", example=1),
+ *         @OA\Property(property="name", type="string", example="Rede Exemplo")
+ *     ),
+ *     @OA\Property(property="contacts", type="array", @OA\Items(ref="#/components/schemas/ContactStoreList"))
+ * )
+ */
+/**
+ * @OA\Schema(
+ *     schema="ContactStoreList",
+ *     @OA\Property(property="id", type="integer", example=1),
+ *     @OA\Property(property="name", type="string", example="Contato 1"),
+ *     @OA\Property(property="email", type="string", example="contato@email.com"),
+ *     @OA\Property(property="phone", type="string", example="11999999999"),
+ *     @OA\Property(property="observation", type="string", example="Observação")
+ * )
+ */

@@ -16,10 +16,10 @@ class Store extends Model
     ];
     protected $date = ['deleted_at'];
 
-    public static function rules()
+    public static function rulesCreate()
     {
         return [
-            'name' => 'required|max:255|',
+            'name' => 'required|max:255|min:5',
             'fk_companie' => 'required|exists:companies,id',
             'cnpj' => 'required|digits:14|',
 
@@ -29,14 +29,27 @@ class Store extends Model
             'contacts.*.phone' => 'required|max:11',
             'contacts.*.observation' => 'nullable|max:255',
 
+            'country',
+            'state',
+            'city',
+            'address',
+            'cep',
+
+            'address' => 'required|array|min:1',
+            'address.*.country' => 'required|max:255',
+            'address.*.state' => 'required|email|max:255',
+            'address.*.city' => 'required|max:255',
+            'address.*.address' => 'required|max:255',
+            'address.*.cep' => 'required|max:255',
         ];
     }
 
-    public static function feedback()
+    public static function feedbackCreate()
     {
         return [
             'name.required' => 'O campo nome é obrigatório.',
             'name.max' => 'O nome não pode ter mais que 255 caracteres.',
+            'name.min' => 'O nome deve ter no mínimo 5 caracteres.',
 
             'fk_companie.required' => 'O campo rede é obrigatório.',
             'fk_companie.exists' => 'A rede selecionada não existe.',
@@ -57,6 +70,45 @@ class Store extends Model
             'contacts.*.phone.required' => 'O telefone do contato é obrigatório.',
             'contacts.*.phone.max' => 'O telefone do contato deve ter no máximo 11 caracteres.',
             'contacts.*.observation.max' => 'A observação do contato deve ter no máximo 255 caracteres.',
+
+            'address.required' => 'É obrigatório informar ao menos um endereço.',
+            'address.array' => 'O campo endereço deve ser um array.',
+            'address.min' => 'É obrigatório informar ao menos um endereço.',
+            'address.*.country.required' => 'O país do endereço é obrigatório.',
+            'address.*.country.max' => 'O país do endereço deve ter no máximo 255 caracteres.',
+            'address.*.state.required' => 'O estado do endereço é obrigatório.',
+            'address.*.state.email' => 'O estado do endereço deve ser um e-mail válido.',
+            'address.*.state.max' => 'O estado do endereço deve ter no máximo 255 caracteres.',
+            'address.*.city.required' => 'A cidade do endereço é obrigatória.',
+            'address.*.city.max' => 'A cidade do endereço deve ter no máximo 255 caracteres.',
+            'address.*.address.required' => 'O endereço é obrigatório.',
+            'address.*.address.max' => 'O endereço deve ter no máximo 255 caracteres.',
+            'address.*.cep.required' => 'O CEP do endereço é obrigatório.',
+            'address.*.cep.max' => 'O CEP do endereço deve ter no máximo 255 caracteres.',
+        ];
+    }
+
+    public static function rulesUpdate()
+    {
+        return [
+            'name' => 'required|max:255|min:5',
+            'fk_companie' => 'required|exists:companies,id',
+            'cnpj' => 'required|digits:14|',
+        ];
+    }
+
+    public static function feedbackUpdate()
+    {
+        return [
+            'name.required' => 'O campo nome é obrigatório.',
+            'name.max' => 'O nome não pode ter mais que 255 caracteres.',
+            'name.min' => 'O nome deve ter no mínimo 5 caracteres.',
+
+            'fk_companie.required' => 'O campo rede é obrigatório.',
+            'fk_companie.exists' => 'A rede selecionada não existe.',
+
+            'cnpj.required' => 'O campo CNPJ é obrigatório.',
+            'cnpj.digits' => 'O CNPJ deve conter 14 caracteres.',
         ];
     }
 

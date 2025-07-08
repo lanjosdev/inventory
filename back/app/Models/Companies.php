@@ -35,12 +35,6 @@ class Companies extends Model
         });
     }
 
-    // Relacionamento anterior (ajuste conforme necessário)
-    public function contactCompanies()
-    {
-        return $this->hasMany(ContactCompanies::class, 'fk_rede');
-    }
-
     public function contacts()
     {
         return $this->belongsToMany(Contact::class, 'contact_companies', 'fk_companie', 'fk_contact');
