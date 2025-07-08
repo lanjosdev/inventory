@@ -25,12 +25,13 @@ class AssetController extends Controller
      *     path="/stores/{id_store}/assets",
      *     tags={"Ativos"},
      *     summary="Listar ativos de uma loja",
-     *     description="Retorna uma lista paginada de ativos de uma loja específica, ordenados por nome (asc).",
+     *     description="Retorna uma lista paginada de ativos de uma loja específica, ordenados por nome (asc). Permite filtrar por nome exato.",
      *     @OA\Parameter(name="id_store", in="path", required=true, description="ID da loja", @OA\Schema(type="integer")),
      *     @OA\Parameter(name="page", in="query", required=false, @OA\Schema(type="integer", default=1)),
      *     @OA\Parameter(name="per_page", in="query", required=false, @OA\Schema(type="integer", default=10)),
      *     @OA\Parameter(name="order_by", in="query", required=false, description="Campo de ordenação (padrão: name)", @OA\Schema(type="string", default="name")),
      *     @OA\Parameter(name="order_dir", in="query", required=false, description="Direção da ordenação (asc/desc, padrão: asc)", @OA\Schema(type="string", default="asc")),
+     *     @OA\Parameter(name="name", in="query", required=false, description="Filtrar por nome exato do ativo", @OA\Schema(type="string", example="Notebook")),
      *     @OA\Response(response=200, description="Lista paginada de ativos ordenada por nome"),
      *     @OA\Response(response=404, description="Loja não encontrada"),
      *     @OA\Response(response=500, description="Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.")
@@ -42,8 +43,14 @@ class AssetController extends Controller
             $perPage = $request->get('per_page', 10);
             $orderBy = $request->get('order_by', 'name');
             $orderDir = $request->get('order_dir', 'asc');
-            $assets = Asset::where('fk_store', $id_store)
-                ->orderBy($orderBy, $orderDir)
+            
+            $query = Asset::where('fk_store', $id_store);
+            
+            if ($request->has('name') && $request->get('name') !== null) {
+                $query->where('name', $request->get('name'));
+            }
+            
+            $assets = $query->orderBy($orderBy, $orderDir)
                 ->paginate($perPage)
                 ->appends($request->all());
             return ResponseHelper::success('Ativos listados com sucesso.', $assets);

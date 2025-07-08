@@ -271,7 +271,7 @@
                     "Ativos"
                 ],
                 "summary": "Listar ativos de uma loja",
-                "description": "Retorna uma lista paginada de ativos de uma loja específica, ordenados por nome (asc).",
+                "description": "Retorna uma lista paginada de ativos de uma loja específica, ordenados por nome (asc). Permite filtrar por nome exato.",
                 "operationId": "b5ef156ef49c26350061d03f9b3acca2",
                 "parameters": [
                     {
@@ -319,6 +319,16 @@
                         "schema": {
                             "type": "string",
                             "default": "asc"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Filtrar por nome exato do ativo",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "Notebook"
                         }
                     }
                 ],
@@ -1179,6 +1189,226 @@
                         "sanctum": []
                     }
                 ]
+            }
+        },
+        "/brands": {
+            "get": {
+                "tags": [
+                    "Marcas"
+                ],
+                "summary": "Listar marcas",
+                "description": "Retorna uma lista paginada de marcas, ordenadas por nome. Permite filtrar por nome exato.",
+                "operationId": "711d753e27854b9627bc20daaf663a1b",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 10
+                        }
+                    },
+                    {
+                        "name": "order_by",
+                        "in": "query",
+                        "description": "Campo de ordenação (padrão: name)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "name"
+                        }
+                    },
+                    {
+                        "name": "order_dir",
+                        "in": "query",
+                        "description": "Direção da ordenação (asc/desc, padrão: asc)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "asc"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Filtrar por nome exato da marca",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "Samsung"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista paginada de marcas"
+                    },
+                    "500": {
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Marcas"
+                ],
+                "summary": "Criar uma nova marca",
+                "description": "Cria uma nova marca.",
+                "operationId": "1e2443c535bc922ade379537fe9631c9",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Samsung"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Marca criada com sucesso"
+                    },
+                    "422": {
+                        "description": "Erro de validação"
+                    },
+                    "500": {
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
+                    }
+                }
+            }
+        },
+        "/brands/{id_brand}": {
+            "get": {
+                "tags": [
+                    "Marcas"
+                ],
+                "summary": "Exibir uma marca",
+                "description": "Retorna os dados de uma marca pelo ID.",
+                "operationId": "88fae7cf8e7efd49186b47b44462ed6b",
+                "parameters": [
+                    {
+                        "name": "id_brand",
+                        "in": "path",
+                        "description": "ID da marca",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Marca encontrada"
+                    },
+                    "404": {
+                        "description": "Marca não encontrada"
+                    },
+                    "500": {
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Marcas"
+                ],
+                "summary": "Atualizar uma marca",
+                "description": "Atualiza os dados de uma marca.",
+                "operationId": "de195f57717f64a74b0fefa7c02ed6af",
+                "parameters": [
+                    {
+                        "name": "id_brand",
+                        "in": "path",
+                        "description": "ID da marca",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Samsung"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Marca atualizada com sucesso"
+                    },
+                    "404": {
+                        "description": "Marca não encontrada"
+                    },
+                    "422": {
+                        "description": "Erro de validação"
+                    },
+                    "500": {
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Marcas"
+                ],
+                "summary": "Remover uma marca",
+                "description": "Remove (soft delete) uma marca.",
+                "operationId": "c9eca63b4e0dfb19c061a38e6d4de6e0",
+                "parameters": [
+                    {
+                        "name": "id_brand",
+                        "in": "path",
+                        "description": "ID da marca",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Marca removida com sucesso"
+                    },
+                    "404": {
+                        "description": "Marca não encontrada"
+                    },
+                    "500": {
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
+                    }
+                }
             }
         },
         "/api/companies": {
@@ -5451,6 +5681,10 @@
         {
             "name": "Ativos",
             "description": "Gerenciamento de ativos de cada loja"
+        },
+        {
+            "name": "Marcas",
+            "description": "Gerenciamento de marcas"
         },
         {
             "name": "Redes",

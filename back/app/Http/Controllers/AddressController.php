@@ -172,6 +172,7 @@ class AddressController extends Controller
             if (!$address) {
                 return ResponseHelper::error('Endereço não encontrado.', 404);
             }
+
             $address->delete();
             
             // Log de sistema
