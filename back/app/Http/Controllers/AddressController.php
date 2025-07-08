@@ -173,6 +173,7 @@ class AddressController extends Controller
                 return ResponseHelper::error('Endereço não encontrado.', 404);
             }
             $address->delete();
+            
             // Log de sistema
             SystemLog::create([
                 'fk_user' => request()->user()->id ?? null,

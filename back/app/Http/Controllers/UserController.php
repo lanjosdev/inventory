@@ -739,4 +739,68 @@ class UserController extends Controller
             return ResponseHelper::error('Erro interno ao restaurar usuário.', 500);
         }
     }
+
+    /**
+     * @OA\Get(
+     *     path="/api/users/my-profile",
+     *     summary="Exibe o perfil do usuário autenticado",
+     *     description="Retorna os dados do usuário atualmente autenticado.",
+     *     tags={"Usuários"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Perfil do usuário retornado com sucesso",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Perfil do usuário obtido com sucesso."),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="id", type="integer", example=1),
+     *                 @OA\Property(property="name", type="string", example="João da Silva"),
+     *                 @OA\Property(property="email", type="string", example="joao@email.com"),
+     *                 @OA\Property(property="level", type="array", @OA\Items(
+     *                     @OA\Property(property="id", type="integer", example=1),
+     *                     @OA\Property(property="name", type="string", example="Admin"),
+     *                     @OA\Property(property="permission", type="string", example="C,R,U,D")
+     *                 )),
+     *                 @OA\Property(property="created_at", type="string", format="date-time", example="2025-07-01T10:00:00Z"),
+     *                 @OA\Property(property="updated_at", type="string", format="date-time", example="2025-07-01T10:00:00Z"),
+     *                 @OA\Property(property="deleted_at", type="string", format="date-time", nullable=true, example=null)
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(response=401, description="Não autenticado"),
+     *     @OA\Response(response=500, description="Erro ao obter perfil do usuário.")
+     * )
+     */
+    public function myProfile(Request $request)
+    {
+        try {
+            $user = $request->user();
+            if (!$user) {
+                return ResponseHelper::error('Não autenticado.', 401);
+            }
+            $userData = [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'level' => $user->roles->map(function ($role) {
+                    return [
+                        'id' => $role->id,
+                        'name' => $role->name,
+                        'permission' => $role->permissions()->pluck('name')->implode(',')
+                    ];
+                }),
+                'created_at' => $user->created_at ?? null,
+                'updated_at' => $user->updated_at ?? null,
+                'deleted_at' => $user->deleted_at ?? null,
+            ];
+            return ResponseHelper::success('Perfil do usuário obtido com sucesso.', $userData);
+        } catch (QueryException $qe) {
+            Log::error('Error DB: ' . $qe->getMessage());
+            return ResponseHelper::error('Erro ao obter perfil do usuário.', 500);
+        } catch (Exception $e) {
+            Log::error('Error: ' . $e->getMessage());
+            return ResponseHelper::error('Erro ao obter perfil do usuário.', 500);
+        }
+    }
 }

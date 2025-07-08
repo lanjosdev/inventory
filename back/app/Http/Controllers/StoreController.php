@@ -225,7 +225,7 @@ class StoreController extends Controller
      *                 @OA\Property(property="state", type="string", maxLength=255, example="São Paulo"),
      *                 @OA\Property(property="city", type="string", maxLength=255, example="São Paulo"),
      *                 @OA\Property(property="address", type="string", maxLength=255, example="Rua das Flores, 123"),
-     *                 @OA\Property(property="cep", type="string", maxLength=255, example="01234-567")
+     *                 @OA\Property(property="cep", type="string", maxLength=9, example="01234-567")
      *             ))
      *         )
      *     ),
@@ -249,7 +249,15 @@ class StoreController extends Controller
      *                     @OA\Property(property="email", type="string", example="contato@email.com"),
      *                     @OA\Property(property="phone", type="string", example="11999999999"),
      *                     @OA\Property(property="observation", type="string", example="Observação")
-     *                 ))
+     *                 )),
+    *                 @OA\Property(property="addresses", type="object",
+    *                     @OA\Property(property="id", type="integer", example=1),
+    *                     @OA\Property(property="country", type="string", example="Brasil"),
+    *                     @OA\Property(property="state", type="string", example="São Paulo"),
+    *                     @OA\Property(property="city", type="string", example="São Paulo"),
+    *                     @OA\Property(property="address", type="string", example="Rua das Flores, 123"),
+    *                     @OA\Property(property="cep", type="string", example="01234-567")
+    *                 )
      *             )
      *         )
      *     ),
@@ -551,7 +559,7 @@ class StoreController extends Controller
      *             @OA\Property(property="state", type="string", maxLength=255, example="São Paulo"),
      *             @OA\Property(property="city", type="string", maxLength=255, example="São Paulo"),
      *             @OA\Property(property="address", type="string", maxLength=255, example="Rua das Flores, 123"),
-     *             @OA\Property(property="cep", type="string", maxLength=255, example="01234-567")
+     *             @OA\Property(property="cep", type="string", maxLength=9, example="01234-567")
      *         )
      *     ),
      *     @OA\Response(

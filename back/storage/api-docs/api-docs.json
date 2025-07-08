@@ -3592,7 +3592,7 @@
                                                 },
                                                 "cep": {
                                                     "type": "string",
-                                                    "maxLength": 255,
+                                                    "maxLength": 9,
                                                     "example": "01234-567"
                                                 }
                                             },
@@ -3675,6 +3675,35 @@
                                                         },
                                                         "type": "object"
                                                     }
+                                                },
+                                                "addresses": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "country": {
+                                                            "type": "string",
+                                                            "example": "Brasil"
+                                                        },
+                                                        "state": {
+                                                            "type": "string",
+                                                            "example": "São Paulo"
+                                                        },
+                                                        "city": {
+                                                            "type": "string",
+                                                            "example": "São Paulo"
+                                                        },
+                                                        "address": {
+                                                            "type": "string",
+                                                            "example": "Rua das Flores, 123"
+                                                        },
+                                                        "cep": {
+                                                            "type": "string",
+                                                            "example": "01234-567"
+                                                        }
+                                                    },
+                                                    "type": "object"
                                                 }
                                             },
                                             "type": "object"
@@ -4236,7 +4265,7 @@
                                     },
                                     "cep": {
                                         "type": "string",
-                                        "maxLength": 255,
+                                        "maxLength": 9,
                                         "example": "01234-567"
                                     }
                                 },
@@ -5315,6 +5344,102 @@
                         "description": "Erro interno ao restaurar usuário"
                     }
                 }
+            }
+        },
+        "/api/users/my-profile": {
+            "get": {
+                "tags": [
+                    "Usuários"
+                ],
+                "summary": "Exibe o perfil do usuário autenticado",
+                "description": "Retorna os dados do usuário atualmente autenticado.",
+                "operationId": "2f1a45ecac40ae5f2a5ecabc9342477d",
+                "responses": {
+                    "200": {
+                        "description": "Perfil do usuário retornado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Perfil do usuário obtido com sucesso."
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "João da Silva"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "joao@email.com"
+                                                },
+                                                "level": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "name": {
+                                                                "type": "string",
+                                                                "example": "Admin"
+                                                            },
+                                                            "permission": {
+                                                                "type": "string",
+                                                                "example": "C,R,U,D"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-07-01T10:00:00Z"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-07-01T10:00:00Z"
+                                                },
+                                                "deleted_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": null,
+                                                    "nullable": true
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Não autenticado"
+                    },
+                    "500": {
+                        "description": "Erro ao obter perfil do usuário."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         }
     },

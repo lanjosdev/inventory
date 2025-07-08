@@ -12,6 +12,8 @@ use App\Http\Controllers\StoreController;
 use App\Http\Controllers\ContactStoreController;
 use App\Http\Controllers\StatusController;
 use App\Http\Controllers\ActionController;
+use App\Http\Controllers\AssetController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\SystemLogController;
 
 Route::get('/', function () {
@@ -39,6 +41,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('users/{id_user}/restore', [UserController::class, 'restore']);
     Route::post('users/update-password', [UserController::class, 'updatePassword']);
     Route::post('users/{id_user}/update-password-admin', [UserController::class, 'updatePasswordAdmin']);
+    Route::get('/my-profile', [UserController::class, 'myProfile']);
     Route::apiResource('users', UserController::class, [
         'parameters' => ['users' => 'id_user']
     ]);
@@ -55,11 +58,11 @@ Route::middleware('auth:sanctum')->group(function () {
     ]);
 
     //lojas
+    Route::post('stores/{id_store}/addresses', [StoreController::class, 'addAddressToStore']);
     Route::apiResource('stores', StoreController::class, [
         'parameters' => ['stores' => 'id_store']
     ]);
-    
-    Route::post('stores/{id_store}/addresses', [\App\Http\Controllers\StoreController::class, 'addAddressToStore']);
+
 
     //status
     Route::apiResource('status', StatusController::class, [
@@ -67,14 +70,14 @@ Route::middleware('auth:sanctum')->group(function () {
     ]);
 
     // ativos (assets) aninhados em lojas
-    Route::apiResource('stores.assets', App\Http\Controllers\AssetController::class, [
+    Route::apiResource('stores.assets', AssetController::class, [
         'parameters' => [
             'stores' => 'id_store',
             'assets' => 'asset',
         ]
     ]);
 
-    Route::apiResource('contacts', App\Http\Controllers\ContactController::class, [
+    Route::apiResource('contacts', ContactController::class, [
         'parameters' => ['contacts' => 'id']
     ]);
 });

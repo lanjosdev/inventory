@@ -35,7 +35,7 @@ class Store extends Model
             'address',
             'cep',
 
-            'address' => 'required|array|min:1',
+            'address' => 'required|min:1',
             'address.*.country' => 'required|max:255',
             'address.*.state' => 'required|email|max:255',
             'address.*.city' => 'required|max:255',
@@ -72,7 +72,6 @@ class Store extends Model
             'contacts.*.observation.max' => 'A observação do contato deve ter no máximo 255 caracteres.',
 
             'address.required' => 'É obrigatório informar ao menos um endereço.',
-            'address.array' => 'O campo endereço deve ser um array.',
             'address.min' => 'É obrigatório informar ao menos um endereço.',
             'address.*.country.required' => 'O país do endereço é obrigatório.',
             'address.*.country.max' => 'O país do endereço deve ter no máximo 255 caracteres.',
