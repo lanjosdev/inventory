@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
-import { Edit, ArrowLeft, Mail, Phone, User, Calendar } from 'lucide-react'
+import { Edit, ArrowLeft, Mail, Phone, User } from 'lucide-react'
 import type { Company } from '@/types'
 import Link from 'next/link'
 
