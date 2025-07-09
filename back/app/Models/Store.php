@@ -29,12 +29,6 @@ class Store extends Model
             'contacts.*.phone' => 'required|max:11',
             'contacts.*.observation' => 'nullable|max:255',
 
-            'country',
-            'state',
-            'city',
-            'address',
-            'cep',
-
             'address' => 'required|min:1',
             'address.*.country' => 'required|max:255',
             'address.*.state' => 'required|email|max:255',
