@@ -3,23 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Brand extends Model
+class Agency extends Model
 {
-    use SoftDeletes;
-
     protected $fillable = [
         'name',
         'observation'
     ];
-
-    protected $dates = ['deleted_at'];
-
-    public function contacts()
-    {
-        return $this->belongsToMany(Contact::class, 'brand_contacts', 'fk_brand', 'fk_contact');
-    }
+    protected $date = ['deleted_at'];
+    protected $table = 'agencies';
 
     public static function rulesCreate()
     {
@@ -28,7 +20,7 @@ class Brand extends Model
             'observation' => 'nullable|max:255',
 
             'contacts' => 'required|array|min:1',
-            'contacts.*.name' => 'required|max:255|min:3',
+            'contacts.*.name' => 'required|string|max:255|min:3',
             'contacts.*.email' => 'required|email|max:255|min:7',
             'contacts.*.phone' => 'required|max:11',
             'contacts.*.observation' => 'nullable|max:255',

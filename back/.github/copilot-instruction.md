@@ -7,6 +7,38 @@ O bloco try/catch deve capturar ValidationException, QueryException e Exception,
 
 Utilize sempre um ResponseHelper para padronizar o retorno de sucesso e erro.
 
+## 1.1. Padrão de Try/Catch para Métodos de Alteração na Base de Dados
+
+Para métodos que alteram dados (store, update, destroy), utilize obrigatoriamente este padrão:
+
+```php
+} catch (ValidationException $e) {
+    DB::rollBack();
+    return ResponseHelper::error($e->getMessage(), 422);
+} catch (QueryException $e) {
+    DB::rollBack();
+    Log::error($e);
+    return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
+} catch (\Exception $e) {
+    DB::rollBack();
+    Log::error($e);
+    return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
+}
+```
+
+## 1.2. Padrão de Try/Catch para Métodos de Visualização
+
+Para métodos de visualização (index, show), utilize apenas Exception:
+
+```php
+} catch (\Exception $e) {
+    Log::error($e);
+    return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
+}
+```
+
+**Importante:** Sempre importe as classes necessárias: `use Illuminate\Validation\ValidationException;`, `use Illuminate\Database\QueryException;` e `use Illuminate\Support\Facades\Log;`.
+
 # 2. Uso de Transações
 Sempre inicie uma transação (DB::beginTransaction()) em rotas de atualização, remoção ou criação de dados.
 
@@ -146,6 +178,68 @@ class Agency extends Model
 
 O uso de SoftDeletes é obrigatório para todos os recursos do sistema.
 
+## 3.4.1. Padrão para criação de Models
+
+Ao criar um novo Model, siga sempre o padrão abaixo para garantir consistência, facilidade de manutenção e aderência às boas práticas da aplicação:
+
+- Importe e utilize o trait `SoftDeletes`.
+- Defina o array protegido `$fillable` com todos os atributos que podem ser preenchidos em massa.
+- Defina o array protegido `$dates` incluindo `deleted_at` (e outros campos de data, se houver).
+- Implemente métodos estáticos `rules()` e `feedback()` para centralizar as regras de validação e mensagens de feedback, baseando-se nos atributos do `$fillable`.
+- Caso o nome da tabela não siga o padrão plural do nome do model, defina explicitamente a propriedade protegida `$table` com o nome correto da tabela.
+
+**Exemplo de Model padrão:**
+
+```php
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+class Example extends Model
+{
+    use SoftDeletes;
+
+    // Defina explicitamente o nome da tabela se não seguir o padrão do Eloquent
+    protected $table = 'nome_da_tabela';
+
+    protected $fillable = [
+        'nome',
+        'email',
+        'telefone',
+        // ... outros campos
+    ];
+
+    protected $dates = [
+        'deleted_at',
+        // ... outros campos de data
+    ];
+
+    public static function rules($id = null)
+    {
+        return [
+            'nome' => 'required|string|max:255',
+            'email' => 'required|email|unique:examples,email,' . ($id ?? 'NULL') . ',id',
+            'telefone' => 'nullable|string',
+            // ... regras para outros campos
+        ];
+    }
+
+    public static function feedback()
+    {
+        return [
+            'nome.required' => 'O campo nome é obrigatório.',
+            'email.required' => 'O campo e-mail é obrigatório.',
+            'email.email' => 'O e-mail informado não é válido.',
+            'email.unique' => 'Este e-mail já está cadastrado.',
+            // ... mensagens para outros campos
+        ];
+    }
+}
+```
+
+> **Dica:** Sempre utilize os métodos `rules()` e `feedback()` nos Controllers para centralizar e padronizar a validação dos dados.
+
+Esse padrão deve ser seguido em todos os novos Models e aplicado gradualmente aos existentes.
+
 # 4. Guia de Software (SEÇÃO ATUALIZADA)
 O README.md principal deve servir como um portal para a documentação, contendo:
 
@@ -206,7 +300,6 @@ Localize e altere o bloco de anotação @OA\... correspondente para que ele refl
 
 ## 8. Logs na aplicação
 
-
 Todas as ações de atualização, criação ou remoção (exceto listagem geral - get-all - e consulta por ID - get-id) devem obrigatoriamente registrar logs no sistema.
 
 O log deve conter informações cruciais para relatórios e auditoria, incluindo:
@@ -217,7 +310,32 @@ O log deve conter informações cruciais para relatórios e auditoria, incluindo
 - Dados relevantes antes e depois da alteração (quando aplicável)
 - Identificador do recurso afetado
 - Descrição da ação realizada
+
 **Esses logs são essenciais para rastreamento de atividades e auditoria de segurança.**
+
+## 8.1. Padrão de Implementação de Logs
+
+Utilize sempre este padrão para registrar logs de auditoria em todas as operações de criação, edição e remoção:
+
+```php
+SystemLog::create([
+    'fk_user' => $request->user()->id ?? null,
+    'fk_action' => ActionModel::where('name', 'Editou')->value('id'),
+    'name_table' => 'companies',
+    'record_id' => $company->id,
+    'description' => 'Empresa atualizada: ' . json_encode($company->toArray()),
+]);
+```
+
+**Regras para implementação:**
+
+- `fk_user`: ID do usuário logado (`$request->user()->id ?? null`)
+- `fk_action`: ID da ação obtido do ActionModel (ex: 'Criou', 'Editou', 'Removeu')
+- `name_table`: Nome da tabela sendo manipulada
+- `record_id`: ID do registro sendo manipulado
+- `description`: Descrição clara da ação + dados do registro em JSON
+
+**Importante:** Certifique-se de importar `use App\Models\SystemLog;` e `use App\Models\ActionModel;` no controller.
 
 
 **Este arquivo é o coração da aplicação. Toda nova feature, refatoração ou ajuste deve seguir e, se necessário, atualizar este guia.**

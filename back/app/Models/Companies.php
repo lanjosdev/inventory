@@ -59,14 +59,22 @@ class Companies extends Model
             'name.max' => 'O nome da empresa deve ter no máximo 255 caracteres.',
             'name.min' => 'O nome da empresa deve ter no mínimo 2 caracteres.',
 
-            'contacts' => 'required|array|min:1',
-            'contacts.*.name' => 'required|string|max:255|min:3',
-            'contacts.*.email' => 'required|email|max:255|min:7',
-            'contacts.*.phone' => 'required|max:11',
-            'contacts.*.observation' => 'nullable|max:255',
+            'contacts.required' => 'É obrigatório informar ao menos um contato.',
+            'contacts.array' => 'O campo contatos deve ser um array.',
+            'contacts.min' => 'É obrigatório informar ao menos um contato.',
+            'contacts.*.name.required' => 'O nome do contato é obrigatório.',
+            'contacts.*.name.max' => 'O nome do contato deve ter no máximo 255 caracteres.',
+            'contacts.*.name.min' => 'O nome do contato deve ter no mínimo 3 caracteres.',
+            'contacts.*.email.required' => 'O e-mail do contato é obrigatório.',
+            'contacts.*.email.email' => 'O e-mail do contato deve ser válido.',
+            'contacts.*.email.max' => 'O e-mail do contato deve ter no máximo 255 caracteres.',
+            'contacts.*.email.min' => 'O e-mail do contato deve ter no mínimo 7 caracteres.',
+            'contacts.*.phone.required' => 'O telefone do contato é obrigatório.',
+            'contacts.*.phone.max' => 'O telefone do contato deve ter no máximo 11 caracteres.',
+            'contacts.*.observation.max' => 'A observação do contato deve ter no máximo 255 caracteres.',
         ];
     }
-    
+
     public static function rulesUpdate()
     {
         return [

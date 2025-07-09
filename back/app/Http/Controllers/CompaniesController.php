@@ -295,9 +295,11 @@ class CompaniesController extends Controller
         DB::beginTransaction();
         try {
             $company = Companies::find($id_company);
+            
             if (!$company) {
                 return ResponseHelper::error('Empresa não encontrada.', 404);
             }
+            
             $validated = $request->validate(
                 Companies::rulesUpdate(),
                 Companies::feedbackUpdate()
@@ -470,11 +472,11 @@ class CompaniesController extends Controller
         } catch (QueryException $qe) {
             DB::rollBack();
             Log::error('Error DB: ' . $qe->getMessage());
-            return ResponseHelper::error('Erro interno ao adicionar contato.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         } catch (Exception $e) {
             DB::rollBack();
             Log::error('Error: ' . $e->getMessage());
-            return ResponseHelper::error('Erro interno ao adicionar contato.', 500);
+            return ResponseHelper::error('Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde.', 500);
         }
     }
 }

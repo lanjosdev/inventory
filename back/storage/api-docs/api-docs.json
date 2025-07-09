@@ -265,6 +265,266 @@
                 }
             }
         },
+        "/api/agencies": {
+            "get": {
+                "tags": [
+                    "Agências"
+                ],
+                "summary": "Listar agências",
+                "description": "Retorna uma lista paginada de agências",
+                "operationId": "697a4a7e63ba7c3bbce65c71a718e22e",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Número da página",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Número de itens por página",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 10
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de agências retornada com sucesso"
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Agências"
+                ],
+                "summary": "Criar nova agência",
+                "description": "Cria uma nova agência no sistema",
+                "operationId": "a5d73eab2b5be570294a40eb452b9e99",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Agência Exemplo"
+                                    },
+                                    "observation": {
+                                        "type": "string",
+                                        "example": "Observação da agência"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Agência criada com sucesso"
+                    },
+                    "422": {
+                        "description": "Erro de validação"
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor"
+                    }
+                }
+            }
+        },
+        "/api/agencies/{id_agency}": {
+            "get": {
+                "tags": [
+                    "Agências"
+                ],
+                "summary": "Exibir agência específica",
+                "description": "Retorna os dados de uma agência específica",
+                "operationId": "4c9f820eb8c23fc6a70c9adf5b1f59e1",
+                "parameters": [
+                    {
+                        "name": "id_agency",
+                        "in": "path",
+                        "description": "ID da agência",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Agência encontrada com sucesso"
+                    },
+                    "404": {
+                        "description": "Agência não encontrada"
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Agências"
+                ],
+                "summary": "Atualizar agência",
+                "description": "Atualiza os dados de uma agência específica",
+                "operationId": "9abc83f48172a44f844efb70a6fc4db7",
+                "parameters": [
+                    {
+                        "name": "id_agency",
+                        "in": "path",
+                        "description": "ID da agência",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Agência Atualizada"
+                                    },
+                                    "observation": {
+                                        "type": "string",
+                                        "example": "Nova observação"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Agência atualizada com sucesso"
+                    },
+                    "404": {
+                        "description": "Agência não encontrada"
+                    },
+                    "422": {
+                        "description": "Erro de validação"
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Agências"
+                ],
+                "summary": "Remover agência",
+                "description": "Remove uma agência específica (soft delete)",
+                "operationId": "6a4822211e5d6875e6ceec67ea192eb4",
+                "parameters": [
+                    {
+                        "name": "id_agency",
+                        "in": "path",
+                        "description": "ID da agência",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Agência removida com sucesso"
+                    },
+                    "404": {
+                        "description": "Agência não encontrada"
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor"
+                    }
+                }
+            }
+        },
+        "/api/agencies/{id_agency}/contacts": {
+            "post": {
+                "tags": [
+                    "Agências"
+                ],
+                "summary": "Adicionar contato à agência",
+                "description": "Cria um novo contato e o adiciona à agência especificada",
+                "operationId": "c74be1ea6c37da1584bd7e0d843041cf",
+                "parameters": [
+                    {
+                        "name": "id_agency",
+                        "in": "path",
+                        "description": "ID da agência",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "João Silva"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "joao@exemplo.com"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "(11) 99999-9999"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Contato adicionado à agência com sucesso"
+                    },
+                    "404": {
+                        "description": "Agência não encontrada"
+                    },
+                    "422": {
+                        "description": "Erro de validação"
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor"
+                    }
+                }
+            }
+        },
         "/stores/{id_store}/assets": {
             "get": {
                 "tags": [
@@ -1197,7 +1457,7 @@
                     "Marcas"
                 ],
                 "summary": "Listar marcas",
-                "description": "Retorna uma lista paginada de marcas, ordenadas por nome. Permite filtrar por nome exato.",
+                "description": "Retorna uma lista paginada de marcas com seus contatos, ordenadas por nome. Permite filtrar por nome exato.",
                 "operationId": "711d753e27854b9627bc20daaf663a1b",
                 "parameters": [
                     {
@@ -1251,7 +1511,98 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Lista paginada de marcas"
+                        "description": "Lista paginada de marcas",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Marcas listadas com sucesso."
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "data": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "name": {
+                                                                "type": "string",
+                                                                "example": "Samsung"
+                                                            },
+                                                            "observation": {
+                                                                "type": "string",
+                                                                "example": "Marca de eletrônicos"
+                                                            },
+                                                            "created_at": {
+                                                                "type": "string",
+                                                                "format": "date-time"
+                                                            },
+                                                            "updated_at": {
+                                                                "type": "string",
+                                                                "format": "date-time"
+                                                            },
+                                                            "contacts": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "properties": {
+                                                                        "id": {
+                                                                            "type": "integer",
+                                                                            "example": 1
+                                                                        },
+                                                                        "name": {
+                                                                            "type": "string",
+                                                                            "example": "João Silva"
+                                                                        },
+                                                                        "email": {
+                                                                            "type": "string",
+                                                                            "example": "joao@samsung.com"
+                                                                        },
+                                                                        "phone": {
+                                                                            "type": "string",
+                                                                            "example": "11999999999"
+                                                                        },
+                                                                        "observation": {
+                                                                            "type": "string",
+                                                                            "example": "Contato principal",
+                                                                            "nullable": true
+                                                                        }
+                                                                    },
+                                                                    "type": "object"
+                                                                }
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "example": 10
+                                                },
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 100
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "500": {
                         "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
@@ -1263,7 +1614,7 @@
                     "Marcas"
                 ],
                 "summary": "Criar uma nova marca",
-                "description": "Cria uma nova marca.",
+                "description": "Cria uma nova marca com ao menos um contato associado.",
                 "operationId": "1e2443c535bc922ade379537fe9631c9",
                 "requestBody": {
                     "required": true,
@@ -1271,12 +1622,49 @@
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "name"
+                                    "name",
+                                    "contacts"
                                 ],
                                 "properties": {
                                     "name": {
                                         "type": "string",
                                         "example": "Samsung"
+                                    },
+                                    "observation": {
+                                        "type": "string",
+                                        "example": "Marca de eletrônicos"
+                                    },
+                                    "contacts": {
+                                        "type": "array",
+                                        "items": {
+                                            "required": [
+                                                "name",
+                                                "email",
+                                                "phone"
+                                            ],
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "João Silva"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "format": "email",
+                                                    "example": "joao@samsung.com"
+                                                },
+                                                "phone": {
+                                                    "type": "string",
+                                                    "example": "11999999999"
+                                                },
+                                                "observation": {
+                                                    "type": "string",
+                                                    "example": "Contato principal",
+                                                    "nullable": true
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "minItems": 1
                                     }
                                 },
                                 "type": "object"
@@ -1286,7 +1674,78 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Marca criada com sucesso"
+                        "description": "Marca criada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Marca criada com sucesso."
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Samsung"
+                                                },
+                                                "observation": {
+                                                    "type": "string",
+                                                    "example": "Marca de eletrônicos"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                },
+                                                "contacts": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "name": {
+                                                                "type": "string",
+                                                                "example": "João Silva"
+                                                            },
+                                                            "email": {
+                                                                "type": "string",
+                                                                "example": "joao@samsung.com"
+                                                            },
+                                                            "phone": {
+                                                                "type": "string",
+                                                                "example": "11999999999"
+                                                            },
+                                                            "observation": {
+                                                                "type": "string",
+                                                                "example": "Contato principal",
+                                                                "nullable": true
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "422": {
                         "description": "Erro de validação"
@@ -1303,7 +1762,7 @@
                     "Marcas"
                 ],
                 "summary": "Exibir uma marca",
-                "description": "Retorna os dados de uma marca pelo ID.",
+                "description": "Retorna os dados de uma marca pelo ID, incluindo seus contatos associados.",
                 "operationId": "88fae7cf8e7efd49186b47b44462ed6b",
                 "parameters": [
                     {
@@ -1318,7 +1777,78 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Marca encontrada"
+                        "description": "Marca encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Marca encontrada."
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Samsung"
+                                                },
+                                                "observation": {
+                                                    "type": "string",
+                                                    "example": "Marca de eletrônicos"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                },
+                                                "contacts": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "name": {
+                                                                "type": "string",
+                                                                "example": "João Silva"
+                                                            },
+                                                            "email": {
+                                                                "type": "string",
+                                                                "example": "joao@samsung.com"
+                                                            },
+                                                            "phone": {
+                                                                "type": "string",
+                                                                "example": "11999999999"
+                                                            },
+                                                            "observation": {
+                                                                "type": "string",
+                                                                "example": "Contato principal",
+                                                                "nullable": true
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "404": {
                         "description": "Marca não encontrada"
@@ -1358,6 +1888,10 @@
                                     "name": {
                                         "type": "string",
                                         "example": "Samsung"
+                                    },
+                                    "observation": {
+                                        "type": "string",
+                                        "example": "Marca de eletrônicos atualizada"
                                     }
                                 },
                                 "type": "object"
@@ -1367,7 +1901,49 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Marca atualizada com sucesso"
+                        "description": "Marca atualizada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Marca atualizada com sucesso."
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Samsung"
+                                                },
+                                                "observation": {
+                                                    "type": "string",
+                                                    "example": "Marca de eletrônicos atualizada"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "404": {
                         "description": "Marca não encontrada"
@@ -1400,10 +1976,194 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Marca removida com sucesso"
+                        "description": "Marca removida com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Marca removida com sucesso."
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Samsung"
+                                                },
+                                                "observation": {
+                                                    "type": "string",
+                                                    "example": "Marca de eletrônicos"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                },
+                                                "deleted_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "404": {
                         "description": "Marca não encontrada"
+                    },
+                    "500": {
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
+                    }
+                }
+            }
+        },
+        "/brands/{id_brand}/contacts": {
+            "post": {
+                "tags": [
+                    "Marcas"
+                ],
+                "summary": "Adicionar contato a uma marca",
+                "description": "Cria um novo contato e o associa a uma marca específica.",
+                "operationId": "c16614ebd9a2265a096ab794062994f1",
+                "parameters": [
+                    {
+                        "name": "id_brand",
+                        "in": "path",
+                        "description": "ID da marca",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "phone"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Maria Santos"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "maria@samsung.com"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "11888888888"
+                                    },
+                                    "observation": {
+                                        "type": "string",
+                                        "example": "Contato comercial",
+                                        "nullable": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Contato adicionado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Contato adicionado à marca com sucesso."
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "brand": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "name": {
+                                                            "type": "string",
+                                                            "example": "Samsung"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "contact": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": 2
+                                                        },
+                                                        "name": {
+                                                            "type": "string",
+                                                            "example": "Maria Santos"
+                                                        },
+                                                        "email": {
+                                                            "type": "string",
+                                                            "example": "maria@samsung.com"
+                                                        },
+                                                        "phone": {
+                                                            "type": "string",
+                                                            "example": "11888888888"
+                                                        },
+                                                        "observation": {
+                                                            "type": "string",
+                                                            "example": "Contato comercial"
+                                                        },
+                                                        "created_at": {
+                                                            "type": "string",
+                                                            "format": "date-time"
+                                                        },
+                                                        "updated_at": {
+                                                            "type": "string",
+                                                            "format": "date-time"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Marca não encontrada"
+                    },
+                    "422": {
+                        "description": "Erro de validação"
                     },
                     "500": {
                         "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
@@ -5677,6 +6437,10 @@
         {
             "name": "Endereços",
             "description": "Gerenciamento de endereços."
+        },
+        {
+            "name": "Agências",
+            "description": "Gerenciamento das agências"
         },
         {
             "name": "Ativos",
