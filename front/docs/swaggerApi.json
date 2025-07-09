@@ -9,104 +9,18 @@
         "version": "1.0.0"
     },
     "paths": {
-        "/api/actions": {
+        "/api/addresses/{id}": {
             "get": {
                 "tags": [
-                    "Ações"
+                    "Endereços"
                 ],
-                "summary": "Listar ações",
-                "description": "Retorna uma lista paginada de ações.",
-                "operationId": "a9d7c561614fd277a97feeccca3fdafb",
+                "summary": "Exibe um endereço",
+                "description": "Retorna os dados de um endereço pelo ID.",
+                "operationId": "de6419a46a2f3639437add4f3cb76e5d",
                 "parameters": [
                     {
-                        "name": "page",
-                        "in": "query",
-                        "description": "Número da página para paginação",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "default": 1
-                        }
-                    },
-                    {
-                        "name": "per_page",
-                        "in": "query",
-                        "description": "Quantidade de itens por página",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "default": 10
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Sucesso"
-                    },
-                    "401": {
-                        "description": "Não autorizado"
-                    },
-                    "500": {
-                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
-                    }
-                }
-            }
-        },
-        "/api/action": {
-            "post": {
-                "tags": [
-                    "Ações"
-                ],
-                "summary": "Criar ação",
-                "description": "Cria uma nova ação.",
-                "operationId": "7c1409027af1e3b942435b2e66a9cbaf",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "name"
-                                ],
-                                "properties": {
-                                    "name": {
-                                        "type": "string"
-                                    },
-                                    "description": {
-                                        "type": "string"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Criado"
-                    },
-                    "400": {
-                        "description": "Erro de validação"
-                    },
-                    "500": {
-                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
-                    }
-                }
-            }
-        },
-        "/api/actions/{id_action}": {
-            "get": {
-                "tags": [
-                    "Ações"
-                ],
-                "summary": "Exibir ação",
-                "description": "Exibe uma ação específica.",
-                "operationId": "cdffda7410fffd48a66cb189cbf3ea9e",
-                "parameters": [
-                    {
-                        "name": "id_action",
+                        "name": "id",
                         "in": "path",
-                        "description": "ID da ação",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -115,28 +29,81 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Sucesso"
+                        "description": "Endereço encontrado.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Endereço encontrado."
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "country": {
+                                                    "type": "string",
+                                                    "example": "Brasil"
+                                                },
+                                                "state": {
+                                                    "type": "string",
+                                                    "example": "São Paulo"
+                                                },
+                                                "city": {
+                                                    "type": "string",
+                                                    "example": "São Paulo"
+                                                },
+                                                "address": {
+                                                    "type": "string",
+                                                    "example": "Rua das Flores, 123"
+                                                },
+                                                "cep": {
+                                                    "type": "string",
+                                                    "example": "01234-567"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "404": {
-                        "description": "Não encontrado"
+                        "description": "Endereço não encontrado"
                     },
                     "500": {
-                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
+                        "description": "Erro ao buscar endereço."
                     }
                 }
             },
             "put": {
                 "tags": [
-                    "Ações"
+                    "Endereços"
                 ],
-                "summary": "Atualizar ação",
-                "description": "Atualiza uma ação existente.",
-                "operationId": "87d1513604beac66ed6e6b1b65809497",
+                "summary": "Atualiza um endereço",
+                "description": "Atualiza os dados de um endereço pelo ID.",
+                "operationId": "2f078db19c8d7e5a374faa4b048e4c45",
                 "parameters": [
                     {
-                        "name": "id_action",
+                        "name": "id",
                         "in": "path",
-                        "description": "ID da ação",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -149,14 +116,32 @@
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "name"
+                                    "country",
+                                    "state",
+                                    "city",
+                                    "address",
+                                    "cep"
                                 ],
                                 "properties": {
-                                    "name": {
-                                        "type": "string"
+                                    "country": {
+                                        "type": "string",
+                                        "example": "Brasil"
                                     },
-                                    "description": {
-                                        "type": "string"
+                                    "state": {
+                                        "type": "string",
+                                        "example": "São Paulo"
+                                    },
+                                    "city": {
+                                        "type": "string",
+                                        "example": "São Paulo"
+                                    },
+                                    "address": {
+                                        "type": "string",
+                                        "example": "Rua das Flores, 123"
+                                    },
+                                    "cep": {
+                                        "type": "string",
+                                        "example": "01234-567"
                                     }
                                 },
                                 "type": "object"
@@ -166,31 +151,84 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Ação atualizada com sucesso"
-                    },
-                    "400": {
-                        "description": "Erro de validação"
+                        "description": "Endereço atualizado com sucesso.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Endereço atualizado com sucesso."
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "country": {
+                                                    "type": "string",
+                                                    "example": "Brasil"
+                                                },
+                                                "state": {
+                                                    "type": "string",
+                                                    "example": "São Paulo"
+                                                },
+                                                "city": {
+                                                    "type": "string",
+                                                    "example": "São Paulo"
+                                                },
+                                                "address": {
+                                                    "type": "string",
+                                                    "example": "Rua das Flores, 123"
+                                                },
+                                                "cep": {
+                                                    "type": "string",
+                                                    "example": "01234-567"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "404": {
-                        "description": "Não encontrado"
+                        "description": "Endereço não encontrado"
+                    },
+                    "422": {
+                        "description": "Erro de validação"
                     },
                     "500": {
-                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
+                        "description": "Erro ao atualizar endereço."
                     }
                 }
             },
             "delete": {
                 "tags": [
-                    "Ações"
+                    "Endereços"
                 ],
-                "summary": "Remover ação",
-                "description": "Remove uma ação existente.",
-                "operationId": "0c33a55388c27d3816de4e2040683dfc",
+                "summary": "Remove um endereço",
+                "description": "Remove um endereço pelo ID.",
+                "operationId": "3380f49103f9fb0f4a126d324894a33a",
                 "parameters": [
                     {
-                        "name": "id_action",
+                        "name": "id",
                         "in": "path",
-                        "description": "ID da ação",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -199,13 +237,30 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Ação removida com sucesso"
+                        "description": "Endereço removido com sucesso.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Endereço removido com sucesso."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "404": {
-                        "description": "Não encontrado"
+                        "description": "Endereço não encontrado"
                     },
                     "500": {
-                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
+                        "description": "Erro ao remover endereço."
                     }
                 }
             }
@@ -216,7 +271,7 @@
                     "Ativos"
                 ],
                 "summary": "Listar ativos de uma loja",
-                "description": "Retorna uma lista paginada de ativos de uma loja específica.",
+                "description": "Retorna uma lista paginada de ativos de uma loja específica, ordenados por nome (asc).",
                 "operationId": "b5ef156ef49c26350061d03f9b3acca2",
                 "parameters": [
                     {
@@ -245,11 +300,31 @@
                             "type": "integer",
                             "default": 10
                         }
+                    },
+                    {
+                        "name": "order_by",
+                        "in": "query",
+                        "description": "Campo de ordenação (padrão: name)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "name"
+                        }
+                    },
+                    {
+                        "name": "order_dir",
+                        "in": "query",
+                        "description": "Direção da ordenação (asc/desc, padrão: asc)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "asc"
+                        }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Lista paginada de ativos"
+                        "description": "Lista paginada de ativos ordenada por nome"
                     },
                     "404": {
                         "description": "Loja não encontrada"
@@ -342,7 +417,7 @@
                     "Ativos"
                 ],
                 "summary": "Exibe um ativo de uma loja",
-                "description": "Retorna os dados de um ativo pelo ID e loja.",
+                "description": "Retorna os dados de um ativo pelo ID e loja. O resultado é sempre ordenado por nome ascendente.",
                 "operationId": "b09f81173d7e3bbab229c82e92b19a8f",
                 "parameters": [
                     {
@@ -366,7 +441,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Ativo encontrado"
+                        "description": "Ativo encontrado (ordenado por nome ascendente)"
                     },
                     "404": {
                         "description": "Ativo ou loja não encontrado"
@@ -1112,7 +1187,7 @@
                     "Redes"
                 ],
                 "summary": "Lista empresas paginadas",
-                "description": "Retorna uma lista paginada de empresas, incluindo contatos.",
+                "description": "Retorna uma lista paginada de empresas, incluindo contatos. O parâmetro 'active' permite filtrar empresas ativas, deletadas ou ambas.",
                 "operationId": "ac82cf1c054ef7cbe0c010c867c5b527",
                 "parameters": [
                     {
@@ -1133,6 +1208,16 @@
                         "schema": {
                             "type": "integer",
                             "example": 10
+                        }
+                    },
+                    {
+                        "name": "active",
+                        "in": "query",
+                        "description": "Filtra empresas ativas (true), deletadas (false) ou ambas (não informado)",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean",
+                            "example": true
                         }
                     }
                 ],
@@ -1161,7 +1246,7 @@
                                                     "type": "array",
                                                     "items": {
                                                         "properties": {
-                                                            "id_company": {
+                                                            "id": {
                                                                 "type": "integer",
                                                                 "example": 1
                                                             },
@@ -1181,7 +1266,7 @@
                                                                 "type": "array",
                                                                 "items": {
                                                                     "properties": {
-                                                                        "id_contact": {
+                                                                        "id": {
                                                                             "type": "integer"
                                                                         },
                                                                         "name": {
@@ -1263,6 +1348,7 @@
                                                 },
                                                 "email": {
                                                     "type": "string",
+                                                    "format": "email",
                                                     "example": "contato@email.com"
                                                 },
                                                 "phone": {
@@ -1332,7 +1418,8 @@
                                                             },
                                                             "observation": {
                                                                 "type": "string",
-                                                                "example": "Observação do contato"
+                                                                "example": "Observação do contato",
+                                                                "nullable": true
                                                             }
                                                         },
                                                         "type": "object"
@@ -1362,7 +1449,7 @@
                     "Redes"
                 ],
                 "summary": "Exibe uma empresa",
-                "description": "Retorna os dados de uma empresa pelo ID, incluindo contatos.",
+                "description": "Retorna os dados de uma empresa pelo ID, incluindo contatos. O parâmetro 'active' permite buscar uma empresa ativa, deletada ou ambas.",
                 "operationId": "71e5597248b4641b8916a53bdd4a2d3f",
                 "parameters": [
                     {
@@ -1371,6 +1458,16 @@
                         "required": true,
                         "schema": {
                             "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "active",
+                        "in": "query",
+                        "description": "Filtra empresa ativa (true), deletada (false) ou ambas (não informado)",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean",
+                            "example": true
                         }
                     }
                 ],
@@ -1411,6 +1508,9 @@
                                                     "type": "array",
                                                     "items": {
                                                         "properties": {
+                                                            "id": {
+                                                                "type": "integer"
+                                                            },
                                                             "name": {
                                                                 "type": "string"
                                                             },
@@ -1449,8 +1549,8 @@
                 "tags": [
                     "Redes"
                 ],
-                "summary": "Atualiza uma empresa",
-                "description": "Atualiza os dados de uma empresa e seus contatos.",
+                "summary": "Atualiza o nome de uma empresa",
+                "description": "Atualiza apenas o nome da empresa (rede) pelo ID.",
                 "operationId": "b930e74d5c9016a6de661536ec316b1d",
                 "parameters": [
                     {
@@ -1468,48 +1568,12 @@
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "name",
-                                    "contacts"
+                                    "name"
                                 ],
                                 "properties": {
                                     "name": {
                                         "type": "string",
                                         "example": "Empresa XPTO Atualizada"
-                                    },
-                                    "contacts": {
-                                        "type": "array",
-                                        "items": {
-                                            "required": [
-                                                "name",
-                                                "email",
-                                                "phone"
-                                            ],
-                                            "properties": {
-                                                "id": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
-                                                "name": {
-                                                    "type": "string",
-                                                    "example": "Contato Atualizado"
-                                                },
-                                                "email": {
-                                                    "type": "string",
-                                                    "example": "novo@email.com"
-                                                },
-                                                "phone": {
-                                                    "type": "string",
-                                                    "example": "11988887777"
-                                                },
-                                                "observation": {
-                                                    "type": "string",
-                                                    "example": "Nova observação",
-                                                    "nullable": true
-                                                }
-                                            },
-                                            "type": "object"
-                                        },
-                                        "minItems": 1
                                     }
                                 },
                                 "type": "object"
@@ -1541,34 +1605,6 @@
                                                 "name": {
                                                     "type": "string",
                                                     "example": "Empresa XPTO Atualizada"
-                                                },
-                                                "contacts": {
-                                                    "type": "array",
-                                                    "items": {
-                                                        "properties": {
-                                                            "id": {
-                                                                "type": "integer",
-                                                                "example": 1
-                                                            },
-                                                            "name": {
-                                                                "type": "string",
-                                                                "example": "Contato Atualizado"
-                                                            },
-                                                            "email": {
-                                                                "type": "string",
-                                                                "example": "novo@email.com"
-                                                            },
-                                                            "phone": {
-                                                                "type": "string",
-                                                                "example": "11988887777"
-                                                            },
-                                                            "observation": {
-                                                                "type": "string",
-                                                                "example": "Nova observação"
-                                                            }
-                                                        },
-                                                        "type": "object"
-                                                    }
                                                 }
                                             },
                                             "type": "object"
@@ -1637,6 +1673,441 @@
                 }
             }
         },
+        "/api/companies/{id_companie}/contacts": {
+            "post": {
+                "tags": [
+                    "Redes"
+                ],
+                "summary": "Adiciona um contato a uma empresa (rede)",
+                "description": "Cria um novo contato e faz a relação com a empresa informada.",
+                "operationId": "4d54deddd5dda6f72d65be706ed73178",
+                "parameters": [
+                    {
+                        "name": "id_companie",
+                        "in": "path",
+                        "description": "ID da empresa (rede)",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "phone"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Contato Novo"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "contato@empresa.com"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "11999999999"
+                                    },
+                                    "observation": {
+                                        "type": "string",
+                                        "example": "Observação do contato",
+                                        "nullable": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Contato criado e relacionado à empresa com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Contato adicionado à empresa com sucesso."
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "company_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "contact": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": 10
+                                                        },
+                                                        "name": {
+                                                            "type": "string",
+                                                            "example": "Contato Novo"
+                                                        },
+                                                        "email": {
+                                                            "type": "string",
+                                                            "example": "contato@empresa.com"
+                                                        },
+                                                        "phone": {
+                                                            "type": "string",
+                                                            "example": "11999999999"
+                                                        },
+                                                        "observation": {
+                                                            "type": "string",
+                                                            "example": "Observação do contato",
+                                                            "nullable": true
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Empresa não encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Empresa não encontrada."
+                                        },
+                                        "data": {
+                                            "type": "null",
+                                            "example": null
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Erro de validação",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "object",
+                                            "example": {
+                                                "email": [
+                                                    "O campo email é obrigatório."
+                                                ]
+                                            }
+                                        },
+                                        "data": {
+                                            "type": "null",
+                                            "example": null
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno ao adicionar contato",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Erro interno ao adicionar contato."
+                                        },
+                                        "data": {
+                                            "type": "null",
+                                            "example": null
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/contacts/{id}": {
+            "get": {
+                "tags": [
+                    "Contatos"
+                ],
+                "summary": "Exibe um contato",
+                "description": "Retorna os dados de um contato pelo ID.",
+                "operationId": "4b37f4c90f5cd7974a09bd688ac4d3dd",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Contato encontrado.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Contato encontrado."
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Contato Exemplo"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "contato@email.com"
+                                                },
+                                                "phone": {
+                                                    "type": "string",
+                                                    "example": "11999999999"
+                                                },
+                                                "observation": {
+                                                    "type": "string",
+                                                    "example": "Observação do contato",
+                                                    "nullable": true
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Contato não encontrado"
+                    },
+                    "500": {
+                        "description": "Erro ao buscar contato."
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Contatos"
+                ],
+                "summary": "Atualiza um contato",
+                "description": "Atualiza os dados de um contato pelo ID.",
+                "operationId": "554514967b71c75698b6cef012de4420",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "phone"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Contato Atualizado"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "novo@email.com"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "11988887777"
+                                    },
+                                    "observation": {
+                                        "type": "string",
+                                        "example": "Nova observação",
+                                        "nullable": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Contato atualizado com sucesso.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Contato atualizado com sucesso."
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Contato Atualizado"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "novo@email.com"
+                                                },
+                                                "phone": {
+                                                    "type": "string",
+                                                    "example": "11988887777"
+                                                },
+                                                "observation": {
+                                                    "type": "string",
+                                                    "example": "Nova observação",
+                                                    "nullable": true
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Contato não encontrado"
+                    },
+                    "422": {
+                        "description": "Erro de validação"
+                    },
+                    "500": {
+                        "description": "Erro ao atualizar contato."
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Contatos"
+                ],
+                "summary": "Remove um contato",
+                "description": "Remove um contato pelo ID.",
+                "operationId": "3a78f2af1871a21a2b5a492134d72017",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Contato removido com sucesso.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Contato removido com sucesso."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Contato não encontrado"
+                    },
+                    "500": {
+                        "description": "Erro ao remover contato."
+                    }
+                }
+            }
+        },
         "/api/roles": {
             "get": {
                 "tags": [
@@ -1690,7 +2161,44 @@
                                                 "data": {
                                                     "type": "array",
                                                     "items": {
-                                                        "$ref": "#/components/schemas/Role"
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "name": {
+                                                                "type": "string",
+                                                                "example": "Admin"
+                                                            },
+                                                            "description": {
+                                                                "type": "string",
+                                                                "example": "Administrador do sistema"
+                                                            },
+                                                            "created_at": {
+                                                                "type": "string",
+                                                                "format": "date-time",
+                                                                "example": "2025-07-01T10:00:00Z"
+                                                            },
+                                                            "updated_at": {
+                                                                "type": "string",
+                                                                "format": "date-time",
+                                                                "example": "2025-07-01T10:00:00Z"
+                                                            },
+                                                            "deleted_at": {
+                                                                "type": "string",
+                                                                "format": "date-time",
+                                                                "example": null,
+                                                                "nullable": true
+                                                            },
+                                                            "permissions": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "type": "string",
+                                                                    "example": "C"
+                                                                }
+                                                            }
+                                                        },
+                                                        "type": "object"
                                                     }
                                                 },
                                                 "total": {
@@ -1757,7 +2265,44 @@
                                             "example": "Papel criado com sucesso."
                                         },
                                         "data": {
-                                            "$ref": "#/components/schemas/Role"
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Admin"
+                                                },
+                                                "description": {
+                                                    "type": "string",
+                                                    "example": "Administrador do sistema"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-07-01T10:00:00Z"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-07-01T10:00:00Z"
+                                                },
+                                                "deleted_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": null,
+                                                    "nullable": true
+                                                },
+                                                "permissions": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "C"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
                                         }
                                     },
                                     "type": "object"
@@ -1804,7 +2349,44 @@
                                             "example": "Papel encontrado."
                                         },
                                         "data": {
-                                            "$ref": "#/components/schemas/Role"
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Admin"
+                                                },
+                                                "description": {
+                                                    "type": "string",
+                                                    "example": "Administrador do sistema"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-07-01T10:00:00Z"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-07-01T10:00:00Z"
+                                                },
+                                                "deleted_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": null,
+                                                    "nullable": true
+                                                },
+                                                "permissions": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "C"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
                                         }
                                     },
                                     "type": "object"
@@ -1872,7 +2454,44 @@
                                             "example": "Papel atualizado com sucesso."
                                         },
                                         "data": {
-                                            "$ref": "#/components/schemas/Role"
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Admin"
+                                                },
+                                                "description": {
+                                                    "type": "string",
+                                                    "example": "Administrador do sistema"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-07-01T10:00:00Z"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-07-01T10:00:00Z"
+                                                },
+                                                "deleted_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": null,
+                                                    "nullable": true
+                                                },
+                                                "permissions": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "C"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
                                         }
                                     },
                                     "type": "object"
@@ -2754,7 +3373,7 @@
                                                     "type": "array",
                                                     "items": {
                                                         "properties": {
-                                                            "id_store": {
+                                                            "id": {
                                                                 "type": "integer",
                                                                 "example": 1
                                                             },
@@ -2762,11 +3381,28 @@
                                                                 "type": "string",
                                                                 "example": "Loja XPTO"
                                                             },
+                                                            "cnpj": {
+                                                                "type": "string",
+                                                                "example": "12345678000195"
+                                                            },
+                                                            "company": {
+                                                                "properties": {
+                                                                    "id": {
+                                                                        "type": "integer",
+                                                                        "example": 1
+                                                                    },
+                                                                    "name": {
+                                                                        "type": "string",
+                                                                        "example": "Rede Exemplo"
+                                                                    }
+                                                                },
+                                                                "type": "object"
+                                                            },
                                                             "contacts": {
                                                                 "type": "array",
                                                                 "items": {
                                                                     "properties": {
-                                                                        "id_contact": {
+                                                                        "id": {
                                                                             "type": "integer",
                                                                             "example": 1
                                                                         },
@@ -2785,6 +3421,38 @@
                                                                         "observation": {
                                                                             "type": "string",
                                                                             "example": "Observação"
+                                                                        }
+                                                                    },
+                                                                    "type": "object"
+                                                                }
+                                                            },
+                                                            "addresses": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "properties": {
+                                                                        "id": {
+                                                                            "type": "integer",
+                                                                            "example": 1
+                                                                        },
+                                                                        "country": {
+                                                                            "type": "string",
+                                                                            "example": "Brasil"
+                                                                        },
+                                                                        "state": {
+                                                                            "type": "string",
+                                                                            "example": "São Paulo"
+                                                                        },
+                                                                        "city": {
+                                                                            "type": "string",
+                                                                            "example": "São Paulo"
+                                                                        },
+                                                                        "address": {
+                                                                            "type": "string",
+                                                                            "example": "Rua das Flores, 123"
+                                                                        },
+                                                                        "cep": {
+                                                                            "type": "string",
+                                                                            "example": "01234-567"
                                                                         }
                                                                     },
                                                                     "type": "object"
@@ -2821,7 +3489,7 @@
                     "Lojas"
                 ],
                 "summary": "Cria uma nova loja",
-                "description": "Cria uma loja e associa contatos.",
+                "description": "Cria uma loja e associa contatos e endereços. O CNPJ deve ser único no sistema.",
                 "operationId": "5562ee6fb25788924172167093719fe9",
                 "requestBody": {
                     "required": true,
@@ -2830,12 +3498,28 @@
                             "schema": {
                                 "required": [
                                     "name",
-                                    "contacts"
+                                    "contacts",
+                                    "address",
+                                    "fk_companie",
+                                    "cnpj"
                                 ],
                                 "properties": {
                                     "name": {
                                         "type": "string",
+                                        "maxLength": 255,
+                                        "minLength": 5,
                                         "example": "Loja XPTO"
+                                    },
+                                    "fk_companie": {
+                                        "description": "ID da rede (empresa) à qual a loja pertence.",
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "cnpj": {
+                                        "description": "CNPJ com exatamente 14 dígitos, deve ser único no sistema.",
+                                        "type": "string",
+                                        "pattern": "^[0-9]{14}$",
+                                        "example": "12345678000195"
                                     },
                                     "contacts": {
                                         "type": "array",
@@ -2848,19 +3532,68 @@
                                             "properties": {
                                                 "name": {
                                                     "type": "string",
+                                                    "maxLength": 255,
+                                                    "minLength": 3,
                                                     "example": "Contato 1"
                                                 },
                                                 "email": {
                                                     "type": "string",
+                                                    "format": "email",
+                                                    "maxLength": 255,
+                                                    "minLength": 7,
                                                     "example": "contato@email.com"
                                                 },
                                                 "phone": {
                                                     "type": "string",
+                                                    "maxLength": 11,
                                                     "example": "11999999999"
                                                 },
                                                 "observation": {
                                                     "type": "string",
-                                                    "example": "Observação"
+                                                    "maxLength": 255,
+                                                    "example": "Observação",
+                                                    "nullable": true
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "minItems": 1
+                                    },
+                                    "address": {
+                                        "type": "array",
+                                        "items": {
+                                            "required": [
+                                                "country",
+                                                "state",
+                                                "city",
+                                                "address",
+                                                "cep"
+                                            ],
+                                            "properties": {
+                                                "country": {
+                                                    "type": "string",
+                                                    "maxLength": 255,
+                                                    "example": "Brasil"
+                                                },
+                                                "state": {
+                                                    "type": "string",
+                                                    "maxLength": 255,
+                                                    "example": "São Paulo"
+                                                },
+                                                "city": {
+                                                    "type": "string",
+                                                    "maxLength": 255,
+                                                    "example": "São Paulo"
+                                                },
+                                                "address": {
+                                                    "type": "string",
+                                                    "maxLength": 255,
+                                                    "example": "Rua das Flores, 123"
+                                                },
+                                                "cep": {
+                                                    "type": "string",
+                                                    "maxLength": 9,
+                                                    "example": "01234-567"
                                                 }
                                             },
                                             "type": "object"
@@ -2897,6 +3630,80 @@
                                                 "name": {
                                                     "type": "string",
                                                     "example": "Loja XPTO"
+                                                },
+                                                "cnpj": {
+                                                    "type": "string",
+                                                    "example": "12345678000195"
+                                                },
+                                                "company": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "name": {
+                                                            "type": "string",
+                                                            "example": "Rede Exemplo"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "contacts": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "name": {
+                                                                "type": "string",
+                                                                "example": "Contato 1"
+                                                            },
+                                                            "email": {
+                                                                "type": "string",
+                                                                "example": "contato@email.com"
+                                                            },
+                                                            "phone": {
+                                                                "type": "string",
+                                                                "example": "11999999999"
+                                                            },
+                                                            "observation": {
+                                                                "type": "string",
+                                                                "example": "Observação"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "addresses": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "country": {
+                                                            "type": "string",
+                                                            "example": "Brasil"
+                                                        },
+                                                        "state": {
+                                                            "type": "string",
+                                                            "example": "São Paulo"
+                                                        },
+                                                        "city": {
+                                                            "type": "string",
+                                                            "example": "São Paulo"
+                                                        },
+                                                        "address": {
+                                                            "type": "string",
+                                                            "example": "Rua das Flores, 123"
+                                                        },
+                                                        "cep": {
+                                                            "type": "string",
+                                                            "example": "01234-567"
+                                                        }
+                                                    },
+                                                    "type": "object"
                                                 }
                                             },
                                             "type": "object"
@@ -2908,7 +3715,24 @@
                         }
                     },
                     "422": {
-                        "description": "Erro de validação"
+                        "description": "Erro de validação ou CNPJ já registrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "CNPJ já registrado, por favor verifique."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "500": {
                         "description": "Erro interno ao criar loja"
@@ -2961,11 +3785,200 @@
                                                     "type": "string",
                                                     "example": "Loja XPTO"
                                                 },
+                                                "cnpj": {
+                                                    "type": "string",
+                                                    "example": "12345678000195"
+                                                },
+                                                "company": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "name": {
+                                                            "type": "string",
+                                                            "example": "Rede Exemplo"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
                                                 "contacts": {
                                                     "type": "array",
                                                     "items": {
                                                         "properties": {
-                                                            "id_contact": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "name": {
+                                                                "type": "string",
+                                                                "example": "Contato 1"
+                                                            },
+                                                            "email": {
+                                                                "type": "string",
+                                                                "example": "contato@email.com"
+                                                            },
+                                                            "phone": {
+                                                                "type": "string",
+                                                                "example": "11999999999"
+                                                            },
+                                                            "observation": {
+                                                                "type": "string",
+                                                                "example": "Observação"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "addresses": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "country": {
+                                                                "type": "string",
+                                                                "example": "Brasil"
+                                                            },
+                                                            "state": {
+                                                                "type": "string",
+                                                                "example": "São Paulo"
+                                                            },
+                                                            "city": {
+                                                                "type": "string",
+                                                                "example": "São Paulo"
+                                                            },
+                                                            "address": {
+                                                                "type": "string",
+                                                                "example": "Rua das Flores, 123"
+                                                            },
+                                                            "cep": {
+                                                                "type": "string",
+                                                                "example": "01234-567"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Loja não encontrada"
+                    },
+                    "500": {
+                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Lojas"
+                ],
+                "summary": "Atualiza uma loja",
+                "description": "Atualiza os dados de uma loja. O CNPJ deve ser único no sistema.",
+                "operationId": "dee0ded648b52cb19d465658d67cf510",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID da loja",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "fk_companie",
+                                    "cnpj"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "minLength": 5,
+                                        "example": "Loja XPTO Atualizada"
+                                    },
+                                    "fk_companie": {
+                                        "description": "ID da rede (empresa) à qual a loja pertence.",
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "cnpj": {
+                                        "description": "CNPJ com exatamente 14 dígitos, deve ser único no sistema.",
+                                        "type": "string",
+                                        "pattern": "^[0-9]{14}$",
+                                        "example": "12345678000195"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Loja atualizada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Loja atualizada com sucesso."
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Loja XPTO Atualizada"
+                                                },
+                                                "cnpj": {
+                                                    "type": "string",
+                                                    "example": "12345678000195"
+                                                },
+                                                "company": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "name": {
+                                                            "type": "string",
+                                                            "example": "Rede Exemplo"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "contacts": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
                                                                 "type": "integer",
                                                                 "example": 1
                                                             },
@@ -3001,116 +4014,25 @@
                     "404": {
                         "description": "Loja não encontrada"
                     },
-                    "500": {
-                        "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
-                    }
-                }
-            },
-            "put": {
-                "tags": [
-                    "Lojas"
-                ],
-                "summary": "Atualiza uma loja",
-                "description": "Atualiza os dados de uma loja e seus contatos.",
-                "operationId": "dee0ded648b52cb19d465658d67cf510",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "ID da loja",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "name"
-                                ],
-                                "properties": {
-                                    "name": {
-                                        "type": "string",
-                                        "example": "Loja XPTO"
-                                    },
-                                    "contacts": {
-                                        "type": "array",
-                                        "items": {
-                                            "properties": {
-                                                "id_contact": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
-                                                "name": {
-                                                    "type": "string",
-                                                    "example": "Contato 1"
-                                                },
-                                                "email": {
-                                                    "type": "string",
-                                                    "example": "contato@email.com"
-                                                },
-                                                "phone": {
-                                                    "type": "string",
-                                                    "example": "11999999999"
-                                                },
-                                                "observation": {
-                                                    "type": "string",
-                                                    "example": "Observação"
-                                                }
-                                            },
-                                            "type": "object"
-                                        }
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Loja atualizada com sucesso",
+                    "422": {
+                        "description": "Erro de validação ou CNPJ já registrado",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
                                         "success": {
                                             "type": "boolean",
-                                            "example": true
+                                            "example": false
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "Loja atualizada com sucesso."
-                                        },
-                                        "data": {
-                                            "properties": {
-                                                "id": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
-                                                "name": {
-                                                    "type": "string",
-                                                    "example": "Loja XPTO"
-                                                }
-                                            },
-                                            "type": "object"
+                                            "example": "CNPJ já registrado, por favor verifique."
                                         }
                                     },
                                     "type": "object"
                                 }
                             }
                         }
-                    },
-                    "404": {
-                        "description": "Loja não encontrada"
-                    },
-                    "422": {
-                        "description": "Erro de validação"
                     },
                     "500": {
                         "description": "Erro interno ao atualizar loja"
@@ -3162,6 +4084,263 @@
                     },
                     "500": {
                         "description": "Erro interno ao remover loja"
+                    }
+                }
+            }
+        },
+        "/api/stores/{id_store}/contacts": {
+            "post": {
+                "tags": [
+                    "Lojas"
+                ],
+                "summary": "Adiciona um contato a uma loja",
+                "description": "Cria um novo contato e faz a relação com a loja informada.",
+                "operationId": "88d5b4c96f22b0c66951e22f528eea11",
+                "parameters": [
+                    {
+                        "name": "id_store",
+                        "in": "path",
+                        "description": "ID da loja",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "phone"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Contato Novo"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "contato@loja.com"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "11999999999"
+                                    },
+                                    "observation": {
+                                        "type": "string",
+                                        "example": "Observação do contato",
+                                        "nullable": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Contato criado e relacionado à loja com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Contato adicionado à loja com sucesso."
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "store_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "contact": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": 10
+                                                        },
+                                                        "name": {
+                                                            "type": "string",
+                                                            "example": "Contato Novo"
+                                                        },
+                                                        "email": {
+                                                            "type": "string",
+                                                            "example": "contato@loja.com"
+                                                        },
+                                                        "phone": {
+                                                            "type": "string",
+                                                            "example": "11999999999"
+                                                        },
+                                                        "observation": {
+                                                            "type": "string",
+                                                            "example": "Observação do contato",
+                                                            "nullable": true
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Loja não encontrada"
+                    },
+                    "422": {
+                        "description": "Erro de validação"
+                    },
+                    "500": {
+                        "description": "Erro interno ao adicionar contato"
+                    }
+                }
+            }
+        },
+        "/api/stores/{id_store}/addresses": {
+            "post": {
+                "tags": [
+                    "Lojas"
+                ],
+                "summary": "Adiciona um endereço a uma loja",
+                "description": "Cria um novo endereço e faz a relação com a loja informada.",
+                "operationId": "6378ba39249dfd6f40dba6e5d33434ed",
+                "parameters": [
+                    {
+                        "name": "id_store",
+                        "in": "path",
+                        "description": "ID da loja",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "country",
+                                    "state",
+                                    "city",
+                                    "address",
+                                    "cep"
+                                ],
+                                "properties": {
+                                    "country": {
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "example": "Brasil"
+                                    },
+                                    "state": {
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "example": "São Paulo"
+                                    },
+                                    "city": {
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "example": "São Paulo"
+                                    },
+                                    "address": {
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "example": "Rua das Flores, 123"
+                                    },
+                                    "cep": {
+                                        "type": "string",
+                                        "maxLength": 9,
+                                        "example": "01234-567"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Endereço criado e relacionado à loja com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Endereço adicionado à loja com sucesso."
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "store_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "address": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": 10
+                                                        },
+                                                        "country": {
+                                                            "type": "string",
+                                                            "example": "Brasil"
+                                                        },
+                                                        "state": {
+                                                            "type": "string",
+                                                            "example": "São Paulo"
+                                                        },
+                                                        "city": {
+                                                            "type": "string",
+                                                            "example": "São Paulo"
+                                                        },
+                                                        "address": {
+                                                            "type": "string",
+                                                            "example": "Rua das Flores, 123"
+                                                        },
+                                                        "cep": {
+                                                            "type": "string",
+                                                            "example": "01234-567"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Loja não encontrada"
+                    },
+                    "422": {
+                        "description": "Erro de validação"
+                    },
+                    "500": {
+                        "description": "Erro interno ao adicionar endereço"
                     }
                 }
             }
@@ -3247,7 +4426,7 @@
                     "Usuários"
                 ],
                 "summary": "Lista usuários paginados",
-                "description": "Retorna uma lista paginada de usuários. Parâmetros de filtro e paginação podem ser usados.",
+                "description": "Retorna uma lista paginada de usuários. Parâmetros de filtro e paginação podem ser usados. O parâmetro 'active' permite filtrar usuários ativos, deletados ou ambos.",
                 "operationId": "c457726701591d1183b53aa71fc13441",
                 "parameters": [
                     {
@@ -3268,6 +4447,16 @@
                         "schema": {
                             "type": "integer",
                             "example": 10
+                        }
+                    },
+                    {
+                        "name": "active",
+                        "in": "query",
+                        "description": "Filtra usuários ativos (true), deletados (false) ou ambos (não informado)",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean",
+                            "example": true
                         }
                     }
                 ],
@@ -3434,6 +4623,42 @@
                                                 "email": {
                                                     "type": "string",
                                                     "example": "joao@email.com"
+                                                },
+                                                "level": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "name": {
+                                                                "type": "string",
+                                                                "example": "Admin"
+                                                            },
+                                                            "permission": {
+                                                                "type": "string",
+                                                                "example": "C,R,U,D"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-07-01T10:00:00Z"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-07-01T10:00:00Z"
+                                                },
+                                                "deleted_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": null,
+                                                    "nullable": true
                                                 }
                                             },
                                             "type": "object"
@@ -3459,7 +4684,7 @@
                     "Usuários"
                 ],
                 "summary": "Exibe um usuário",
-                "description": "Retorna os dados de um usuário pelo ID.",
+                "description": "Retorna os dados de um usuário pelo ID. O parâmetro 'active' permite buscar um usuário ativo, deletado ou ambos.",
                 "operationId": "dd259f1f0755a25c8b3bc8509c0384f1",
                 "parameters": [
                     {
@@ -3470,6 +4695,16 @@
                         "schema": {
                             "type": "integer",
                             "example": 1
+                        }
+                    },
+                    {
+                        "name": "active",
+                        "in": "query",
+                        "description": "Filtra usuário ativo (true), deletado (false) ou ambos (não informado)",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean",
+                            "example": true
                         }
                     }
                 ],
@@ -3501,6 +4736,26 @@
                                                 "email": {
                                                     "type": "string",
                                                     "example": "joao@email.com"
+                                                },
+                                                "level": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "name": {
+                                                                "type": "string",
+                                                                "example": "Admin"
+                                                            },
+                                                            "permission": {
+                                                                "type": "string",
+                                                                "example": "C,R,U,D"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
                                                 },
                                                 "created_at": {
                                                     "type": "string",
@@ -3611,6 +4866,42 @@
                                                 "email": {
                                                     "type": "string",
                                                     "example": "joao@email.com"
+                                                },
+                                                "level": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "name": {
+                                                                "type": "string",
+                                                                "example": "Admin"
+                                                            },
+                                                            "permission": {
+                                                                "type": "string",
+                                                                "example": "C,R,U,D"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-07-01T10:00:00Z"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-07-01T10:00:00Z"
+                                                },
+                                                "deleted_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": null,
+                                                    "nullable": true
                                                 }
                                             },
                                             "type": "object"
@@ -3631,14 +4922,16 @@
                         "description": "Ocorreu um erro inesperado ao processar sua solicitação. Tente novamente mais tarde."
                     }
                 }
-            },
+            }
+        },
+        "/api/users/{id}": {
             "delete": {
                 "tags": [
                     "Usuários"
                 ],
                 "summary": "Remove um usuário",
                 "description": "Remove um usuário pelo ID.",
-                "operationId": "3c8810913ff5c1f35b095ed60be0fa89",
+                "operationId": "fa56cffde745d3f152f95cbacd936c0b",
                 "parameters": [
                     {
                         "name": "id",
@@ -3718,12 +5011,9 @@
                                                 "permissions": {
                                                     "type": "array",
                                                     "items": {
-                                                        "type": "string"
-                                                    },
-                                                    "example": [
-                                                        "C",
-                                                        "R"
-                                                    ]
+                                                        "type": "string",
+                                                        "example": "C"
+                                                    }
                                                 }
                                             },
                                             "type": "object"
@@ -3779,12 +5069,9 @@
                                                     "permissions": {
                                                         "type": "array",
                                                         "items": {
-                                                            "type": "string"
-                                                        },
-                                                        "example": [
-                                                            "C",
-                                                            "R"
-                                                        ]
+                                                            "type": "string",
+                                                            "example": "C"
+                                                        }
                                                     }
                                                 },
                                                 "type": "object"
@@ -3807,49 +5094,359 @@
                     }
                 }
             }
-        }
-    },
-    "components": {
-        "schemas": {
-            "Role": {
-                "properties": {
-                    "id": {
-                        "type": "integer",
-                        "example": 1
-                    },
-                    "name": {
-                        "type": "string",
-                        "example": "admin"
-                    },
-                    "description": {
-                        "type": "string",
-                        "example": "Administrador do sistema"
-                    },
-                    "created_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2025-07-04T14:21:51.000000Z"
-                    },
-                    "updated_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2025-07-04T14:21:51.000000Z"
-                    },
-                    "deleted_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "example": null,
-                        "nullable": true
+        },
+        "/api/users/update-password": {
+            "post": {
+                "tags": [
+                    "Usuários"
+                ],
+                "summary": "Usuário altera a própria senha",
+                "operationId": "9ea6fc863476a63a469e42c80cf0cca2",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "password",
+                                    "password_confirmation"
+                                ],
+                                "properties": {
+                                    "password": {
+                                        "type": "string",
+                                        "example": "novaSenha123"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "example": "novaSenha123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
                     }
                 },
-                "type": "object"
+                "responses": {
+                    "200": {
+                        "description": "Senha alterada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Senha alterada com sucesso."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Erro de validação"
+                    },
+                    "500": {
+                        "description": "Erro interno ao alterar senha"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/users/{id}/update-password-admin": {
+            "post": {
+                "tags": [
+                    "Usuários"
+                ],
+                "summary": "Admin altera a senha de um usuário",
+                "operationId": "e0244c35c0c1a545b6f45e2065fe81ac",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "password",
+                                    "password_confirmation"
+                                ],
+                                "properties": {
+                                    "password": {
+                                        "type": "string",
+                                        "example": "novaSenha123"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "example": "novaSenha123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Senha alterada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Senha alterada com sucesso."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Sem permissão"
+                    },
+                    "404": {
+                        "description": "Usuário não encontrado"
+                    },
+                    "422": {
+                        "description": "Erro de validação"
+                    },
+                    "500": {
+                        "description": "Erro interno ao alterar senha"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/users/{id}/restore": {
+            "post": {
+                "tags": [
+                    "Usuários"
+                ],
+                "summary": "Restaura um usuário excluído (soft delete)",
+                "description": "Restaura um usuário previamente excluído, tornando-o ativo novamente.",
+                "operationId": "a3087db765f18596ec09f9c3abb4fdc5",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do usuário",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Usuário restaurado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Usuário restaurado com sucesso."
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "João da Silva"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "joao@email.com"
+                                                },
+                                                "level": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "name": {
+                                                                "type": "string",
+                                                                "example": "Admin"
+                                                            },
+                                                            "permission": {
+                                                                "type": "string",
+                                                                "example": "C,R,U,D"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-07-01T10:00:00Z"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-07-01T10:00:00Z"
+                                                },
+                                                "deleted_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": null,
+                                                    "nullable": true
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Usuário não encontrado ou não está excluído"
+                    },
+                    "500": {
+                        "description": "Erro interno ao restaurar usuário"
+                    }
+                }
+            }
+        },
+        "/api/users/my-profile": {
+            "get": {
+                "tags": [
+                    "Usuários"
+                ],
+                "summary": "Exibe o perfil do usuário autenticado",
+                "description": "Retorna os dados do usuário atualmente autenticado.",
+                "operationId": "2f1a45ecac40ae5f2a5ecabc9342477d",
+                "responses": {
+                    "200": {
+                        "description": "Perfil do usuário retornado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Perfil do usuário obtido com sucesso."
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "João da Silva"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "joao@email.com"
+                                                },
+                                                "level": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "name": {
+                                                                "type": "string",
+                                                                "example": "Admin"
+                                                            },
+                                                            "permission": {
+                                                                "type": "string",
+                                                                "example": "C,R,U,D"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-07-01T10:00:00Z"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-07-01T10:00:00Z"
+                                                },
+                                                "deleted_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": null,
+                                                    "nullable": true
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Não autenticado"
+                    },
+                    "500": {
+                        "description": "Erro ao obter perfil do usuário."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         }
     },
     "tags": [
         {
-            "name": "Ações",
-            "description": "Gerenciamento de ações do sistema"
+            "name": "Endereços",
+            "description": "Gerenciamento de endereços."
         },
         {
             "name": "Ativos",
@@ -3858,6 +5455,10 @@
         {
             "name": "Redes",
             "description": "Gerenciamento de empresas (redes) e seus contatos."
+        },
+        {
+            "name": "Contatos",
+            "description": "Gerenciamento de contatos."
         },
         {
             "name": "Logs do sistema",
