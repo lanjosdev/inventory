@@ -13,14 +13,13 @@ import {
 import { MoreHorizontal, Edit, Trash2, Eye, Building2 } from 'lucide-react'
 import type { Company } from '@/types'
 
+
 interface CompanyListProps {
   companies: Company[]
-  onEdit: (company: Company) => void
   onDelete: (company: Company) => void
   isLoading?: boolean
 }
-
-export function CompanyList({ companies, onEdit, onDelete, isLoading }: CompanyListProps) {
+export function CompanyList({ companies, onDelete, isLoading }: CompanyListProps) {
   if (isLoading) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -60,7 +59,6 @@ export function CompanyList({ companies, onEdit, onDelete, isLoading }: CompanyL
         <CompanyCard
           key={company.id}
           company={company}
-          onEdit={onEdit}
           onDelete={onDelete}
         />
       ))}
@@ -68,13 +66,12 @@ export function CompanyList({ companies, onEdit, onDelete, isLoading }: CompanyL
   )
 }
 
+
 interface CompanyCardProps {
   company: Company
-  onEdit: (company: Company) => void
   onDelete: (company: Company) => void
 }
-
-function CompanyCard({ company, onEdit, onDelete }: CompanyCardProps) {
+function CompanyCard({ company, onDelete }: CompanyCardProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   return (
@@ -102,9 +99,11 @@ function CompanyCard({ company, onEdit, onDelete }: CompanyCardProps) {
                   Visualizar
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => onEdit(company)}>
-                <Edit className="w-4 h-4 mr-2" />
-                Editar
+              <DropdownMenuItem asChild>
+                <Link href={`/redes/${company.id}/editar`}>
+                  <Edit className="w-4 h-4 mr-2" />
+                  Editar
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem 
                 onClick={() => onDelete(company)}

@@ -7,7 +7,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Plus, Search, Building2 } from 'lucide-react'
 import { CompanyList } from './company-list'
-import { CompanyDetails } from './company-details'
 import { DeleteConfirmation } from './delete-confirmation'
 import { Pagination } from './pagination'
 import { useCompanies } from '@/hooks/use-companies'
@@ -39,10 +38,10 @@ export function CompaniesPage() {
     )
   )
 
-  const handleEdit = (company: Company) => {
-    setSelectedCompany(company)
-    setViewMode('edit')
-  }
+  // const handleEdit = (company: Company) => {
+  //   setSelectedCompany(company)
+  //   setViewMode('edit')
+  // }
 
   // const handleView = (company: Company) => {
   //   setSelectedCompany(company)
@@ -93,11 +92,12 @@ export function CompaniesPage() {
   if (viewMode === 'details' && selectedCompany) {
     return (
       <div className="container mx-auto p-6">
-        <CompanyDetails
+        {/* <CompanyDetails
           company={selectedCompany}
           onEdit={handleEdit}
           onBack={handleBack}
-        />
+        /> */}
+        <h1>Tirar</h1>
       </div>
     )
   }
@@ -183,12 +183,11 @@ export function CompaniesPage() {
         </CardContent>
       </Card>
 
+
       {/* Companies List */}
       <CompanyList
         companies={searchTerm ? filteredCompanies : companies}
-        onEdit={handleEdit}
         onDelete={handleDelete}
-        // onView={handleView}
         isLoading={isLoading}
       />
 
@@ -201,6 +200,7 @@ export function CompaniesPage() {
           isLoading={isLoading}
         />
       )}
+      
 
       {/* Delete Confirmation Modal */}
       {viewMode === 'delete' && selectedCompany && (

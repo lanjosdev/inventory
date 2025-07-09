@@ -31,7 +31,6 @@ export function useLoginForm() {
             setIsSuccess(false)
 
             const result: ActionResult = await loginAction(data);
-            // console.log('Login result:', result)
 
             if(result.success) {
                 setIsSuccess(true)

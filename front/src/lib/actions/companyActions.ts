@@ -16,10 +16,10 @@ export async function getCompaniesAction(page: number = 1, perPage: number = 10)
       message: response.message
     }
   } catch (error) {
-    console.error('Erro ao buscar empresas:', error)
+    console.error('Erro ao buscar redes:', error)
     return {
       success: false,
-      message: 'Erro ao buscar empresas. Tente novamente.',
+      message: 'Erro ao buscar redes. Tente novamente.',
       data: null
     }
   }
@@ -37,10 +37,10 @@ export async function getCompanyByIdAction(id: number) {
       message: response.message
     }
   } catch (error) {
-    console.error('Erro ao buscar empresa:', error)
+    console.error('Erro ao buscar rede:', error)
     return {
       success: false,
-      message: 'Erro ao buscar empresa. Tente novamente.',
+      message: 'Erro ao buscar rede. Tente novamente.',
       data: null
     }
   }
@@ -52,7 +52,6 @@ export async function getCompanyByIdAction(id: number) {
 export async function createCompanyAction(data: CreateCompanyRequest) {
   try {
     const response = await CompanyService.createCompany(data)
-    console.log('EEEmpresa criada:', response)
     
     // Revalidar a página para atualizar os dados
     revalidatePath('/redes')
@@ -63,10 +62,10 @@ export async function createCompanyAction(data: CreateCompanyRequest) {
       message: response.message
     }
   } catch (error) {
-    console.error('Erro ao criar empresa:', error)
+    console.error('Erro ao criar rede:', error)
     return {
       success: false,
-      message: 'Erro ao criar empresa. Tente novamente.',
+      message: 'Erro ao criar rede. Tente novamente.',
       data: null
     }
   }
@@ -88,10 +87,10 @@ export async function updateCompanyAction(id: number, data: UpdateCompanyRequest
       message: response.message
     }
   } catch (error) {
-    console.error('Erro ao atualizar empresa:', error)
+    console.error('Erro ao atualizar rede:', error)
     return {
       success: false,
-      message: 'Erro ao atualizar empresa. Tente novamente.',
+      message: 'Erro ao atualizar rede. Tente novamente.',
       data: null
     }
   }
@@ -103,6 +102,7 @@ export async function updateCompanyAction(id: number, data: UpdateCompanyRequest
 export async function deleteCompanyAction(id: number) {
   try {
     const response = await CompanyService.deleteCompany(id)
+    console.log('Resposta do deleteCompanyAction:', response)
     
     // Revalidar a página para atualizar os dados
     revalidatePath('/redes')
@@ -112,10 +112,10 @@ export async function deleteCompanyAction(id: number) {
       message: response.message
     }
   } catch (error) {
-    console.error('Erro ao deletar empresa:', error)
+    console.error('Erro ao deletar rede:', error)
     return {
       success: false,
-      message: 'Erro ao deletar empresa. Tente novamente.'
+      message: 'Erro ao deletar rede. Tente novamente.'
     }
   }
 }

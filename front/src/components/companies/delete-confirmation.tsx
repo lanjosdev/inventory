@@ -31,7 +31,17 @@ export function DeleteConfirmation({
   }
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div 
+      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      style={{ 
+        width: '100vw', 
+        height: '100vh', 
+        top: 0, 
+        left: 0, 
+        margin: 0, 
+        padding: 0 
+      }}
+    >
       <Card className="w-full max-w-md mx-4">
         <CardHeader className="pb-4">
           <div className="flex items-center justify-between">

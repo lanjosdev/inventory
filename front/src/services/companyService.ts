@@ -53,7 +53,7 @@ export class CompanyService {
    * Remove uma empresa/rede.
    */
   static async deleteCompany(id: number): Promise<{ success: boolean; message: string }> {
-    const url = `/api/companies/${id}`
+    const url = `/companies/${id}`
     return await api.authFetch<{ success: boolean; message: string }>(url, {
       method: 'DELETE'
     })

@@ -37,7 +37,6 @@ export async function loginAction(data: LoginFormData): Promise<ActionResult> {
             user: response.data.user,
         }
     } catch (error) {
-        // console.error('EEErro ao processar a ação de login:', error)
         // 4. Tratamento de erros.
         if (error instanceof z.ZodError) {
             // Erro de validação do Zod.

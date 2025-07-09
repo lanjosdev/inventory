@@ -10,7 +10,6 @@ interface DetailsNetworkPageProps {
 export default async function DetailsNetworkPage({ params }: DetailsNetworkPageProps) {
     const companyId = parseInt(params.id, 10);
     const companyResponse = await getCompanyByIdAction(companyId);
-    console.log('Company response:', companyResponse);
 
     if (!companyResponse.success || !companyResponse.data) {
         return <CompanyNotFound companyId={params.id} message={companyResponse.message} />;
