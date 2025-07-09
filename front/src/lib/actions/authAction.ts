@@ -5,7 +5,7 @@ import { z } from 'zod'
 import { cookies } from 'next/headers'
 import { login as loginService } from '@/services/authService'
 import { ApiError } from '@/lib/api'
-import type { ActionResult, LoginSuccessResponse } from '@/types'
+import type { ActionResult, LoginSuccessResponse, User } from '@/types'
 
 /**
  * Executa a autenticação do usuário, orquestrando a validação e a chamada ao serviço.
@@ -96,5 +96,42 @@ export async function logoutAction(): Promise<ActionResult> {
             success: false,
             message: 'Ocorreu um erro ao tentar fazer logout. Tente novamente.',
         }
+    }
+}
+
+/**
+ * Obtém os dados do usuário autenticado a partir do token armazenado no cookie.
+ * @returns Os dados do usuário ou null se não estiver autenticado.
+ */
+export async function getCurrentUser(): Promise<User | null> {
+    try {
+        const authTokenName = process.env.NEXT_COOKIE_AUTH_TOKEN_NAME || 'auth_token_bizsys'
+        const token = cookies().get(authTokenName)?.value
+
+        if (!token) {
+            return null
+        }
+
+        // Aqui você pode fazer uma chamada para validar o token e obter os dados do usuário
+        // Por agora, vou retornar dados mockados baseados no token
+        // Em um cenário real, você faria uma chamada à API para verificar o token e obter os dados
+
+        // Dados mockados para desenvolvimento
+        return {
+            id: 1,
+            name: 'Usuário Teste',
+            email: 'usuario@teste.com',
+            level: [{
+                id: 1,
+                name: 'Admin',
+                permission: 'full'
+            }],
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+            deleted_at: null
+        }
+    } catch (error) {
+        console.error('Erro ao obter dados do usuário:', error)
+        return null
     }
 }

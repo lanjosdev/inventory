@@ -101,7 +101,7 @@ export default function EditNetworkPage({ params }: EditNetworkPageProps) {
   }
 
   return (
-    <div className="container mx-auto py-10">
+    <div className="container mx-auto py-10 px-6">
       <div className="mb-8">
         <h1 className="text-3xl font-bold flex items-center gap-3 text-gray-900">
           <Building className="w-8 h-8 text-blue-600" />
